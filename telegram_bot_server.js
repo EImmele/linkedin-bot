@@ -23,7 +23,7 @@ http.createServer((req, res) => {
     console.log(`🌐 HTTP Health Check Server listening on port ${PORT}`);
 });
 
-console.log("🤖 Telegram Bot updated with Web Service Health Check for Render 24/7 Free Deployment...");
+console.log("🤖 Telegram Bot updated with Strategic Format Engine (Text vs. Image Decision)...");
 
 process.on('uncaughtException', (err) => { console.error('⚠️ Protected Exception:', err.message); });
 process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected Rejection:', reason); });
@@ -66,6 +66,8 @@ const postsDB = {
     post1: {
         title: "Post 1: Tradução de Riscos de TI para o Board (Risk IT)",
         category: "GRC / Risk IT / CRISC",
+        recommendedFormat: "TEXT_ONLY", // Strategy: High Dwell Time Text Post
+        formatReason: "💡 Recomendação Estratégica: TEXTO PURO (Post conceitual de liderança gera maior tempo de leitura e debate nos comentários).",
         text: `Como é feita a tradução dos riscos de TI para a linguagem de negócios na sua organização?
 
 ${fixedCismMessage}
@@ -92,6 +94,8 @@ Quando a Gestão de Riscos deixa de ser um checklist burocrático e passa a trad
     post2: {
         title: "Post 2: Continuidade de Negócios & BIA (COBIT DSS04)",
         category: "BCM / Business Continuity / BIA",
+        recommendedFormat: "TEXT_ONLY",
+        formatReason: "💡 Recomendação Estratégica: TEXTO PURO (Foco em provocar reflexão de C-Level sobre RTO e RPO).",
         text: `How does your organization define which business systems to recover first during an operational disruption?
 
 In times of operational crisis, IT teams cannot prioritize recovery based on who shouts the loudest or on technical intuition.
@@ -113,6 +117,8 @@ Business Continuity is not an IT plan saved in a PDF. It is operational resilien
     post3: {
         title: "Post 3: Segurança da Informação como Habilitadora (CISM)",
         category: "InfoSec / Business Enabler / CISM",
+        recommendedFormat: "TEXT_ONLY",
+        formatReason: "💡 Recomendação Estratégica: TEXTO PURO (Posicionamento de CISO como Business Enabler).",
         text: `A equipe de Segurança da Informação da sua empresa é vista como uma parceira estratégica ou como o departamento do "não"?
 
 ${fixedCismMessage}
@@ -137,7 +143,10 @@ Quando a liderança entende que segurança forte gera vantagem competitiva, o CI
     post4: {
         title: "Post 4: Gestão de Riscos em Terceiros (TPRM & Supply Chain)",
         category: "TPRM / Supply Chain / Risk IT",
-        text: `Como a sua organização garante a segurança dos dados quando um fornecedor crítico é comprometido?
+        recommendedFormat: "WITH_IMAGE",
+        formatReason: "🖼️ Recomendação Estratégica: TEXTO + INFOGRÁFICO PNG (O ciclo de 3 etapas do TPRM ganha 3x mais destaque visual com o infográfico).",
+        imagePath: "third_party_risk_management_graphic.png",
+        text: `Como a sua organização garante a segurança dos dados quando um fornecedor crítico é compromised?
 
 ${fixedCismMessage}
 
@@ -161,6 +170,9 @@ Quando a governança de terceiros é integrada à gestão de riscos da empresa, 
     post5: {
         title: "Post 5: Gestão de Incidentes & Resposta a Crises (CISM)",
         category: "Incident Management / CISM Domínio 4",
+        recommendedFormat: "WITH_IMAGE",
+        formatReason: "🖼️ Recomendação Estratégica: TEXTO + INFOGRÁFICO PNG (As 5 fases da resposta a incidentes exigem apoio gráfico para memorização).",
+        imagePath: "incident_management_lifecycle_graphic.png",
         text: `Quando ocorre um vazamento crítico de dados, a sua equipe tem um plano de resposta testado ou o caos toma conta das primeiras 2 horas?
 
 ${fixedCismMessage}
@@ -193,9 +205,9 @@ Gestão de incidentes eficiente não é sobre nunca sofrer um ataque, mas sobre 
 const mainMenuKeyboard = {
     reply_markup: {
         inline_keyboard: [
-            [{ text: "📖 Ver Posts Existentes", callback_data: "select_post_menu" }],
-            [{ text: "🚀 Post 4 (Perfil)", callback_data: "publish_post4_personal" }, { text: "🏢 Post 4 (Empresa)", callback_data: "publish_post4_company" }],
-            [{ text: "🚨 Post 5 (Incidentes)", callback_data: "publish_post5_personal" }, { text: "💬 Últimos 5 Comentários", callback_data: "list_unreplied_comments" }],
+            [{ text: "📖 Ver Posts & Recomendações de Formato", callback_data: "select_post_menu" }],
+            [{ text: "🚀 Post 4 (Texto)", callback_data: "publish_custom_post4_personal_text" }, { text: "🖼️ Post 4 (com Imagem)", callback_data: "publish_custom_post4_personal_img" }],
+            [{ text: "🚨 Post 5 (com Imagem)", callback_data: "publish_custom_post5_personal_img" }, { text: "💬 Últimos 5 Comentários", callback_data: "list_unreplied_comments" }],
             [{ text: "📊 Status Conexão", callback_data: "check_status" }, { text: "🗑️ Excluir Post LinkedIn", callback_data: "delete_linkedin_menu" }]
         ]
     }
@@ -206,7 +218,7 @@ bot.on('message', async (msg) => {
     const text = msg.text || "";
 
     if (text.startsWith('/start') || text.toLowerCase().includes('menu') || text.toLowerCase().includes('ajuda')) {
-        await bot.sendMessage(chatId, "👋 Olá, Erik! Escolha uma opção no menu ou me envie uma mensagem:", mainMenuKeyboard);
+        await bot.sendMessage(chatId, "👋 Olá, Erik! Escolha uma opção no menu:", mainMenuKeyboard);
     } else {
         await bot.sendMessage(chatId, `💡 Mensagem recebida: "${text}"`, mainMenuKeyboard);
     }
@@ -224,16 +236,16 @@ bot.on('callback_query', async (query) => {
         const selectPostKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "1️⃣ Post 1: Riscos de TI (Risk IT)", callback_data: "view_post_post1" }],
-                    [{ text: "2️⃣ Post 2: Continuidade & BIA", callback_data: "view_post_post2" }],
-                    [{ text: "3️⃣ Post 3: Segurança Enabler", callback_data: "view_post_post3" }],
-                    [{ text: "4️⃣ Post 4: Riscos em Terceiros", callback_data: "view_post_post4" }],
-                    [{ text: "5️⃣ Post 5: Gestão Incidentes", callback_data: "view_post_post5" }],
+                    [{ text: "1️⃣ Post 1: Riscos de TI (Risk IT) [💡 Texto]", callback_data: "view_post_post1" }],
+                    [{ text: "2️⃣ Post 2: Continuidade & BIA [💡 Texto]", callback_data: "view_post_post2" }],
+                    [{ text: "3️⃣ Post 3: Segurança Enabler [💡 Texto]", callback_data: "view_post_post3" }],
+                    [{ text: "4️⃣ Post 4: Riscos em Terceiros [🖼️ com Imagem]", callback_data: "view_post_post4" }],
+                    [{ text: "5️⃣ Post 5: Gestão Incidentes [🖼️ com Imagem]", callback_data: "view_post_post5" }],
                     [{ text: "⬅️ Voltar", callback_data: "back_to_main_menu" }]
                 ]
             }
         };
-        await bot.sendMessage(chatId, "📚 Escolha o post que deseja visualizar:", selectPostKeyboard);
+        await bot.sendMessage(chatId, "📚 Escolha o post para ver o conteúdo e a **Recomendação Estratégica de Formato**:", selectPostKeyboard);
     } else if (action.startsWith("view_post_")) {
         const postKey = action.replace("view_post_", "");
         const post = postsDB[postKey];
@@ -242,8 +254,12 @@ bot.on('callback_query', async (query) => {
                 reply_markup: {
                     inline_keyboard: [
                         [
-                            { text: "🚀 Publicar (Perfil)", callback_data: `publish_custom_${postKey}_personal` },
-                            { text: "🏢 Publicar (Empresa)", callback_data: `publish_custom_${postKey}_company` }
+                            { text: "🚀 Publicar Apenas Texto (Perfil)", callback_data: `publish_custom_${postKey}_personal_text` },
+                            { text: "🖼️ Publicar com Imagem (Perfil)", callback_data: `publish_custom_${postKey}_personal_img` }
+                        ],
+                        [
+                            { text: "🏢 Publicar na Empresa (Texto)", callback_data: `publish_custom_${postKey}_company_text` },
+                            { text: "🏢 Publicar na Empresa (com Imagem)", callback_data: `publish_custom_${postKey}_company_img` }
                         ],
                         [
                             { text: "⬅️ Voltar aos Posts", callback_data: "select_post_menu" }
@@ -251,10 +267,14 @@ bot.on('callback_query', async (query) => {
                     ]
                 }
             };
-            await bot.sendMessage(chatId, `📌 ${post.title}\n🏷️ Categoria: ${post.category}\n\n--------------------\n\n${post.text}`, postActionsKeyboard);
+            await bot.sendMessage(
+                chatId,
+                `📌 **${post.title}**\n🏷️ Categoria: ${post.category}\n\n${post.formatReason}\n\n--------------------\n\n${post.text}`,
+                postActionsKeyboard
+            );
         }
     } else if (action === "list_unreplied_comments") {
-        await bot.sendMessage(chatId, "🔍 **Buscando os últimos comentários e identificando nomes dos executivos...**", { parse_mode: 'Markdown' });
+        await bot.sendMessage(chatId, "🔍 **Buscando os últimos comentários não respondidos no LinkedIn...**", { parse_mode: 'Markdown' });
 
         const unrepliedList = [];
 
@@ -442,24 +462,18 @@ bot.on('callback_query', async (query) => {
         } catch (e) {
             await bot.sendMessage(chatId, `❌ Erro: ${e.message}`);
         }
-    } else if (action.startsWith("publish_custom_") || action.startsWith("publish_post")) {
-        let postKey = "post4";
-        let isPersonal = true;
-
-        if (action.startsWith("publish_custom_")) {
-            const parts = action.replace("publish_custom_", "").split("_");
-            postKey = parts[0];
-            isPersonal = parts[1] === "personal";
-        } else {
-            isPersonal = action.includes("personal");
-            postKey = action.includes("post5") ? "post5" : "post4";
-        }
+    } else if (action.startsWith("publish_custom_")) {
+        const parts = action.replace("publish_custom_", "").split("_");
+        const postKey = parts[0];
+        const isPersonal = parts[1] === "personal";
+        const isImage = parts[2] === "img";
 
         const post = postsDB[postKey];
         const authorUrn = isPersonal ? PERSONAL_URN : ORG_URN;
         const targetName = isPersonal ? "Perfil Pessoal (Erik Immele)" : "Página Comercial (Audit Chain)";
+        const formatLabel = isImage ? "Texto + Infográfico PNG" : "Texto Puro";
 
-        await bot.sendMessage(chatId, `🚀 Disparando ${post.title} para ${targetName}...`);
+        await bot.sendMessage(chatId, `🚀 Disparando ${post.title} em formato [${formatLabel}] para ${targetName}...`);
 
         try {
             const response = await composio.tools.proxyExecute({
@@ -484,7 +498,7 @@ bot.on('callback_query', async (query) => {
             });
 
             if (response.status === 201 || (response.data && response.data.id)) {
-                await bot.sendMessage(chatId, `🎉 PUBLICADO COM SUCESSO!\n\n• Post: ${post.title}\n• Destino: ${targetName}\n• ID: ${response.data.id}`);
+                await bot.sendMessage(chatId, `🎉 PUBLICADO COM SUCESSO!\n\n• Post: ${post.title}\n• Formato: ${formatLabel}\n• Destino: ${targetName}\n• ID: ${response.data.id}`);
             } else {
                 await bot.sendMessage(chatId, `⚠️ Resposta API: ${JSON.stringify(response.data)}`);
             }
