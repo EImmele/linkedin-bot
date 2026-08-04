@@ -14,16 +14,19 @@ const ORG_URN = "urn:li:organization:122274764";
 const composio = new Composio({ apiKey: COMPOSIO_API_KEY });
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
+// State for Approval Mode: false = MANUAL (Human-in-the-Loop), true = AUTO_PILOT (Auto-Publish without approval)
+let autoApprovalMode = false;
+
 // Start HTTP Health Check Server for Render Web Service (Free Tier)
 const PORT = process.env.PORT || 3000;
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Audit Chain LinkedIn & Telegram Bot Server is Running 24/7!\n');
+    res.end(`Audit Chain LinkedIn & Telegram Bot Server is Running 24/7! AutoApproval: ${autoApprovalMode ? 'ON' : 'OFF'}\n`);
 }).listen(PORT, () => {
     console.log(`🌐 HTTP Health Check Server listening on port ${PORT}`);
 });
 
-console.log("🤖 Telegram Bot updated with Strategic Format Engine (Text vs. Image Decision)...");
+console.log("🤖 Telegram Bot updated with Approval Mode Toggle Switch (Turn In/Out)...");
 
 process.on('uncaughtException', (err) => { console.error('⚠️ Protected Exception:', err.message); });
 process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected Rejection:', reason); });
@@ -66,8 +69,8 @@ const postsDB = {
     post1: {
         title: "Post 1: Tradução de Riscos de TI para o Board (Risk IT)",
         category: "GRC / Risk IT / CRISC",
-        recommendedFormat: "TEXT_ONLY", // Strategy: High Dwell Time Text Post
-        formatReason: "💡 Recomendação Estratégica: TEXTO PURO (Post conceitual de liderança gera maior tempo de leitura e debate nos comentários).",
+        recommendedFormat: "TEXT_ONLY",
+        formatReason: "💡 Recomendação Estratégica: TEXTO PURO (Post conceitual de liderança gera maior tempo de leitura e debate).",
         text: `Como é feita a tradução dos riscos de TI para a linguagem de negócios na sua organização?
 
 ${fixedCismMessage}
@@ -144,9 +147,9 @@ Quando a liderança entende que segurança forte gera vantagem competitiva, o CI
         title: "Post 4: Gestão de Riscos em Terceiros (TPRM & Supply Chain)",
         category: "TPRM / Supply Chain / Risk IT",
         recommendedFormat: "WITH_IMAGE",
-        formatReason: "🖼️ Recomendação Estratégica: TEXTO + INFOGRÁFICO PNG (O ciclo de 3 etapas do TPRM ganha 3x mais destaque visual com o infográfico).",
+        formatReason: "🖼️ Recomendação Estratégica: TEXTO + INFOGRÁFICO PNG (O ciclo de 3 etapas do TPRM ganha destaque visual).",
         imagePath: "third_party_risk_management_graphic.png",
-        text: `Como a sua organização garante a segurança dos dados quando um fornecedor crítico é compromised?
+        text: `Como a sua organização garante a segurança dos dados quando um fornecedor crítico é comprometido?
 
 ${fixedCismMessage}
 
@@ -171,7 +174,7 @@ Quando a governança de terceiros é integrada à gestão de riscos da empresa, 
         title: "Post 5: Gestão de Incidentes & Resposta a Crises (CISM)",
         category: "Incident Management / CISM Domínio 4",
         recommendedFormat: "WITH_IMAGE",
-        formatReason: "🖼️ Recomendação Estratégica: TEXTO + INFOGRÁFICO PNG (As 5 fases da resposta a incidentes exigem apoio gráfico para memorização).",
+        formatReason: "🖼️ Recomendação Estratégica: TEXTO + INFOGRÁFICO PNG (As 5 fases da resposta a incidentes exigem apoio gráfico).",
         imagePath: "incident_management_lifecycle_graphic.png",
         text: `Quando ocorre um vazamento crítico de dados, a sua equipe tem um plano de resposta testado ou o caos toma conta das primeiras 2 horas?
 
@@ -202,25 +205,33 @@ Gestão de incidentes eficiente não é sobre nunca sofrer um ataque, mas sobre 
     }
 };
 
-const mainMenuKeyboard = {
-    reply_markup: {
-        inline_keyboard: [
-            [{ text: "📖 Ver Posts & Recomendações de Formato", callback_data: "select_post_menu" }],
-            [{ text: "🚀 Post 4 (Texto)", callback_data: "publish_custom_post4_personal_text" }, { text: "🖼️ Post 4 (com Imagem)", callback_data: "publish_custom_post4_personal_img" }],
-            [{ text: "🚨 Post 5 (com Imagem)", callback_data: "publish_custom_post5_personal_img" }, { text: "💬 Últimos 5 Comentários", callback_data: "list_unreplied_comments" }],
-            [{ text: "📊 Status Conexão", callback_data: "check_status" }, { text: "🗑️ Excluir Post LinkedIn", callback_data: "delete_linkedin_menu" }]
-        ]
-    }
-};
+function getMainMenuKeyboard() {
+    const toggleButtonText = autoApprovalMode 
+        ? "🟢 Modo Aprovação: AUTOMÁTICA (Clique p/ Manual)" 
+        : "🔴 Modo Aprovação: MANUAL (Clique p/ Autopiloto)";
+
+    return {
+        reply_markup: {
+            inline_keyboard: [
+                [{ text: toggleButtonText, callback_data: "toggle_approval_mode" }],
+                [{ text: "📖 Ver Posts & Recomendações de Formato", callback_data: "select_post_menu" }],
+                [{ text: "🚀 Post 4 (Texto)", callback_data: "publish_custom_post4_personal_text" }, { text: "🖼️ Post 4 (com Imagem)", callback_data: "publish_custom_post4_personal_img" }],
+                [{ text: "🚨 Post 5 (com Imagem)", callback_data: "publish_custom_post5_personal_img" }, { text: "💬 Últimos 5 Comentários", callback_data: "list_unreplied_comments" }],
+                [{ text: "📊 Status Conexão", callback_data: "check_status" }, { text: "🗑️ Excluir Post LinkedIn", callback_data: "delete_linkedin_menu" }]
+            ]
+        }
+    };
+}
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text || "";
 
     if (text.startsWith('/start') || text.toLowerCase().includes('menu') || text.toLowerCase().includes('ajuda')) {
-        await bot.sendMessage(chatId, "👋 Olá, Erik! Escolha uma opção no menu:", mainMenuKeyboard);
+        const modeLabel = autoApprovalMode ? "🟢 PILOTO AUTOMÁTICO (Sem aprovação)" : "🔴 APROVAÇÃO MANUAL (Com revisão)";
+        await bot.sendMessage(chatId, `👋 Olá, Erik!\n\n⚙️ **Status Atual do Modo de Aprovação**: ${modeLabel}\n\nEscolha uma opção no menu abaixo:`, getMainMenuKeyboard());
     } else {
-        await bot.sendMessage(chatId, `💡 Mensagem recebida: "${text}"`, mainMenuKeyboard);
+        await bot.sendMessage(chatId, `💡 Mensagem recebida: "${text}"`, getMainMenuKeyboard());
     }
 });
 
@@ -230,8 +241,15 @@ bot.on('callback_query', async (query) => {
 
     try { await bot.answerCallbackQuery(query.id); } catch (e) {}
 
-    if (action === "back_to_main_menu") {
-        await bot.sendMessage(chatId, "🏠 Menu Principal:", mainMenuKeyboard);
+    if (action === "toggle_approval_mode") {
+        autoApprovalMode = !autoApprovalMode;
+        const newStatusText = autoApprovalMode 
+            ? "🟢 **MODO PILOTO AUTOMÁTICO ATIVADO!**\n\nA partir de agora, as respostas a comentários e disparos agendados serão publicados **diretamente sem exigir aprovação prévia**. Você receberá apenas as confirmações de envio no Telegram."
+            : "🔴 **MODO APROVAÇÃO MANUAL ATIVADO!**\n\nA partir de agora, **todo comentário e post exigirá obrigatoriamente a sua revisão e clique explícito de aprovação no Telegram** antes de ir ao ar no LinkedIn.";
+
+        await bot.sendMessage(chatId, newStatusText, { parse_mode: 'Markdown', ...getMainMenuKeyboard() });
+    } else if (action === "back_to_main_menu") {
+        await bot.sendMessage(chatId, "🏠 Menu Principal:", getMainMenuKeyboard());
     } else if (action === "select_post_menu") {
         const selectPostKeyboard = {
             reply_markup: {
@@ -315,29 +333,67 @@ bot.on('callback_query', async (query) => {
         const last5 = unrepliedList.slice(0, 5);
 
         if (last5.length === 0) {
-            await bot.sendMessage(chatId, "✅ **Nenhum comentário pendente de resposta!**\n\nTodos os comentários recebidos já foram respondidos por você.", { parse_mode: 'Markdown', ...mainMenuKeyboard });
+            await bot.sendMessage(chatId, "✅ **Nenhum comentário pendente de resposta!**\n\nTodos os comentários recebidos já foram respondidos por você.", { parse_mode: 'Markdown', ...getMainMenuKeyboard() });
         } else {
-            const commentButtons = last5.map((c, index) => {
-                const cacheKey = `comm_${index + 1}`;
-                
-                const aiSuggestion = `${c.author} Exatamente essa virada de chave! Na governança de CISM e Risk IT, quando conectamos o risco ao impacto financeiro, a liderança assume a decisão com clareza. Como vocês estruturam esse alinhamento por aí?`;
+            // IF AUTO-APPROVAL MODE IS ON -> AUTO PUBLISH REPLIES DIRECTLY
+            if (autoApprovalMode) {
+                await bot.sendMessage(chatId, `⚡ **Modo Piloto Automático Ativo!** Respondendo a ${last5.length} comentários automaticamente com marcação em azul (@)...`);
 
-                unrepliedCommentsCache[cacheKey] = {
-                    ...c,
-                    suggestion: aiSuggestion
-                };
+                for (const c of last5) {
+                    const aiSuggestion = `${c.author} Exatamente essa virada de chave! Na governança de CISM e Risk IT, quando conectamos o risco ao impacto financeiro, a liderança assume a decisão com clareza. Como vocês estruturam esse alinhamento por aí?`;
+                    
+                    try {
+                        const payload = {
+                            actor: PERSONAL_URN,
+                            message: {
+                                text: aiSuggestion,
+                                attributes: c.actorUrn && c.actorUrn.includes("person:") ? [{
+                                    start: 0,
+                                    length: c.author.length,
+                                    value: { "com.linkedin.common.MemberAttributedEntity": { member: c.actorUrn } }
+                                }] : []
+                            },
+                            object: c.activityUrn,
+                            parentComment: c.fullCommentUrn
+                        };
 
-                const shortTxt = c.text.length > 20 ? c.text.substring(0, 18) + "..." : c.text;
-                return [{ text: `${index + 1}️⃣ ${c.author}: "${shortTxt}"`, callback_data: `view_comment_${cacheKey}` }];
-            });
+                        await composio.tools.proxyExecute({
+                            endpoint: `https://api.linkedin.com/v2/socialActions/${encodeURIComponent(c.activityUrn)}/comments`,
+                            method: "POST",
+                            connectedAccountId: CONNECTED_ACCOUNT_ID,
+                            headers: { "X-Restli-Protocol-Version": "2.0.0", "Content-Type": "application/json" },
+                            body: payload
+                        });
 
-            commentButtons.push([{ text: "⬅️ Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]);
+                        await bot.sendMessage(chatId, `🎉 **AUTOMÁTICO**: Resposta enviada para ${c.author}!`);
+                    } catch (e) {
+                        console.error(`Auto reply error for ${c.author}:`, e.message);
+                    }
+                }
+            } else {
+                // MANUAL APPROVAL MODE -> SHOW LIST OF BUTTONS FOR REVISION
+                const commentButtons = last5.map((c, index) => {
+                    const cacheKey = `comm_${index + 1}`;
+                    
+                    const aiSuggestion = `${c.author} Exatamente essa virada de chave! Na governança de CISM e Risk IT, quando conectamos o risco ao impacto financeiro, a liderança assume a decisão com clareza. Como vocês estruturam esse alinhamento por aí?`;
 
-            await bot.sendMessage(
-                chatId,
-                `💬 **Últimos ${last5.length} Comentários Não Respondidos:**\n\nClique em um comentário para ver o texto completo e a sugestão de resposta:`,
-                { parse_mode: 'Markdown', reply_markup: { inline_keyboard: commentButtons } }
-            );
+                    unrepliedCommentsCache[cacheKey] = {
+                        ...c,
+                        suggestion: aiSuggestion
+                    };
+
+                    const shortTxt = c.text.length > 20 ? c.text.substring(0, 18) + "..." : c.text;
+                    return [{ text: `${index + 1}️⃣ ${c.author}: "${shortTxt}"`, callback_data: `view_comment_${cacheKey}` }];
+                });
+
+                commentButtons.push([{ text: "⬅️ Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]);
+
+                await bot.sendMessage(
+                    chatId,
+                    `💬 **Últimos ${last5.length} Comentários Não Respondidos (Modo Manual):**\n\nClique em um comentário para ver o texto completo e a sugestão de resposta:`,
+                    { parse_mode: 'Markdown', reply_markup: { inline_keyboard: commentButtons } }
+                );
+            }
         }
     } else if (action.startsWith("view_comment_")) {
         const cacheKey = action.replace("view_comment_", "");
@@ -365,7 +421,7 @@ bot.on('callback_query', async (query) => {
                 { parse_mode: 'Markdown', ...replyActionsKeyboard }
             );
         } else {
-            await bot.sendMessage(chatId, "⚠️ Comentário não encontrado ou expirado.", mainMenuKeyboard);
+            await bot.sendMessage(chatId, "⚠️ Comentário não encontrado ou expirado.", getMainMenuKeyboard());
         }
     } else if (action.startsWith("approve_reply_")) {
         const cacheKey = action.replace("approve_reply_", "");
@@ -458,7 +514,8 @@ bot.on('callback_query', async (query) => {
     } else if (action === "check_status") {
         try {
             const acc = await composio.connectedAccounts.get(CONNECTED_ACCOUNT_ID);
-            await bot.sendMessage(chatId, `✅ Status Composio/LinkedIn:\n• Status: ${acc.status}\n• Account ID: ${acc.id}`);
+            const modeLabel = autoApprovalMode ? "🟢 PILOTO AUTOMÁTICO (Sem aprovação)" : "🔴 APROVAÇÃO MANUAL (Com revisão)";
+            await bot.sendMessage(chatId, `✅ Status Composio/LinkedIn:\n• Status: ${acc.status}\n• Modo de Aprovação: ${modeLabel}\n• Account ID: ${acc.id}`);
         } catch (e) {
             await bot.sendMessage(chatId, `❌ Erro: ${e.message}`);
         }
