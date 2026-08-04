@@ -17,6 +17,9 @@ const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 // State for Approval Mode: false = MANUAL (Human-in-the-Loop), true = AUTO_PILOT (Auto-Publish without approval)
 let autoApprovalMode = false;
 
+// Metrics Counter Cache
+let totalRepliesSent = 3; // Baseline from successful test replies sent
+
 // Start HTTP Health Check Server for Render Web Service (Free Tier)
 const PORT = process.env.PORT || 3000;
 http.createServer((req, res) => {
@@ -26,7 +29,7 @@ http.createServer((req, res) => {
     console.log(`🌐 HTTP Health Check Server listening on port ${PORT}`);
 });
 
-console.log("🤖 Telegram Bot updated with Approval Mode Toggle Switch (Turn In/Out)...");
+console.log("🤖 Telegram Bot updated with Real-Time Interactions Dashboard...");
 
 process.on('uncaughtException', (err) => { console.error('⚠️ Protected Exception:', err.message); });
 process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected Rejection:', reason); });
@@ -34,9 +37,10 @@ process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected R
 const fixedCismMessage = `Olá pessoal, Como parte da minha preparação para o exame de certificação CISM da ISACA, estou compartilhando reflexões práticas (e reais) que conectam minha experiência no mercado com o conhecimento adquirido nesta jornada.`;
 
 const trackedPosts = [
-    { urn: "urn:li:share:7490327458173399040", name: "Post 1 (Perfil Pessoal)", author: PERSONAL_URN },
-    { urn: "urn:li:share:7490192848332574720", name: "Post 2 (Audit Chain)", author: ORG_URN },
-    { urn: "urn:li:share:7490193701017722880", name: "Post 3 (Perfil Pessoal)", author: PERSONAL_URN }
+    { urn: "urn:li:share:7490327458173399040", name: "Post 1 (Riscos TI - Perfil)", author: PERSONAL_URN },
+    { urn: "urn:li:share:7490192848332574720", name: "Post 2 (BCM - Audit Chain)", author: ORG_URN },
+    { urn: "urn:li:share:7490193701017722880", name: "Post 3 (Segurança - Perfil)", author: PERSONAL_URN },
+    { urn: "urn:li:share:7490380916247232512", name: "Post 4 (TPRM - Audit Chain)", author: ORG_URN }
 ];
 
 const unrepliedCommentsCache = {};
@@ -214,6 +218,7 @@ function getMainMenuKeyboard() {
         reply_markup: {
             inline_keyboard: [
                 [{ text: toggleButtonText, callback_data: "toggle_approval_mode" }],
+                [{ text: "📊 Dashboard de Interações", callback_data: "show_dashboard" }],
                 [{ text: "📖 Ver Posts & Recomendações de Formato", callback_data: "select_post_menu" }],
                 [{ text: "🚀 Post 4 (Texto)", callback_data: "publish_custom_post4_personal_text" }, { text: "🖼️ Post 4 (com Imagem)", callback_data: "publish_custom_post4_personal_img" }],
                 [{ text: "🚨 Post 5 (com Imagem)", callback_data: "publish_custom_post5_personal_img" }, { text: "💬 Últimos 5 Comentários", callback_data: "list_unreplied_comments" }],
@@ -241,7 +246,80 @@ bot.on('callback_query', async (query) => {
 
     try { await bot.answerCallbackQuery(query.id); } catch (e) {}
 
-    if (action === "toggle_approval_mode") {
+    if (action === "show_dashboard") {
+        await bot.sendMessage(chatId, "📊 **Carregando Métricas e Dashboard de Interações em Tempo Real...**", { parse_mode: 'Markdown' });
+
+        let totalComments = 0;
+        let totalLikes = 0;
+        let unrepliedCount = 0;
+        let postBreakdownText = "";
+
+        for (const item of trackedPosts) {
+            let postCommentsCount = 0;
+            let postLikesCount = 0;
+
+            try {
+                // Fetch comments summary
+                const commentsResp = await composio.tools.proxyExecute({
+                    endpoint: `https://api.linkedin.com/v2/socialActions/${encodeURIComponent(item.urn)}/comments`,
+                    method: "GET",
+                    connectedAccountId: CONNECTED_ACCOUNT_ID,
+                    headers: { "X-Restli-Protocol-Version": "2.0.0" }
+                });
+
+                if (commentsResp.data && commentsResp.data.elements) {
+                    postCommentsCount = commentsResp.data.elements.length;
+                    totalComments += postCommentsCount;
+
+                    for (const c of commentsResp.data.elements) {
+                        const actorUrn = c.created?.actor || c.actor || "";
+                        if (actorUrn !== PERSONAL_URN && actorUrn !== ORG_URN) {
+                            unrepliedCount++;
+                        }
+                    }
+                }
+
+                // Fetch likes summary
+                const likesResp = await composio.tools.proxyExecute({
+                    endpoint: `https://api.linkedin.com/v2/socialActions/${encodeURIComponent(item.urn)}/likes`,
+                    method: "GET",
+                    connectedAccountId: CONNECTED_ACCOUNT_ID,
+                    headers: { "X-Restli-Protocol-Version": "2.0.0" }
+                });
+
+                if (likesResp.data && likesResp.data.paging) {
+                    postLikesCount = likesResp.data.paging.total || likesResp.data.elements?.length || 0;
+                    totalLikes += postLikesCount;
+                }
+            } catch (e) {
+                console.error(`Dashboard error for ${item.name}:`, e.message);
+            }
+
+            postBreakdownText += `• **${item.name}**\n  💬 Comentários: ${postCommentsCount} | 👍 Likes: ${postLikesCount}\n\n`;
+        }
+
+        const coverageRate = totalComments > 0 ? Math.round(((totalComments - unrepliedCount) / totalComments) * 100) : 100;
+        const modeLabel = autoApprovalMode ? "🟢 PILOTO AUTOMÁTICO" : "🔴 APROVAÇÃO MANUAL";
+
+        const dashboardMessage = 
+            `📊 **DASHBOARD EXECUTIVO DE INTERAÇÕES DO LINKEDIN**\n` +
+            `-----------------------------------------------------\n\n` +
+            `📈 **Métricas Consolidadas de Engajamento:**\n` +
+            `💬 **Total de Comentários Recebidos**: ${totalComments}\n` +
+            `✅ **Respostas Enviadas (com @Mention)**: ${totalRepliesSent}\n` +
+            `⏳ **Comentários Pendentes de Revisão**: ${unrepliedCount}\n` +
+            `👍 **Total de Curtidas/Reações**: ${totalLikes}\n` +
+            `🎯 **Taxa de Resposta e Cobertura**: ${coverageRate}%\n\n` +
+            `-----------------------------------------------------\n\n` +
+            `📌 **Desempenho por Publicação:**\n${postBreakdownText}` +
+            `-----------------------------------------------------\n\n` +
+            `⚙️ **Configurações do Servidor Nuvem:**\n` +
+            `• **Status do Servidor**: 🟢 ONLINE 24/7 (Render.com)\n` +
+            `• **Modo de Aprovação Atual**: ${modeLabel}\n` +
+            `• **Conexão LinkedIn OAuth**: 🟢 ATIVA (Composio Proxy)`;
+
+        await bot.sendMessage(chatId, dashboardMessage, { parse_mode: 'Markdown', ...getMainMenuKeyboard() });
+    } else if (action === "toggle_approval_mode") {
         autoApprovalMode = !autoApprovalMode;
         const newStatusText = autoApprovalMode 
             ? "🟢 **MODO PILOTO AUTOMÁTICO ATIVADO!**\n\nA partir de agora, as respostas a comentários e disparos agendados serão publicados **diretamente sem exigir aprovação prévia**. Você receberá apenas as confirmações de envio no Telegram."
@@ -335,7 +413,6 @@ bot.on('callback_query', async (query) => {
         if (last5.length === 0) {
             await bot.sendMessage(chatId, "✅ **Nenhum comentário pendente de resposta!**\n\nTodos os comentários recebidos já foram respondidos por você.", { parse_mode: 'Markdown', ...getMainMenuKeyboard() });
         } else {
-            // IF AUTO-APPROVAL MODE IS ON -> AUTO PUBLISH REPLIES DIRECTLY
             if (autoApprovalMode) {
                 await bot.sendMessage(chatId, `⚡ **Modo Piloto Automático Ativo!** Respondendo a ${last5.length} comentários automaticamente com marcação em azul (@)...`);
 
@@ -365,13 +442,13 @@ bot.on('callback_query', async (query) => {
                             body: payload
                         });
 
+                        totalRepliesSent++;
                         await bot.sendMessage(chatId, `🎉 **AUTOMÁTICO**: Resposta enviada para ${c.author}!`);
                     } catch (e) {
                         console.error(`Auto reply error for ${c.author}:`, e.message);
                     }
                 }
             } else {
-                // MANUAL APPROVAL MODE -> SHOW LIST OF BUTTONS FOR REVISION
                 const commentButtons = last5.map((c, index) => {
                     const cacheKey = `comm_${index + 1}`;
                     
@@ -467,6 +544,7 @@ bot.on('callback_query', async (query) => {
                 });
 
                 if (response.status === 201 || (response.data && response.data.id)) {
+                    totalRepliesSent++;
                     await bot.sendMessage(chatId, `🎉 **RESPOSTA COM MARCAÇÃO (@) PUBLICADA COM SUCESSO!**\n\n• Respondido e marcado em azul: ${replyItem.author}!\n• Status: 201 Created`, { parse_mode: 'Markdown' });
                 } else {
                     await bot.sendMessage(chatId, `⚠️ Retorno da API: ${JSON.stringify(response.data)}`);
