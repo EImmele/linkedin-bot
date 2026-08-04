@@ -1,6 +1,7 @@
 const TelegramBotModule = require('node-telegram-bot-api');
 const TelegramBot = TelegramBotModule.default || TelegramBotModule;
 const { Composio } = require('@composio/core');
+const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
@@ -13,7 +14,16 @@ const ORG_URN = "urn:li:organization:122274764";
 const composio = new Composio({ apiKey: COMPOSIO_API_KEY });
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
-console.log("🤖 Telegram Bot updated with LinkedIn Blue Member Tagging (@Mention)...");
+// Start HTTP Health Check Server for Render Web Service (Free Tier)
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Audit Chain LinkedIn & Telegram Bot Server is Running 24/7!\n');
+}).listen(PORT, () => {
+    console.log(`🌐 HTTP Health Check Server listening on port ${PORT}`);
+});
+
+console.log("🤖 Telegram Bot updated with Web Service Health Check for Render 24/7 Free Deployment...");
 
 process.on('uncaughtException', (err) => { console.error('⚠️ Protected Exception:', err.message); });
 process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected Rejection:', reason); });
@@ -418,7 +428,7 @@ bot.on('callback_query', async (query) => {
             });
 
             if (response.status === 200 || response.status === 204 || response.status === 201) {
-                await bot.sendMessage(chatId, `✅ **SUCESSO! O post me foi excluído permanentemente do LinkedIn!**\n\n• URN do Post Removido: \`${shareUrn}\``, { parse_mode: 'Markdown' });
+                await bot.sendMessage(chatId, `✅ **SUCESSO! O post foi excluído permanentemente do LinkedIn!**\n\n• URN do Post Removido: \`${shareUrn}\``, { parse_mode: 'Markdown' });
             } else {
                 await bot.sendMessage(chatId, `⚠️ Retorno da exclusão: HTTP ${response.status}\n${JSON.stringify(response.data)}`);
             }
