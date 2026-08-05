@@ -1,6 +1,7 @@
 const TelegramBotModule = require('node-telegram-bot-api');
 const TelegramBot = TelegramBotModule.default || TelegramBotModule;
 const { Composio } = require('@composio/core');
+const cron = require('node-cron');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -19,6 +20,7 @@ let autoApprovalMode = false;
 
 // Metrics Counter Cache
 let totalRepliesSent = 3;
+let myTelegramChatId = null;
 
 // Start HTTP Health Check Server for Render Web Service (Free Tier)
 const PORT = process.env.PORT || 3000;
@@ -29,7 +31,7 @@ http.createServer((req, res) => {
     console.log(`🌐 HTTP Health Check Server listening on port ${PORT}`);
 });
 
-console.log("🤖 Telegram Bot updated with Full LinkedIn Native Post Analytics...");
+console.log("🤖 Telegram Bot updated with 24/7 Cron Scheduler for Tue/Wed/Thu at 09:45 AM...");
 
 process.on('uncaughtException', (err) => { console.error('⚠️ Protected Exception:', err.message); });
 process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected Rejection:', reason); });
@@ -309,8 +311,57 @@ function getMainMenuKeyboard() {
     };
 }
 
+// CRON JOB SCHEDULER: Runs Every Tuesday, Wednesday and Thursday at 09:45 AM (UTC/Local)
+cron.schedule('45 9 * * 2,3,4', async () => {
+    console.log("⏰ 24/7 CRON TRIGGER: 09:45 AM Prime Time reached!");
+    
+    if (myTelegramChatId) {
+        if (autoApprovalMode) {
+            await bot.sendMessage(myTelegramChatId, "⏰ **HORÁRIO NOBRE (09:45 AM)**: Disparando Post 5 (Gestão de Incidentes CISM) automaticamente no piloto automático...");
+            // Auto publish Post 5
+            try {
+                const response = await composio.tools.proxyExecute({
+                    endpoint: "https://api.linkedin.com/v2/ugcPosts",
+                    method: "POST",
+                    connectedAccountId: CONNECTED_ACCOUNT_ID,
+                    headers: { "X-Restli-Protocol-Version": "2.0.0", "Content-Type": "application/json" },
+                    body: {
+                        author: PERSONAL_URN,
+                        lifecycleState: "PUBLISHED",
+                        specificContent: {
+                            "com.linkedin.ugc.ShareContent": {
+                                "shareCommentary": { "text": postsDB.post5.text },
+                                "shareMediaCategory": "NONE"
+                            }
+                        },
+                        visibility: { "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC" }
+                    }
+                });
+                await bot.sendMessage(myTelegramChatId, `🎉 **PUBLICADO AUTOMATICAMENTE ÀS 09:45 AM!**\n\n• Post: Post 5 (Gestão de Incidentes)\n• ID: ${response.data?.id}`);
+            } catch (e) {
+                await bot.sendMessage(myTelegramChatId, `❌ Erro no disparo automático: ${e.message}`);
+            }
+        } else {
+            await bot.sendMessage(
+                myTelegramChatId,
+                "⏰ **CHEGOU O HORÁRIO NOBRE DE HOJE (09:45 AM)!**\n\nO **Post 5 (Gestão de Incidentes CISM)** está pronto para ser publicado no seu LinkedIn.\n\nClique em um dos botões abaixo para aprovar:",
+                {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: "🚀 Aprovar & Publicar Post 5 (Perfil)", callback_data: "publish_custom_post5_personal_text" }],
+                            [{ text: "🖼️ Aprovar & Publicar Post 5 (com Imagem)", callback_data: "publish_custom_post5_personal_img" }]
+                        ]
+                    }
+                }
+            );
+        }
+    }
+});
+
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
+    myTelegramChatId = chatId;
     const text = msg.text || "";
 
     if (text.startsWith('/start') || text.toLowerCase().includes('menu') || text.toLowerCase().includes('ajuda')) {
@@ -323,6 +374,7 @@ bot.on('message', async (msg) => {
 
 bot.on('callback_query', async (query) => {
     const chatId = query.message.chat.id;
+    myTelegramChatId = chatId;
     const action = query.data;
 
     try { await bot.answerCallbackQuery(query.id); } catch (e) {}
