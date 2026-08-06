@@ -1565,11 +1565,22 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
                     [{ text: `${getPostStatusIcon('post9')} 9️⃣ Simulados de Crise & Testes BCM (ISO 22301)`, callback_data: "publish_custom_post9_personal_img" }],
                     [{ text: `${getPostStatusIcon('post10')} 🔟 Zero Trust Architecture & GRC Executivo`, callback_data: "publish_custom_post10_personal_img" }],
                     [{ text: "✨ 🆕 GERAR NOVO POST INÉDITO COM IA", callback_data: "generate_ai_post" }],
+                    [{ text: "🔄 Resetar Status de Publicações (Reiniciar Ciclo)", callback_data: "reset_published_status" }],
                     [{ text: "👤 Voltar ao Menu Pessoal", callback_data: "menu_personal_profile" }]
                 ]
             }
         };
         await bot.sendMessage(chatId, "👤 **[CATÁLOGO DE THOUGHT LEADERSHIP - ERIK IMMELE]**\n\nEscolha o artigo/post conceitual para disparar no seu Perfil Pessoal em **1ª Pessoa ('Eu')** ou clique para gerar um post novo com IA:", personalPostKeyboard);
+    } else if (action === "reset_published_status") {
+        publishedStatusMap = {};
+        try {
+            if (fs.existsSync(publishedStatusFile)) {
+                fs.writeFileSync(publishedStatusFile, JSON.stringify({}, null, 2));
+            }
+        } catch (e) {
+            console.error("Error resetting published status:", e.message);
+        }
+        await bot.sendMessage(chatId, "🔄 **STATUS DE PUBLICAÇÕES REINICIADO COM SUCESSO!**\n\nTodos os posts voltaram para o status `⏳ [PENDENTE]`. Você pode iniciar um novo ciclo de postagens no LinkedIn com legendas atualizadas!", { parse_mode: 'Markdown', ...getMainMenuKeyboard() });
     } else if (action === "generate_ai_post") {
         await bot.sendMessage(chatId, "✨ **IA Geradora de Conteúdo GRC Ativada!**\n\nCriando um novo post inédito com alta relevância técnica...", { parse_mode: 'Markdown' });
 
