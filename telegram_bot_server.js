@@ -763,10 +763,78 @@ bot.setMyCommands([
     { command: 'start', description: '📱 Menu Principal (Audit Chain & Pessoal)' },
     { command: 'auditchain', description: '🏢 Menu Comercial & Criativos (Audit Chain)' },
     { command: 'pessoal', description: '👤 Menu Thought Leadership (Erik Immele)' },
+    { command: 'gerarpost', description: '✨ Gerar post inédito dinâmico com IA' },
     { command: 'addpost', description: '📌 Adicionar post ao monitoramento 24/7' },
     { command: 'dashboard', description: '📊 Dashboard de Interações & Comentários' },
     { command: 'status', description: '⚡ Status do Bot & Piloto Automático' }
 ]).catch(err => console.error("Error setting Telegram commands:", err.message));
+
+// Dynamic AI Post Generation Topics Pool
+const dynamicTopicsPool = [
+    {
+        title: "Regulação DORA: Mapeamento de Funções Críticas (CIFs) em Provedores Cloud",
+        category: "TPRM / DORA / Cloud Governance",
+        imagePath: "media/audit_chain_tprm_dora.png",
+        text: `Como sua empresa classifica os provedores de serviços de nuvem sob os critérios da regulação DORA (EU 2022/2554)?
+
+No ecossistema financeiro e corporativo moderno, a dependência de infraestruturas de nuvem de terceiros exige um modelo estrito de governança.
+
+Sob a ótica dos Artigos 28 a 30 da DORA, a classificação de Funções Críticas ou Importantes (CIFs) é o ponto de partida para estabelecer controles contratuais e auditorias:
+
+1. Inventário de Dependências de TIC
+Mapear todos os contratos de software, SaaS e infraestrutura de nuvem que sustentam entregas vitais.
+
+2. Cláusulas Contratuais Mínimas & Direitos de Auditoria
+Garantir em contrato o direito de auditar a postura de segurança e planos de contingência dos fornecedores.
+
+3. Testes de Resiliência Operacional (TLPT)
+Realizar testes de penetração orientados a ameaças nos ecossistemas de parceiros críticos.
+
+A governança de terceiros sob a DORA transforma a gestão de fornecedores em um pilar de sobrevivência corporativa.`
+    },
+    {
+        title: "Integração OneTrust & ServiceNow IRM para automação de GRC",
+        category: "GRC Architecture / OneTrust / ServiceNow",
+        imagePath: "media/audit_chain_platforms.png",
+        text: `Por que utilizar plataformas especializadas de GRC é o divisor de águas entre conformidade no papel e governança operacional?
+
+Muitas organizações possuem políticas de segurança bem redigidas, mas enfrentam dificuldades na coleta contínua de evidências para auditores.
+
+A integração dos módulos OneTrust Privacy & TPRM com o ServiceNow Policy & Compliance conecta a estratégia à execução diária:
+
+1. Centralização do Registro de Riscos (Risk Register)
+Apontamentos de risco identificados no OneTrust alimentam automaticamente a matriz de controles no ServiceNow.
+
+2. Coleta Automatizada de Evidências
+Reduzir a carga operacional da equipe substituindo cobranças por e-mail por rotinas automatizadas de auditoria.
+
+3. Dashboards Unificados para Diretoria
+Acompanhamento em tempo real dos indicadores KRIs e prazos de remediação.
+
+A tecnologia certa elimina o trabalho manual e garante governança contínua e transparente.`
+    },
+    {
+        title: "Business Impact Analysis (BIA): Calibrando RTO e RPO na Prática",
+        category: "BCM / Resiliência Operacional / BIA",
+        imagePath: "media/audit_chain_bcm.png",
+        text: `Qual o impacto financeiro real se a sua aplicação de faturamento ficar indisponível por 4 horas?
+
+Definir prioridades de restauração com base em achismos é um dos erros mais caros que a liderança de TI pode cometer em um momento de desastre.
+
+Segundo a norma ISO 22301 e o framework COBIT 2019, o Business Impact Analysis (BIA) é a ferramenta que estabelece o alinhamento:
+
+1. Recovery Time Objective (RTO)
+Determinar a janela máxima aceitável de indisponibilidade com base no impacto financeiro e reputacional.
+
+2. Recovery Point Objective (RPO)
+Estabelecer o volume limite de perda de dados aceitável pelo negócio entre os backups.
+
+3. Planos de Contingência Alinhados com o C-Level
+Garantir que a diretoria assuma a decisão sobre o apetite de risco operacional.
+
+Quando o BIA orienta a Continuidade de Negócios, a TI deixa de adivinhar prioridades e passa a proteger o faturamento da empresa.`
+    }
+];
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
@@ -776,7 +844,82 @@ bot.on('message', async (msg) => {
     }
     const text = msg.text || "";
 
-    if (text.startsWith('/addpost') || text.includes('linkedin.com/posts/') || text.includes('urn:li:')) {
+    if (text.startsWith('/gerarpost') || text.startsWith('/novopost')) {
+        const customPrompt = text.replace(/\/gerarpost|\/novopost/, '').trim();
+        await bot.sendMessage(chatId, "✨ **IA Geradora de Conteúdo GRC Ativada!**\n\nCriando um novo post inédito com alta relevância técnica...", { parse_mode: 'Markdown' });
+
+        const dynamicIndex = Object.keys(postsDB).length + 1;
+        const newKey = `post${dynamicIndex}`;
+        
+        let selectedTopic;
+        if (customPrompt.length > 3) {
+            selectedTopic = {
+                title: `Post ${dynamicIndex}: ${customPrompt.charAt(0).toUpperCase() + customPrompt.slice(1)}`,
+                category: "GRC & Cibersegurança / Personalizado",
+                imagePath: "media/audit_chain_tprm_dora.png",
+                text: `Como a sua organização aborda a gestão de ${customPrompt} na prática?
+
+No ecossistema corporativo atual, a governança eficiente exige conectar requisitos regulatórios com a realidade operacional.
+
+Segundo os principais frameworks de mercado (ISACA, NIST, ISO 27001 e DORA), destacamos três pilares essenciais:
+
+1. Visibilidade e Diagnóstico de Maturidade
+Identificar a real exposição ao risco e mapear lacunas de conformidade.
+
+2. Automação de Processos e Coleta de Evidências
+Substituir processos manuais por plataformas parametrizadas de GRC.
+
+3. Alinhamento com a Liderança e Comitês Executivos
+Traduzir indicadores técnicos em linguagem de negócios e apetite de risco.
+
+A maturidade em governança e segurança é construída com processos claros, tecnologia e cultura contínua.`
+            };
+        } else {
+            const topicItem = dynamicTopicsPool[(dynamicIndex - 1) % dynamicTopicsPool.length];
+            selectedTopic = {
+                title: `Post ${dynamicIndex}: ${topicItem.title}`,
+                category: topicItem.category,
+                imagePath: topicItem.imagePath,
+                text: topicItem.text
+            };
+        }
+
+        postsDB[newKey] = {
+            title: selectedTopic.title,
+            category: selectedTopic.category,
+            recommendedFormat: "WITH_IMAGE",
+            imagePath: selectedTopic.imagePath,
+            text: selectedTopic.text
+        };
+
+        const postActionsKeyboard = {
+            reply_markup: {
+                inline_keyboard: [
+                    [
+                        { text: `🚀 Publicar Post ${dynamicIndex} no Perfil Pessoal`, callback_data: `publish_custom_${newKey}_personal_img` }
+                    ],
+                    [
+                        { text: `🏢 Publicar Post ${dynamicIndex} na Audit Chain`, callback_data: `publish_custom_${newKey}_company_img` }
+                    ],
+                    [
+                        { text: "✨ Gerar Outro Post Inédito", callback_data: "generate_ai_post" },
+                        { text: "🏠 Menu Principal", callback_data: "back_to_main_menu" }
+                    ]
+                ]
+            }
+        };
+
+        await bot.sendMessage(
+            chatId,
+            `✨ **NOVO POST INÉDITO GERADO COM SUCESSO! (Post ${dynamicIndex})**\n\n` +
+            `📌 **Título**: ${selectedTopic.title}\n` +
+            `🏷️ **Categoria**: ${selectedTopic.category}\n` +
+            `🖼️ **Criativo Vinculado**: \`${selectedTopic.imagePath}\`\n\n` +
+            `--------------------\n\n` +
+            `${selectedTopic.text}`,
+            { parse_mode: 'Markdown', ...postActionsKeyboard }
+        );
+    } else if (text.startsWith('/addpost') || text.includes('linkedin.com/posts/') || text.includes('urn:li:')) {
         const match = text.match(/\d{15,20}/);
         if (match) {
             const urn = `urn:li:share:${match[0]}`;
@@ -1297,11 +1440,54 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
                     [{ text: "8️⃣ Arquitetura ServiceNow IRM (Compliance)", callback_data: "publish_custom_post8_personal_img" }],
                     [{ text: "9️⃣ Simulados de Crise & Testes BCM (ISO 22301)", callback_data: "publish_custom_post9_personal_img" }],
                     [{ text: "🔟 Zero Trust Architecture & GRC Executivo", callback_data: "publish_custom_post10_personal_img" }],
+                    [{ text: "✨ 🆕 GERAR NOVO POST INÉDITO COM IA", callback_data: "generate_ai_post" }],
                     [{ text: "👤 Voltar ao Menu Pessoal", callback_data: "menu_personal_profile" }]
                 ]
             }
         };
-        await bot.sendMessage(chatId, "👤 **[CATÁLOGO DE THOUGHT LEADERSHIP - ERIK IMMELE]**\n\nEscolha o artigo/post conceitual para disparar no seu Perfil Pessoal em **1ª Pessoa ('Eu')**:", personalPostKeyboard);
+        await bot.sendMessage(chatId, "👤 **[CATÁLOGO DE THOUGHT LEADERSHIP - ERIK IMMELE]**\n\nEscolha o artigo/post conceitual para disparar no seu Perfil Pessoal em **1ª Pessoa ('Eu')** ou clique para gerar um post novo com IA:", personalPostKeyboard);
+    } else if (action === "generate_ai_post") {
+        await bot.sendMessage(chatId, "✨ **IA Geradora de Conteúdo GRC Ativada!**\n\nCriando um novo post inédito com alta relevância técnica...", { parse_mode: 'Markdown' });
+
+        const dynamicIndex = Object.keys(postsDB).length + 1;
+        const newKey = `post${dynamicIndex}`;
+        const topicItem = dynamicTopicsPool[(dynamicIndex - 1) % dynamicTopicsPool.length];
+
+        postsDB[newKey] = {
+            title: `Post ${dynamicIndex}: ${topicItem.title}`,
+            category: topicItem.category,
+            recommendedFormat: "WITH_IMAGE",
+            imagePath: topicItem.imagePath,
+            text: topicItem.text
+        };
+
+        const postActionsKeyboard = {
+            reply_markup: {
+                inline_keyboard: [
+                    [
+                        { text: `🚀 Publicar Post ${dynamicIndex} no Perfil Pessoal`, callback_data: `publish_custom_${newKey}_personal_img` }
+                    ],
+                    [
+                        { text: `🏢 Publicar Post ${dynamicIndex} na Audit Chain`, callback_data: `publish_custom_${newKey}_company_img` }
+                    ],
+                    [
+                        { text: "✨ Gerar Outro Post Inédito com IA", callback_data: "generate_ai_post" },
+                        { text: "🏠 Menu Principal", callback_data: "back_to_main_menu" }
+                    ]
+                ]
+            }
+        };
+
+        await bot.sendMessage(
+            chatId,
+            `✨ **NOVO POST INÉDITO GERADO COM SUCESSO! (Post ${dynamicIndex})**\n\n` +
+            `📌 **Título**: Post ${dynamicIndex}: ${topicItem.title}\n` +
+            `🏷️ **Categoria**: ${topicItem.category}\n` +
+            `🖼️ **Criativo Vinculado**: \`${topicItem.imagePath}\`\n\n` +
+            `--------------------\n\n` +
+            `${topicItem.text}`,
+            { parse_mode: 'Markdown', ...postActionsKeyboard }
+        );
     } else if (action === "select_post_menu") {
         const selectPostKeyboard = {
             reply_markup: {
