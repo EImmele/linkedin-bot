@@ -921,13 +921,157 @@ bot.on('callback_query', async (query) => {
         await bot.sendMessage(chatId, newStatusText, { parse_mode: 'Markdown', ...getMainMenuKeyboard() });
     } else if (action === "back_to_main_menu") {
         await bot.sendMessage(chatId, "🏠 Menu Principal:", getMainMenuKeyboard());
+const companyPostsDB = {
+    c_tprm: {
+        title: "1️⃣ Gestão de Risco de Terceiros (TPRM/VRM & DORA)",
+        category: "TPRM / DORA / Supply Chain",
+        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_slide1_dora_cover_1786056158919.png",
+        text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM GRC, PRIVACIDADE & CIBERSEGURANÇA]
+
+📌 GESTÃO DE RISCO DE TERCEIROS (TPRM) & CONFORMIDADE DORA
+
+Como sua organização garante a governança de fornecedores de TIC e a resiliência operacional contínua perante os requisitos regulatórios?
+
+👉 Confira no infográfico / carrossel acima os 5 pilares da solução!
+
+---
+
+💡 PORTFÓLIO DE SERVIÇOS AUDIT CHAIN:
+• Gestão de Risco de Terceiros (TPRM/VRM) & Conformidade DORA (Art. 28-30)
+• Privacidade de Dados (LGPD/GDPR) | Continuidade de Negócios (BCM) | SegInfo (ISO 27001) | Compliance
+• Arquitetura, Implementação & Otimização de Plataformas: OneTrust & ServiceNow GRC/IRM.
+
+📩 Sua empresa precisa adequar o programa de terceiros ou automatizar processos no OneTrust/ServiceNow?
+Fale com nossos consultores e agende uma avaliação de maturidade.
+
+#AuditChain #TPRM #DORA #GRC #OneTrust #ServiceNow #Ciberseguranca #LGPD #ISO27001`
+    },
+    c_privacy: {
+        title: "2️⃣ Privacidade de Dados (LGPD & GDPR)",
+        category: "Data Privacy / LGPD / GDPR",
+        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_services_infographic_1786055816314.png",
+        text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM PRIVACIDADE DE DADOS]
+
+📌 ESTRUTURAÇÃO DE PROGRAMA DE PRIVACIDADE (LGPD & GDPR)
+
+Transforme obrigações regulatórias em vantagem competitiva e confiança de mercado.
+
+👉 Confira acima as etapas do programa completo de privacidade de dados!
+
+---
+
+💡 ENTREGÁVEIS TÉCNICOS AUDIT CHAIN:
+• Mapeamento de Dados (Data Mapping / RoPA) & Relatórios de Impacto (RIPD/DPIA)
+• Governança de Direitos dos Titulares (DSAR) & Gestão de Vazamentos/ANPD
+• Arquitetura & Automação dos Módulos OneTrust Privacy (RoPA & DSAR)
+
+📩 Fale com nossos especialistas em privacidade e garanta a conformidade da sua organização.
+
+#AuditChain #LGPD #GDPR #Privacy #OneTrust #ANPD #DPIA #DSAR`
+    },
+    c_bcm: {
+        title: "3️⃣ Continuidade de Negócios (BCM & Resiliência)",
+        category: "BCM / Resiliência / BIA",
+        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_light_slide2_content_1786055917170.png",
+        text: `🏢 [AUDIT CHAIN - RESILIÊNCIA OPERACIONAL & BCM]
+
+📌 CONTINUIDADE DE NEGÓCIOS & RECUPERAÇÃO DE DESASTRES
+
+Sua empresa sabe exatamente quais sistemas operar primeiro em um momento de desastre ou crise?
+
+👉 Confira acima a estrutura de BIA e Planos de Continuidade (BCP/DRP)!
+
+---
+
+💡 SERVIÇOS DE BCM AUDIT CHAIN:
+• Business Impact Analysis (BIA), RTO, RPO & MTPD
+• Planos de Continuidade de Negócios (PCN/BCP), DRP & Simulados de Mesa
+• Implementação & Automação do Módulo ServiceNow BCM
+
+📩 Garanta a resiliência operacional da sua empresa com a consultoria especializada Audit Chain.
+
+#AuditChain #BCM #ISO22301 #Resiliencia #BIA #ServiceNow #DRP`
+    },
+    c_infosec: {
+        title: "4️⃣ Segurança da Informação (ISO 27001 & NIST CSF)",
+        category: "InfoSec / ISO 27001 / NIST",
+        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_light_slide1_cover_1786055907088.png",
+        text: `🏢 [AUDIT CHAIN - SEGURANÇA DA INFORMAÇÃO & GRC]
+
+📌 SISTEMA DE GESTÃO DE SEGURANÇA DA INFORMAÇÃO (SGSI)
+
+Alinhe a proteção cibernética aos objetivos estratégicos e ao apetite de risco da empresa.
+
+👉 Confira no infográfico acima a estrutura do SGSI ISO 27001:2022!
+
+---
+
+💡 SERVIÇOS DE SEGURANÇA AUDIT CHAIN:
+• Gap Analysis & Diagnóstico de Maturidade ISO 27001:2022 / NIST CSF 2.0
+• Matriz de Riscos de TI, Políticas Normativas & Indicadores Executivos (KRIs/KPIs)
+• Preparação para Certificações Internacionais & Auditorias
+
+📩 Eleve a segurança da sua empresa com a equipe consultiva da Audit Chain.
+
+#AuditChain #ISO27001 #NIST #SegurancaDaInformacao #Ciberseguranca #GRC`
+    },
+    c_onetrust: {
+        title: "5️⃣ Plataforma OneTrust (Arquitetura & Implementação)",
+        category: "OneTrust / VRM / Privacy Automation",
+        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_slide3_platforms_1786056176140.png",
+        text: `🏢 [AUDIT CHAIN - ARQUITETURA & OTIMIZAÇÃO ONETRUST]
+
+📌 ESPECIALISTAS EM ARQUITETURA & IMPLANTAÇÃO ONETRUST
+
+Extraia o valor máximo do seu investimento no ecossistema OneTrust com parametrização avançada e automação.
+
+👉 Confira no infográfico os módulos suportados pela Audit Chain!
+
+---
+
+💡 MÓDULOS ONETRUST ATENDIDOS PELA AUDIT CHAIN:
+• Third-Party Risk Management (TPRM/VRM) & Vendor Portal
+• Data Mapping (RoPA) & Privacy Rights Automation (DSAR)
+• Configurações Globais: RBAC, Org Groups, Attribute Manager, Integration Manager (APIs REST) & SSO/SCIM
+
+📩 Agende um Health Check da sua instância OneTrust com nossos arquitetos certificados.
+
+#AuditChain #OneTrust #TPRM #VRM #DSAR #RoPA #IntegrationManager #Privacy`
+    },
+    c_servicenow: {
+        title: "6️⃣ Plataforma ServiceNow GRC/IRM (Arquitetura & Sustentação)",
+        category: "ServiceNow / GRC / IRM",
+        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_slide3_platforms_1786056176140.png",
+        text: `🏢 [AUDIT CHAIN - ESPECIALISTAS SERVICENOW GRC / IRM]
+
+📌 ARQUITETURA, IMPLEMENTAÇÃO & SUSTENTAÇÃO SERVICENOW GRC
+
+Integre a governança corporativa ao ecossistema operacional de TI e Cibersegurança.
+
+👉 Confira no carrossel a suíte ServiceNow IRM parametrizada pela Audit Chain!
+
+---
+
+💡 MÓDULOS SERVICENOW GRC/IRM ATENDIDOS:
+• Vendor Risk Management (VRM) & Vendor Portfolio
+• Policy & Compliance Management (Authority Documents, Citations, Controls)
+• Risk Management (Risk Register, KRIs, Performance Analytics) & BCM
+
+📩 Fale com nossos consultores especialistas em ServiceNow GRC e otimize sua plataforma.
+
+#AuditChain #ServiceNow #GRC #IRM #VRM #Compliance #RiskManagement`
+    }
+};
+
     } else if (action === "menu_audit_chain_page") {
         const auditChainKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "🚀 Post 4: Riscos em Terceiros & DORA (Empresa + Criativo)", callback_data: "publish_custom_post4_company_img" }],
-                    [{ text: "🚨 Post 5: Gestão de Incidentes (Empresa + Criativo)", callback_data: "publish_custom_post5_company_img" }],
-                    [{ text: "📚 Ver Catálogo Completo dos 8 Serviços (Empresa)", callback_data: "select_company_post_menu" }],
+                    [{ text: "🚀 1. Risco de Terceiros & DORA (Empresa + Criativo)", callback_data: "publish_company_post_c_tprm" }],
+                    [{ text: "🔒 2. Privacidade de Dados LGPD/GDPR (Empresa + Criativo)", callback_data: "publish_company_post_c_privacy" }],
+                    [{ text: "⚙️ 3. Plataforma OneTrust (Empresa + Criativo)", callback_data: "publish_company_post_c_onetrust" }],
+                    [{ text: "💼 4. Plataforma ServiceNow GRC/IRM (Empresa + Criativo)", callback_data: "publish_company_post_c_servicenow" }],
+                    [{ text: "📚 Ver Catálogo Completo de Serviços (Empresa)", callback_data: "select_company_post_menu" }],
                     [{ text: "📑 Como publicar PDF de Carrossel (Instruções)", callback_data: "info_pdf_carousel" }],
                     [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
                 ]
@@ -936,53 +1080,25 @@ bot.on('callback_query', async (query) => {
         await bot.sendMessage(
             chatId,
             `🏢 **[PÁGINA COMERCIAL AUDIT CHAIN - MENU DE AÇÕES]**\n\n` +
-            `Todas as publicações disparadas aqui utilizarão o **Tom Comercial B2B**, a **Legenda Curta Explicativa** e o **Foco em Criativos/Carrosséis** promovendo as 8 soluções da empresa.\n\n` +
+            `Todas as publicações disparadas aqui utilizarão **APENAS** o **Tom Comercial B2B**, a **Legenda Curta Explicativa** e os **Criativos/Carrosséis** promovendo os serviços da empresa.\n\n` +
             `💡 *Para publicar um carrossel em PDF criado no Canva/Figma, basta enviar o arquivo PDF diretamente neste chat!*`,
             { parse_mode: 'Markdown', ...auditChainKeyboard }
-        );
-    } else if (action === "menu_personal_profile") {
-        const personalKeyboard = {
-            reply_markup: {
-                inline_keyboard: [
-                    [{ text: "🚀 Post 4: Riscos em Terceiros (Texto Longo Pessoal)", callback_data: "publish_custom_post4_personal_text" }],
-                    [{ text: "🖼️ Post 4: Riscos em Terceiros (Com Imagem Pessoal)", callback_data: "publish_custom_post4_personal_img" }],
-                    [{ text: "🚨 Post 5: Gestão de Incidentes (CISM ISACA)", callback_data: "publish_custom_post5_personal_img" }],
-                    [{ text: "📚 Ver Catálogo CISM & Thought Leadership (Pessoal)", callback_data: "select_personal_post_menu" }],
-                    [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
-                ]
-            }
-        };
-        await bot.sendMessage(
-            chatId,
-            `👤 **[PERFIL PESSOAL ERIK IMMELE - MENU DE AÇÕES]**\n\n` +
-            `Todas as publicações disparadas aqui utilizarão o tom de **Thought Leadership**, **1ª Pessoa ("Eu")** e a **Jornada de Preparação CISM da ISACA** para elevar sua autoridade de CISO/DPO/GRC no mercado.`,
-            { parse_mode: 'Markdown', ...personalKeyboard }
-        );
-    } else if (action === "info_pdf_carousel") {
-        await bot.sendMessage(
-            chatId,
-            `📑 **COMO PUBLICAR CARROSSEL PDF NA AUDIT CHAIN:**\n\n` +
-            `1. Crie os slides do carrossel no Canva, Figma ou PowerPoint.\n` +
-            `2. Exporte o arquivo em formato **PDF**.\n` +
-            `3. Arraste ou envie o arquivo PDF **diretamente nesta conversa do Telegram**.\n` +
-            `4. Clique em **🏢 Publicar Carrossel PDF na Audit Chain**.\n\n` +
-            `O bot formatará a legenda comercial automaticamente e publicará o carrossel interativo no LinkedIn!`,
-            { parse_mode: 'Markdown', ...getMainMenuKeyboard() }
         );
     } else if (action === "select_company_post_menu") {
         const companyPostKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "1️⃣ Privacidade de Dados (LGPD/GDPR + OneTrust)", callback_data: "publish_custom_post1_company_img" }],
-                    [{ text: "2️⃣ Continuidade de Negócios (BCM + ServiceNow)", callback_data: "publish_custom_post2_company_img" }],
-                    [{ text: "3️⃣ Segurança da Informação (ISO 27001/NIST)", callback_data: "publish_custom_post3_company_img" }],
-                    [{ text: "4️⃣ Risco de Terceiros (TPRM & DORA)", callback_data: "publish_custom_post4_company_img" }],
-                    [{ text: "5️⃣ Compliance & Auditoria de Controles", callback_data: "publish_custom_post5_company_img" }],
+                    [{ text: "1️⃣ Risco de Terceiros (TPRM & DORA)", callback_data: "publish_company_post_c_tprm" }],
+                    [{ text: "2️⃣ Privacidade de Dados (LGPD & GDPR)", callback_data: "publish_company_post_c_privacy" }],
+                    [{ text: "3️⃣ Continuidade de Negócios (BCM & BIA)", callback_data: "publish_company_post_c_bcm" }],
+                    [{ text: "4️⃣ Segurança da Informação (ISO 27001/NIST)", callback_data: "publish_company_post_c_infosec" }],
+                    [{ text: "5️⃣ Otimização & Arquitetura OneTrust", callback_data: "publish_company_post_c_onetrust" }],
+                    [{ text: "6️⃣ Otimização & Arquitetura ServiceNow GRC", callback_data: "publish_company_post_c_servicenow" }],
                     [{ text: "🏢 Voltar ao Menu Audit Chain", callback_data: "menu_audit_chain_page" }]
                 ]
             }
         };
-        await bot.sendMessage(chatId, "🏢 **[CATÁLOGO COMERCIAL AUDIT CHAIN - 8 SOLUÇÕES]**\n\nEscolha o post de serviço para disparar na Página da Empresa com **Criativo/Carrossel + Legenda Curta B2B**:", companyPostKeyboard);
+        await bot.sendMessage(chatId, "🏢 **[CATÁLOGO COMERCIAL AUDIT CHAIN - SERVIÇOS EXCLUSIVOS DE EMPRESA]**\n\nEscolha o post de serviço para disparar na Página da Empresa com **Criativo/Carrossel + Legenda Curta B2B**:", companyPostKeyboard);
     } else if (action === "select_personal_post_menu") {
         const personalPostKeyboard = {
             reply_markup: {
@@ -1265,6 +1381,97 @@ bot.on('callback_query', async (query) => {
             await bot.sendMessage(chatId, `✅ Status Composio/LinkedIn:\n• Status: ${acc.status}\n• Modo de Aprovação: ${modeLabel}\n• Account ID: ${acc.id}`);
         } catch (e) {
             await bot.sendMessage(chatId, `❌ Erro: ${e.message}`);
+        }
+    } else if (action.startsWith("publish_company_post_")) {
+        const key = action.replace("publish_company_post_", "");
+        const post = companyPostsDB[key];
+        if (post) {
+            await bot.sendMessage(chatId, `🚀 Disparando post comercial [${post.title}] com CRIATIVO ANEXADO na Página da Audit Chain...`);
+            
+            try {
+                let mediaCategory = "NONE";
+                let mediaArray = undefined;
+
+                if (post.imagePath && fs.existsSync(post.imagePath)) {
+                    await bot.sendMessage(chatId, `🖼️ Fazendo upload do asset gráfico [${path.basename(post.imagePath)}] para a API do LinkedIn...`);
+                    
+                    const registerResponse = await composio.tools.proxyExecute({
+                        endpoint: "https://api.linkedin.com/v2/assets?action=registerUpload",
+                        method: "POST",
+                        connectedAccountId: CONNECTED_ACCOUNT_ID,
+                        headers: {
+                            "X-Restli-Protocol-Version": "2.0.0",
+                            "Content-Type": "application/json"
+                        },
+                        body: {
+                            registerUploadRequest: {
+                                recipes: ["urn:li:digitalmediaRecipe:feedshare-image"],
+                                owner: ORG_URN,
+                                serviceRelationships: [{
+                                    relationshipType: "OWNER",
+                                    identifier: "urn:li:userGeneratedContent"
+                                }]
+                            }
+                        }
+                    });
+
+                    const registerData = registerResponse.data.value;
+                    const uploadUrl = registerData.uploadMechanism["com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"].uploadUrl;
+                    const assetUrn = registerData.asset;
+
+                    const imageBuffer = fs.readFileSync(post.imagePath);
+                    await fetch(uploadUrl, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'image/png' },
+                        body: imageBuffer
+                    });
+
+                    mediaCategory = "IMAGE";
+                    mediaArray = [{
+                        "status": "READY",
+                        "media": assetUrn,
+                        "title": { "text": post.title }
+                    }];
+                }
+
+                const shareContentObj = {
+                    "shareCommentary": { "text": post.text },
+                    "shareMediaCategory": mediaCategory
+                };
+                if (mediaArray) {
+                    shareContentObj.media = mediaArray;
+                }
+
+                const response = await composio.tools.proxyExecute({
+                    endpoint: "https://api.linkedin.com/v2/ugcPosts",
+                    method: "POST",
+                    connectedAccountId: CONNECTED_ACCOUNT_ID,
+                    headers: {
+                        "X-Restli-Protocol-Version": "2.0.0",
+                        "Content-Type": "application/json"
+                    },
+                    body: {
+                        author: ORG_URN,
+                        lifecycleState: "PUBLISHED",
+                        specificContent: {
+                            "com.linkedin.ugc.ShareContent": shareContentObj
+                        },
+                        visibility: { "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC" }
+                    }
+                });
+
+                if (response.status === 201 || (response.data && response.data.id)) {
+                    const publishedUrn = response.data.id || response.data['$URN'];
+                    if (publishedUrn) {
+                        addTrackedPost(publishedUrn, `Publicação Audit Chain (${post.title})`);
+                    }
+                    await bot.sendMessage(chatId, `🎉 PUBLICADO COM SUCESSO NA PÁGINA DA AUDIT CHAIN!\n\n• Post: ${post.title}\n• Formato: Legenda B2B + Criativo Anexado\n• ID: ${response.data.id}\n\n✅ Adicionado ao monitoramento de comentários 24/7!`);
+                } else {
+                    await bot.sendMessage(chatId, `⚠️ Resposta API: ${JSON.stringify(response.data)}`);
+                }
+            } catch (e) {
+                await bot.sendMessage(chatId, `❌ Erro no disparo comercial: ${e.message}`);
+            }
         }
     } else if (action.startsWith("publish_custom_")) {
         const parts = action.replace("publish_custom_", "").split("_");
