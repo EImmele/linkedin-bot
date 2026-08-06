@@ -393,12 +393,120 @@ cron.schedule('45 9 * * 2,3,4', async () => {
                     }
                 }
             );
-        }
-    } else {
-        console.warn("⚠️ Cron triggered at 09:45 AM BRT, but no Telegram Chat ID is set! Send /start to the bot.");
+// Set of processed comment IDs to prevent duplicate notifications/replies
+const processedComments = new Set();
+
+async function checkAndProcessNewComments() {
+    loadConfig();
+    if (!myTelegramChatId) {
+        console.log("ℹ️ [Comment Monitor] Skipping polling: No Telegram Chat ID registered yet.");
+        return;
     }
-}, {
-    timezone: "America/Sao_Paulo"
+
+    console.log("🔍 [Comment Monitor] Checking tracked LinkedIn posts for new unreplied comments...");
+
+    for (const item of trackedPosts) {
+        try {
+            const response = await composio.tools.proxyExecute({
+                endpoint: `https://api.linkedin.com/v2/socialActions/${encodeURIComponent(item.urn)}/comments`,
+                method: "GET",
+                connectedAccountId: CONNECTED_ACCOUNT_ID,
+                headers: { "X-Restli-Protocol-Version": "2.0.0" }
+            });
+
+            if (response.data && response.data.elements && response.data.elements.length > 0) {
+                for (const c of response.data.elements) {
+                    const actorUrn = c.created?.actor || c.actor || "";
+                    if (actorUrn === PERSONAL_URN || actorUrn === ORG_URN) continue;
+
+                    const commentId = c.id || c["$URN"];
+                    if (processedComments.has(commentId)) continue; // Already processed
+
+                    const fullCommentUrn = c["$URN"] || `urn:li:comment:(${item.urn.replace("urn:li:share:", "urn:li:activity:")},${c.id})`;
+                    const textSnippet = c.message?.text || "Comentário recebido";
+                    const realName = await resolvePersonName(actorUrn);
+
+                    const aiSuggestion = `${realName} Exatamente essa virada de chave! Na governança de CISM e Risk IT, quando conectamos o risco ao impacto financeiro, a liderança assume a decisão com clareza. Como vocês estruturam esse alinhamento por aí?`;
+
+                    if (autoApprovalMode) {
+                        // AUTO PILOT: Reply automatically immediately
+                        const payload = {
+                            actor: PERSONAL_URN,
+                            message: {
+                                text: aiSuggestion,
+                                attributes: actorUrn && actorUrn.includes("person:") ? [{
+                                    start: 0,
+                                    length: realName.length,
+                                    value: { "com.linkedin.common.MemberAttributedEntity": { member: actorUrn } }
+                                }] : []
+                            },
+                            object: item.urn.replace("urn:li:share:", "urn:li:activity:"),
+                            parentComment: fullCommentUrn
+                        };
+
+                        await composio.tools.proxyExecute({
+                            endpoint: `https://api.linkedin.com/v2/socialActions/${encodeURIComponent(item.urn.replace("urn:li:share:", "urn:li:activity:"))}/comments`,
+                            method: "POST",
+                            connectedAccountId: CONNECTED_ACCOUNT_ID,
+                            headers: { "X-Restli-Protocol-Version": "2.0.0", "Content-Type": "application/json" },
+                            body: payload
+                        });
+
+                        totalRepliesSent++;
+                        processedComments.add(commentId);
+                        console.log(`✅ Auto-replied to comment from ${realName}`);
+                        await bot.sendMessage(myTelegramChatId, `🎉 **NOVO COMENTÁRIO RESPONDIDO NO PILOTO AUTOMÁTICO!**\n\n📌 **Post**: ${item.name}\n👤 **Autor**: ${realName}\n💬 **Comentário**: "${textSnippet}"\n✍️ **Resposta Enviada**: "${aiSuggestion}"`, { parse_mode: 'Markdown' });
+                    } else {
+                        // HUMAN IN THE LOOP: Send proactive notification with approval button to Telegram
+                        const cacheKey = `comm_${commentId}`;
+                        unrepliedCommentsCache[cacheKey] = {
+                            id: c.id,
+                            fullCommentUrn: fullCommentUrn,
+                            activityUrn: item.urn.replace("urn:li:share:", "urn:li:activity:"),
+                            postName: item.name,
+                            author: realName,
+                            actorUrn: actorUrn,
+                            text: textSnippet,
+                            suggestion: aiSuggestion
+                        };
+                        pendingCommentReplies[cacheKey] = unrepliedCommentsCache[cacheKey];
+
+                        const notificationKeyboard = {
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [{ text: "💬 Aprovar & Enviar Resposta com Marcação (@)", callback_data: `approve_reply_${cacheKey}` }],
+                                    [{ text: "📊 Ver Menu Principal", callback_data: "back_to_main_menu" }]
+                                ]
+                            }
+                        };
+
+                        await bot.sendMessage(
+                            myTelegramChatId,
+                            `🚨 **NOVO COMENTÁRIO RECEBIDO NO LINKEDIN!**\n\n` +
+                            `📌 **Post**: ${item.name}\n` +
+                            `👤 **Autor**: ${realName}\n` +
+                            `💬 **Comentário**: "${textSnippet}"\n\n` +
+                            `------------------------------------\n\n` +
+                            `✍️ **Sugestão de Resposta Inteligente (com @Marcação em Azul):**\n` +
+                            `"${aiSuggestion}"`,
+                            { parse_mode: 'Markdown', ...notificationKeyboard }
+                        );
+
+                        processedComments.add(commentId);
+                        console.log(`🔔 Notified Telegram about new comment from ${realName}`);
+                    }
+                }
+            }
+        } catch (e) {
+            console.error(`Error polling comments for ${item.urn}:`, e.message);
+        }
+    }
+}
+
+// Poll comments every 3 minutes automatically
+cron.schedule('*/3 * * * *', async () => {
+    console.log("⏰ 24/7 CRON TRIGGER: 3-Min Comment Monitor checking for new comments...");
+    await checkAndProcessNewComments();
 });
 
 bot.on('message', async (msg) => {
