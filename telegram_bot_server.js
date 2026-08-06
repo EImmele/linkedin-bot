@@ -582,7 +582,10 @@ function getMainMenuKeyboard() {
                 // SEÇÃO 2: 👤 PERFIL PESSOAL (ERIK IMMELE - THOUGHT LEADERSHIP)
                 [{ text: "👤 [PERFIL PESSOAL] Thought Leadership & Artigos CISM", callback_data: "menu_personal_profile" }],
 
-                // SEÇÃO 3: 📊 MONITORAMENTO & ANALYTICS
+                // SEÇÃO 3: ✨ IA GERADORA DE POSTS INÉDITOS
+                [{ text: "✨ 🆕 GERAR NOVO POST INÉDITO COM IA", callback_data: "generate_ai_post" }],
+
+                // SEÇÃO 4: 📊 MONITORAMENTO & ANALYTICS
                 [{ text: "📊 Dashboard de Interações", callback_data: "show_dashboard" }, { text: "📈 Analytics de Posts", callback_data: "select_analytics_menu" }],
                 [{ text: "💬 Últimos Comentários", callback_data: "list_unreplied_comments" }, { text: "📊 Status Conexão", callback_data: "check_status" }],
                 [{ text: "🗑️ Excluir Post LinkedIn", callback_data: "delete_linkedin_menu" }]
