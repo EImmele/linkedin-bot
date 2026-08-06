@@ -769,6 +769,43 @@ bot.setMyCommands([
     { command: 'status', description: '⚡ Status do Bot & Piloto Automático' }
 ]).catch(err => console.error("Error setting Telegram commands:", err.message));
 
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
+
+async function generateAIContentWithGemini(userPrompt, targetAudience = "personal") {
+    if (!GEMINI_API_KEY) {
+        return null;
+    }
+
+    const systemInstruction = targetAudience === "company"
+        ? `Você é o Arquiteto Principal e Consultor Sênior de GRC da consultoria Audit Chain. Escreva um post comercial B2B de até 150 palavras para o LinkedIn promovendo serviços corporativos em Riscos de Terceiros (TPRM), Regulação DORA (EU 2022/2554), Privacidade de Dados (LGPD/GDPR), Continuidade de Negócios (BCM) ou Arquitetura OneTrust e ServiceNow GRC. Use tom executivo, direto, limpo e com hashtags no final.`
+        : `Você é Erik Immele, Arquiteto Sênior de GRC, Especialista OneTrust, TPRM & DORA e profissional se preparando para a certificação CISM da ISACA. Escreva um post de Thought Leadership no LinkedIn em 1ª pessoa ('Eu'), conectando a prática de mercado com governança de riscos, segurança da informação e resiliência operacional. Use tom executivo e 3 pontos práticos numerados.`;
+
+    try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+        const body = {
+            contents: [{
+                parts: [{ text: `${systemInstruction}\n\nTema / Solicitação: "${userPrompt}"` }]
+            }]
+        };
+
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+            const aiText = data.candidates[0].content.parts[0].text;
+            console.log("✨ Conteúdo gerado pela API do Google Gemini com sucesso!");
+            return aiText.trim();
+        }
+    } catch (e) {
+        console.error("⚠️ Gemini API Error:", e.message);
+    }
+    return null;
+}
+
 // Dynamic AI Post Generation Topics Pool
 const dynamicTopicsPool = [
     {
@@ -891,6 +928,12 @@ A maturidade em governança e segurança é construída com processos claros, te
             imagePath: selectedTopic.imagePath,
             text: selectedTopic.text
         };
+
+        const liveAiGeneratedText = await generateAIContentWithGemini(customPrompt || selectedTopic.title, "personal");
+        if (liveAiGeneratedText) {
+            selectedTopic.text = liveAiGeneratedText;
+            postsDB[newKey].text = liveAiGeneratedText;
+        }
 
         const postActionsKeyboard = {
             reply_markup: {
