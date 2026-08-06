@@ -183,6 +183,31 @@ function generateSmartResponse(authorName, commentText) {
     return `${authorName} Perfeito, concordo totalmente! Quando conectamos a governança e os controles de segurança ao valor do negócio, a liderança passa a enxergar a área como parceira estratégica. Valeu demais pelo comentário!`;
 }
 
+function getFormattedCompanyPostText(post) {
+    if (post.companyText) {
+        return post.companyText;
+    }
+    
+    const lines = post.text.split('\n').filter(l => l.trim().length > 0 && !l.includes('Como parte da minha'));
+    const shortSummary = lines.slice(0, 3).join('\n').trim();
+
+    return `🏢 [AUDIT CHAIN - SOLUÇÕES EM GRC, PRIVACIDADE & CIBERSEGURANÇA]
+
+📌 ${post.title.toUpperCase()}
+
+${shortSummary}
+
+👉 Confira no infográfico / carrossel acima os detalhes visuais da solução!
+
+---
+
+💡 PORTFÓLIO DE SERVIÇOS AUDIT CHAIN:
+• Privacidade (LGPD/GDPR) | Continuidade (BCM) | SegInfo (ISO 27001) | Risco em Terceiros (TPRM/DORA) | Compliance | CISO/DPO as a Service
+• Especialistas em Implementação & Otimização de Plataformas: OneTrust & ServiceNow GRC/IRM.
+
+📩 Fale com nossos consultores e agende uma avaliação de maturidade para a sua empresa!`;
+}
+
 // Helper to resolve real person name via LinkedIn API
 async function resolvePersonName(actorUrn) {
     if (!actorUrn || !actorUrn.includes("person:")) return "Profissional do LinkedIn";
@@ -639,6 +664,34 @@ bot.on('message', async (msg) => {
     }
 });
 
+bot.on('document', async (msg) => {
+    const chatId = msg.chat.id;
+    if (myTelegramChatId !== chatId) {
+        myTelegramChatId = chatId;
+        saveConfig();
+    }
+
+    const doc = msg.document;
+    if (doc && (doc.mime_type === 'application/pdf' || doc.file_name.endsWith('.pdf'))) {
+        await bot.sendMessage(
+            chatId,
+            `📑 **CARROSSEL PDF NATIVO RECEBIDO!**\n\n` +
+            `• Arquivo: \`${doc.file_name}\`\n` +
+            `• Tamanho: ${Math.round(doc.file_size / 1024)} KB\n\n` +
+            `Este arquivo PDF será formatado e publicado como um **Carrossel Interativo de Slides** na página oficial da **Audit Chain** no LinkedIn acompanhado da legenda curta comercial B2B.`,
+            {
+                parse_mode: 'Markdown',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ text: "🏢 Publicar Carrossel PDF na Audit Chain (Página)", callback_data: `publish_pdf_org_${doc.file_id}` }],
+                        [{ text: "👤 Publicar Carrossel PDF no Perfil Pessoal", callback_data: `publish_pdf_user_${doc.file_id}` }]
+                    ]
+                }
+            }
+        );
+    }
+});
+
 bot.on('callback_query', async (query) => {
     const chatId = query.message.chat.id;
     if (myTelegramChatId !== chatId) {
@@ -1091,31 +1144,6 @@ bot.on('callback_query', async (query) => {
         const postKey = parts[0];
         const isPersonal = parts[1] === "personal";
         const isImage = parts[2] === "img";
-
-function getFormattedCompanyPostText(post) {
-    if (post.companyText) {
-        return post.companyText;
-    }
-    
-    const lines = post.text.split('\n').filter(l => l.trim().length > 0 && !l.includes('Como parte da minha'));
-    const shortSummary = lines.slice(0, 3).join('\n').trim();
-
-    return `🏢 [AUDIT CHAIN - SOLUÇÕES EM GRC, PRIVACIDADE & CIBERSEGURANÇA]
-
-📌 ${post.title.toUpperCase()}
-
-${shortSummary}
-
-👉 Confira no infográfico / carrossel acima os detalhes visuais da solução!
-
----
-
-💡 PORTFÓLIO DE SERVIÇOS AUDIT CHAIN:
-• Privacidade (LGPD/GDPR) | Continuidade (BCM) | SegInfo (ISO 27001) | Risco em Terceiros (TPRM/DORA) | Compliance | CISO/DPO as a Service
-• Especialistas em Implementação & Otimização de Plataformas: OneTrust & ServiceNow GRC/IRM.
-
-📩 Fale com nossos consultores e agende uma avaliação de maturidade para a sua empresa!`;
-}
 
         const post = postsDB[postKey];
         const authorUrn = isPersonal ? PERSONAL_URN : ORG_URN;
