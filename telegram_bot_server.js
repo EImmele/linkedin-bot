@@ -870,6 +870,48 @@ Estabelecer o volume limite de perda de dados aceitável pelo negócio entre os 
 Garantir que a diretoria assuma a decisão sobre o apetite de risco operacional.
 
 Quando o BIA orienta a Continuidade de Negócios, a TI deixa de adivinhar prioridades e passa a proteger o faturamento da empresa.`
+    },
+    {
+        title: "Diretiva Europeia NIS2 & Gestão de Risco Cibernético em Fornecedores",
+        category: "NIS2 / TPRM / Cyber Resilience",
+        imagePath: "media/audit_chain_tprm_dora.png",
+        text: `Como a nova Diretiva NIS2 impõe responsabilidades diretas sobre a diretoria corporativa para a governança de riscos em parceiros de tecnologia?
+
+A regulação NIS2 expande os requisitos de segurança cibernética para setores essenciais e torna os executivos pessoalmente responsáveis pela supervisão da cadeia de suprimentos.
+
+Sob a perspectiva de GRC e TPRM, o enquadramento na NIS2 exige três pilares operacionais:
+
+1. Auditoria Obrigatória de Fornecedores de Tecnologia
+Avaliar não apenas a segurança do parceiro direto, mas a exposição na cadeia estendida (N-th party risk).
+
+2. Notificação de Incidentes Graves em 24 Horas
+Estabelecer protocolos automatizados em SLAs contratuais para rápida comunicação de contenção.
+
+3. Programas de Treinamento e Conscientização de C-Level
+Garantir que o conselho compreenda a exposição a riscos cibernéticos e autorize investimentos em mitigação.
+
+A conformidade NIS2 deixa de ser uma tarefa de TI e se consolida como pilar de governança corporativa no conselho.`
+    },
+    {
+        title: "Configurações Globais OneTrust: RBAC, Org Groups & Attribute Manager",
+        category: "OneTrust / Global Admin / Architecture",
+        imagePath: "media/audit_chain_platforms.png",
+        text: `Como estruturar a arquitetura administrativa do OneTrust para sustentar grandes corporações multinacionais?
+
+Sem um planejamento adequado de Org Groups e funções RBAC no OneTrust, a gestão de permissões torna-se caótica e expõe dados sensíveis de auditoria.
+
+Na prática de arquitetura OneTrust, três componentes garantem governança e escalabilidade:
+
+1. Hierarquia de Organizational Groups (Org Groups)
+Segmentar unidades de negócio, filiais e jurisdições garantindo isolamento de dados e visibilidade regional.
+
+2. Customização no Attribute Manager
+Criar atributos corporativos padronizados para enriquecer os inventários de fornecedores, ativos e processos de dados.
+
+3. Automação de Provisionamento via SSO e SCIM
+Integrar a autenticação de usuários ao Identity Provider (IdP) da empresa para revogação instantânea de acessos.
+
+Uma arquitetura OneTrust bem parametrizada garante segurança, conformidade e facilidade de sustentação.`
     }
 ];
 
