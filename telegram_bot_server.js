@@ -460,12 +460,17 @@ function getMainMenuKeyboard() {
         reply_markup: {
             inline_keyboard: [
                 [{ text: toggleButtonText, callback_data: "toggle_approval_mode" }],
-                [{ text: "📊 Dashboard Geral de Interações", callback_data: "show_dashboard" }],
-                [{ text: "📈 Analytics Detalhado por Post (LinkedIn Native)", callback_data: "select_analytics_menu" }],
-                [{ text: "📖 Ver Posts & Recomendações de Formato", callback_data: "select_post_menu" }],
-                [{ text: "🚀 Post 4 (Texto)", callback_data: "publish_custom_post4_personal_text" }, { text: "🖼️ Post 4 (com Imagem)", callback_data: "publish_custom_post4_personal_img" }],
-                [{ text: "🚨 Post 5 (com Imagem)", callback_data: "publish_custom_post5_personal_img" }, { text: "💬 Últimos 5 Comentários", callback_data: "list_unreplied_comments" }],
-                [{ text: "📊 Status Conexão", callback_data: "check_status" }, { text: "🗑️ Excluir Post LinkedIn", callback_data: "delete_linkedin_menu" }]
+                
+                // SEÇÃO 1: 🏢 PÁGINA COMERCIAL AUDIT CHAIN (B2B & CRIATIVOS)
+                [{ text: "🏢 [AUDIT CHAIN] Posts Comerciais, Criativos & PDFs", callback_data: "menu_audit_chain_page" }],
+
+                // SEÇÃO 2: 👤 PERFIL PESSOAL (ERIK IMMELE - THOUGHT LEADERSHIP)
+                [{ text: "👤 [PERFIL PESSOAL] Thought Leadership & Artigos CISM", callback_data: "menu_personal_profile" }],
+
+                // SEÇÃO 3: 📊 MONITORAMENTO & ANALYTICS
+                [{ text: "📊 Dashboard de Interações", callback_data: "show_dashboard" }, { text: "📈 Analytics de Posts", callback_data: "select_analytics_menu" }],
+                [{ text: "💬 Últimos Comentários", callback_data: "list_unreplied_comments" }, { text: "📊 Status Conexão", callback_data: "check_status" }],
+                [{ text: "🗑️ Excluir Post LinkedIn", callback_data: "delete_linkedin_menu" }]
             ]
         }
     };
@@ -870,6 +875,54 @@ bot.on('callback_query', async (query) => {
         await bot.sendMessage(chatId, newStatusText, { parse_mode: 'Markdown', ...getMainMenuKeyboard() });
     } else if (action === "back_to_main_menu") {
         await bot.sendMessage(chatId, "🏠 Menu Principal:", getMainMenuKeyboard());
+    } else if (action === "menu_audit_chain_page") {
+        const auditChainKeyboard = {
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: "🚀 Post 4: Riscos em Terceiros & DORA (Empresa + Criativo)", callback_data: "publish_custom_post4_company_img" }],
+                    [{ text: "🚨 Post 5: Gestão de Incidentes (Empresa + Criativo)", callback_data: "publish_custom_post5_company_img" }],
+                    [{ text: "📚 Escolher Post do Portfólio p/ Empresa", callback_data: "select_post_menu" }],
+                    [{ text: "📑 Como publicar PDF de Carrossel (Instruções)", callback_data: "info_pdf_carousel" }],
+                    [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
+                ]
+            }
+        };
+        await bot.sendMessage(
+            chatId,
+            `🏢 **[PÁGINA COMERCIAL AUDIT CHAIN - MENU DE AÇÕES]**\n\n` +
+            `Todas as publicações disparadas aqui utilizarão o **Tom Comercial B2B**, a **Legenda Curta Explicativa** e o **Foco em Criativos/Carrosséis** promovendo as 8 soluções da empresa.\n\n` +
+            `💡 *Para publicar um carrossel em PDF criado no Canva/Figma, basta enviar o arquivo PDF diretamente neste chat!*`,
+            { parse_mode: 'Markdown', ...auditChainKeyboard }
+        );
+    } else if (action === "menu_personal_profile") {
+        const personalKeyboard = {
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: "🚀 Post 4: Riscos em Terceiros (Texto Longo Pessoal)", callback_data: "publish_custom_post4_personal_text" }],
+                    [{ text: "🖼️ Post 4: Riscos em Terceiros (Com Imagem Pessoal)", callback_data: "publish_custom_post4_personal_img" }],
+                    [{ text: "🚨 Post 5: Gestão de Incidentes (CISM ISACA)", callback_data: "publish_custom_post5_personal_img" }],
+                    [{ text: "📚 Escolher Post do Portfólio p/ Perfil Pessoal", callback_data: "select_post_menu" }],
+                    [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
+                ]
+            }
+        };
+        await bot.sendMessage(
+            chatId,
+            `👤 **[PERFIL PESSOAL ERIK IMMELE - MENU DE AÇÕES]**\n\n` +
+            `Todas as publicações disparadas aqui utilizarão o tom de **Thought Leadership**, **1ª Pessoa ("Eu")** e a **Jornada de Preparação CISM da ISACA** para elevar sua autoridade de CISO/DPO/GRC no mercado.`,
+            { parse_mode: 'Markdown', ...personalKeyboard }
+        );
+    } else if (action === "info_pdf_carousel") {
+        await bot.sendMessage(
+            chatId,
+            `📑 **COMO PUBLICAR CARROSSEL PDF NA AUDIT CHAIN:**\n\n` +
+            `1. Crie os slides do carrossel no Canva, Figma ou PowerPoint.\n` +
+            `2. Exporte o arquivo em formato **PDF**.\n` +
+            `3. Arraste ou envie o arquivo PDF **diretamente nesta conversa do Telegram**.\n` +
+            `4. Clique em **🏢 Publicar Carrossel PDF na Audit Chain**.\n\n` +
+            `O bot formatará a legenda comercial automaticamente e publicará o carrossel interativo no LinkedIn!`,
+            { parse_mode: 'Markdown', ...getMainMenuKeyboard() }
+        );
     } else if (action === "select_post_menu") {
         const selectPostKeyboard = {
             reply_markup: {
