@@ -453,6 +453,116 @@ Restaurar as operações críticas dentro dos prazos operacionais aceitáveis ne
 Elaborar o After Action Report para atualizar as políticas de segurança, fechar brechas de governança e treinar as equipes.
 
 Gestão de incidentes eficiente não é sobre nunca sofrer um ataque, mas sobre responder com tanta precisão e velocidade que o negócio continue operando.`
+    },
+    post6: {
+        title: "Post 6: Governança de Inteligência Artificial & Riscos Cibernéticos (NIST AI RMF & ISO 42001)",
+        category: "AI Governance / NIST AI RMF / ISO 42001",
+        recommendedFormat: "WITH_IMAGE",
+        imagePath: "media/audit_chain_infosec.png",
+        text: `Como a sua organização está equilibrando a rápida adoção de IA Generativa com os requisitos de Governança e Cibersegurança?
+
+A expansão de soluções de Inteligência Artificial trouxe produtividade, mas também introduziu novos vetores de risco: vazamento de propriedade intelectual, viés algorítmico e vulnerabilidades em APIs de LLM.
+
+Segundo o NIST AI Risk Management Framework e a norma ISO 42001 (Sistema de Gestão de IA), a governança de IA não deve proibir o uso da tecnologia, mas estabelecer salvaguardas claras:
+
+1. Inventário & Mapeamento de Modelos de IA
+Saber exatamente quais ferramentas de IA estão sendo utilizadas pelas equipes e com quais dados corporativos alimentam os modelos.
+
+2. Avaliação de Impacto e Privacidade (AIA / DPIA)
+Avaliar os riscos de privacidade e segurança no tratamento de dados por fornecedores e soluções de IA de terceiros.
+
+3. Monitoramento Contínuo e Transparência
+Garantir rastreabilidade das decisões automatizadas e alinhamento com a regulamentação global.
+
+A governança de IA é o pilar que permite às empresas inovarem com segurança e credibilidade no mercado.`
+    },
+    post7: {
+        title: "Post 7: Automação de TPRM no OneTrust (Vendor Portal & Auto-Risks)",
+        category: "OneTrust / TPRM Automation / VRM",
+        recommendedFormat: "WITH_IMAGE",
+        imagePath: "media/audit_chain_tprm_dora.png",
+        text: `Sua equipe ainda gasta centenas de horas enviando planilhas manuais para avaliar fornecedores de TI?
+
+Em organizações com centenas de parceiros cadastrados, a gestão de risco de terceiros realizada manualmente via planilhas gera gargalos operacionais e falta de rastreabilidade.
+
+Com a parametrização avançada da plataforma OneTrust (módulos Vendor Inventory, Assessments e Auto-Risks), a governança de fornecedores atinge maturidade automatizada:
+
+1. Portal do Fornecedor Autônomo
+Terceiros respondem questionários de due diligence diretamente na plataforma, com anexos de evidências centralizados.
+
+2. Disparo de Auto-Riscos por Regras Negociais
+Respostas fora de conformidade geram apontamentos de risco automático no Risk Register para a equipe de segurança tratar.
+
+3. Dashboards em Tempo Real para Comitês de GRC
+Relatórios consolidados de risco inerente vs residual prontos para auditorias e liderança executiva.
+
+Automatizar o programa de TPRM libera a equipe de segurança do trabalho burocrático e foca o tempo na mitigação real dos riscos.`
+    },
+    post8: {
+        title: "Post 8: Arquitetura ServiceNow IRM (Policy, Compliance & Controls)",
+        category: "ServiceNow IRM / Policy & Compliance",
+        recommendedFormat: "WITH_IMAGE",
+        imagePath: "media/audit_chain_platforms.png",
+        text: `Como rastrear se um controle de segurança implantado na infraestrutura realmente atende aos requisitos contratuais e regulatórios da empresa?
+
+No ecossistema corporativo, a falta de conexão entre a política escrita no papel e a operação técnica gera falsas sensações de conformidade.
+
+Com a implementação do módulo ServiceNow Policy & Compliance Management (IRM), criamos a rastreabilidade ponta a ponta:
+
+1. Mapeamento de Authority Documents & Citations
+Vincular legislações (DORA, LGPD, ISO 27001, NIST) diretamente aos artigos e exigências aplicáveis.
+
+2. Controle Operacional vs Indicadores KRIs
+Associar objetivos de controle a testes automatizados e indicadores operacionais dentro da plataforma ServiceNow.
+
+3. Matriz Centralizada de Não-Conformidades
+Visibilidade imediata das brechas regulatórias e acompanhamento em tempo real dos planos de ação de remediação.
+
+Governança de TI no ServiceNow conecta a estratégia de conformidade diretamente ao fluxo de trabalho diário das equipes.`
+    },
+    post9: {
+        title: "Post 9: Simulados de Crise & Testes de Mesa em Continuidade (BCM)",
+        category: "BCM / Crisis Management / ISO 22301",
+        recommendedFormat: "WITH_IMAGE",
+        imagePath: "media/audit_chain_bcm.png",
+        text: `Um plano de continuidade de negócios arquivado na gaveta e nunca testado é apenas uma ilusão de segurança.
+
+Quando ocorre um ransomware ou indisponibilidade total de datacenter, as equipes que nunca participaram de um simulado de crise enfrentam paralisia e indecisão nas primeiras horas.
+
+Segundo as boas práticas da norma ISO 22301 e do COBIT 2019, a realização regular de Simulados de Mesa (Tabletop Exercises) é indispensável:
+
+1. Validação de Papéis e Responsabilidades
+Garantir que os comitês de crise e líderes operacionais saibam exatamente quem toma as decisões de ativação de PCN/DRP.
+
+2. Teste Realista do RTO e RPO
+Medir o tempo real de recuperação dos sistemas vitais contra as metas negociadas no BIA.
+
+3. Identificação de Falhas de Comunicação
+Ajustar os canais alternativos de comunicação e notificação de incidentes antes que uma crise real aconteça.
+
+A resiliência operacional é construída na prática — testar, ajustar e evoluir continuamente.`
+    },
+    post10: {
+        title: "Post 10: Zero Trust Architecture & Alinhamento com a Governança Executiva",
+        category: "Zero Trust / InfoSec / GRC Architecture",
+        recommendedFormat: "WITH_IMAGE",
+        imagePath: "media/audit_chain_infosec.png",
+        text: `O modelo de segurança baseado em perímetro tradicional não responde mais aos desafios da nuvem e do trabalho remoto.
+
+A estratégia Zero Trust ("Nunca Confie, Sempre Verifique") estabelece que nenhuma entidade (interna ou externa) deve ter acesso implícito aos ativos da empresa.
+
+Sob a perspectiva da Governança de Riscos (GRC), o alinhamento com a estratégia Zero Trust exige três diretrizes fundamentais:
+
+1. Princípio do Menor Privilégio (Least Privilege)
+Garantir que usuários e fornecedores acessem estritamente o necessário para a função, revogando privilégios excessivos.
+
+2. Verificação Explícita Contínua
+Autenticação forte (MFA), validação de postura de dispositivo e monitoramento contínuo de identidade em cada sessão.
+
+3. Suposição de Brecha (Assume Breach)
+Segmentar a rede para conter a movimentação lateral do atacante e minimizar a superfície de impacto.
+
+Zero Trust não é um produto fechado, mas sim uma arquitetura contínua de governança e proteção cibernética.`
     }
 };
 
@@ -1180,8 +1290,13 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
                     [{ text: "1️⃣ Tradução de Riscos de TI p/ o Board (Risk IT)", callback_data: "publish_custom_post1_personal_text" }],
                     [{ text: "2️⃣ Continuidade & BIA (COBIT DSS04)", callback_data: "publish_custom_post2_personal_text" }],
                     [{ text: "3️⃣ Segurança como Business Enabler (CISM)", callback_data: "publish_custom_post3_personal_text" }],
-                    [{ text: "4️⃣ Riscos em Terceiros [🖼️ com Imagem]", callback_data: "publish_custom_post4_personal_img" }],
+                    [{ text: "4️⃣ Riscos em Terceiros [🖼️ com Imagem V2]", callback_data: "publish_custom_post4_personal_img" }],
                     [{ text: "5️⃣ Gestão de Incidentes [🚨 CISM Domínio 4]", callback_data: "publish_custom_post5_personal_img" }],
+                    [{ text: "6️⃣ Governança de IA & Riscos Cibernéticos (NIST AI)", callback_data: "publish_custom_post6_personal_img" }],
+                    [{ text: "7️⃣ Automação de TPRM no OneTrust (Vendor Portal)", callback_data: "publish_custom_post7_personal_img" }],
+                    [{ text: "8️⃣ Arquitetura ServiceNow IRM (Compliance)", callback_data: "publish_custom_post8_personal_img" }],
+                    [{ text: "9️⃣ Simulados de Crise & Testes BCM (ISO 22301)", callback_data: "publish_custom_post9_personal_img" }],
+                    [{ text: "🔟 Zero Trust Architecture & GRC Executivo", callback_data: "publish_custom_post10_personal_img" }],
                     [{ text: "👤 Voltar ao Menu Pessoal", callback_data: "menu_personal_profile" }]
                 ]
             }
@@ -1194,8 +1309,13 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
                     [{ text: "1️⃣ Post 1: Riscos de TI (Risk IT) [💡 Texto]", callback_data: "view_post_post1" }],
                     [{ text: "2️⃣ Post 2: Continuidade & BIA [💡 Texto]", callback_data: "view_post_post2" }],
                     [{ text: "3️⃣ Post 3: Segurança Enabler [💡 Texto]", callback_data: "view_post_post3" }],
-                    [{ text: "4️⃣ Post 4: Riscos em Terceiros [🖼️ com Imagem]", callback_data: "view_post_post4" }],
-                    [{ text: "5️⃣ Post 5: Gestão Incidentes [🖼️ com Imagem]", callback_data: "view_post_post5" }],
+                    [{ text: "4️⃣ Post 4: Riscos em Terceiros [🖼️ Imagem V2]", callback_data: "view_post_post4" }],
+                    [{ text: "5️⃣ Post 5: Gestão Incidentes [🖼️ Imagem V2]", callback_data: "view_post_post5" }],
+                    [{ text: "6️⃣ Post 6: Governança de IA (NIST AI)", callback_data: "view_post_post6" }],
+                    [{ text: "7️⃣ Post 7: Automação OneTrust VRM", callback_data: "view_post_post7" }],
+                    [{ text: "8️⃣ Post 8: ServiceNow IRM Compliance", callback_data: "view_post_post8" }],
+                    [{ text: "9️⃣ Post 9: Simulados de Crise BCM", callback_data: "view_post_post9" }],
+                    [{ text: "🔟 Post 10: Zero Trust & GRC", callback_data: "view_post_post10" }],
                     [{ text: "⬅️ Voltar", callback_data: "back_to_main_menu" }]
                 ]
             }
