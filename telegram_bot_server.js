@@ -1065,6 +1065,72 @@ Integre a governança corporativa ao ecossistema operacional de TI e Cibersegura
 📩 Fale com nossos consultores especialistas em ServiceNow GRC e otimize sua plataforma.
 
 #AuditChain #ServiceNow #GRC #IRM #VRM #Compliance #RiskManagement`
+    },
+    c_pdf_tprm: {
+        title: "📄 Carrossel PDF: DORA & Risco em Terceiros (5 Slides)",
+        category: "Carrossel PDF / TPRM & DORA",
+        pdfPath: "media/carrousel_audit_chain_tprm_dora.pdf",
+        text: `🏢 [AUDIT CHAIN - CARROSSEIL EXECUTIVO: TPRM & DORA]
+
+📌 GESTÃO DE RISCO DE TERCEIROS & REGULAÇÃO DORA (5 SLIDES)
+
+Confira no documento PDF deslizável acima a metodologia completa de 4 etapas para adequação da governança de parceiros de TIC perante a regulação DORA.
+
+---
+
+💡 O QUE VOCÊ VERÁ NESTE CARROSSEIL:
+1. Enquadramento de Funções Críticas (CIFs)
+2. Due Diligence & Questionários Proporcionais
+3. Matriz de Risco Inerente vs Residual
+4. Monitoramento Contínuo com OneTrust & ServiceNow GRC
+
+📩 Precisa estruturar o programa de TPRM na sua empresa? Agende uma reunião com nossos arquitetos!
+
+#AuditChain #TPRM #DORA #CarrosselLinkedIn #OneTrust #ServiceNow`
+    },
+    c_pdf_privacy: {
+        title: "📄 Carrossel PDF: Privacidade de Dados LGPD/GDPR (5 Slides)",
+        category: "Carrossel PDF / LGPD & GDPR",
+        pdfPath: "media/carrousel_audit_chain_lgpd_privacy.pdf",
+        text: `🏢 [AUDIT CHAIN - CARROSSEIL EXECUTIVO: PRIVACIDADE DE DADOS]
+
+📌 ESTRUTURAÇÃO DE PROGRAMA DE PRIVACIDADE LGPD/GDPR (5 SLIDES)
+
+Deslize as páginas acima para conferir os entregáveis práticos do nosso programa de privacidade e automação de direitos dos titulares.
+
+---
+
+💡 ESTRUTURA DO CARROSSEIL:
+• Data Mapping & Inventário (RoPA)
+• Relatórios de Impacto (RIPD / DPIA)
+• Automação de DSAR com OneTrust Privacy
+• Governança e Notificação ANPD
+
+📩 Fale com nossos especialistas e garanta a conformidade da sua empresa.
+
+#AuditChain #LGPD #GDPR #Privacy #DSAR #RoPA #OneTrust`
+    },
+    c_pdf_bcm: {
+        title: "📄 Carrossel PDF: Continuidade BCM & BIA (5 Slides)",
+        category: "Carrossel PDF / BCM & Resiliência",
+        pdfPath: "media/carrousel_audit_chain_bcm_resilience.pdf",
+        text: `🏢 [AUDIT CHAIN - CARROSSEIL EXECUTIVO: BCM & RESILIÊNCIA]
+
+📌 CONTINUIDADE DE NEGÓCIOS & ANÁLISE BIA (5 SLIDES)
+
+Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP) integrados com ServiceNow BCM.
+
+---
+
+💡 CONTEÚDO DO CARROSSEIL:
+• Business Impact Analysis (BIA) orientado ao negócio
+• RTO & RPO sem adivinhação
+• Simulados de Mesa & DRP
+• Automação no ServiceNow BCM
+
+📩 Proteja a operação da sua empresa com a consultoria especializada Audit Chain!
+
+#AuditChain #BCM #ISO22301 #Resiliencia #ServiceNow #BIA`
     }
 };
 
@@ -1072,12 +1138,12 @@ Integre a governança corporativa ao ecossistema operacional de TI e Cibersegura
         const auditChainKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "🚀 1. Risco de Terceiros & DORA (Empresa + Criativo)", callback_data: "publish_company_post_c_tprm" }],
-                    [{ text: "🔒 2. Privacidade de Dados LGPD/GDPR (Empresa + Criativo)", callback_data: "publish_company_post_c_privacy" }],
-                    [{ text: "⚙️ 3. Plataforma OneTrust (Empresa + Criativo)", callback_data: "publish_company_post_c_onetrust" }],
-                    [{ text: "💼 4. Plataforma ServiceNow GRC/IRM (Empresa + Criativo)", callback_data: "publish_company_post_c_servicenow" }],
+                    [{ text: "🚀 1. Risco de Terceiros & DORA (Empresa + Criativo V2)", callback_data: "publish_company_post_c_tprm" }],
+                    [{ text: "🔒 2. Privacidade LGPD/GDPR (Empresa + Criativo V2)", callback_data: "publish_company_post_c_privacy" }],
+                    [{ text: "📄 3. Carrossel PDF: TPRM & DORA (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_tprm" }],
+                    [{ text: "📄 4. Carrossel PDF: Privacidade LGPD (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_privacy" }],
+                    [{ text: "📄 5. Carrossel PDF: BCM & Resiliência (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_bcm" }],
                     [{ text: "📚 Ver Catálogo Completo de Serviços (Empresa)", callback_data: "select_company_post_menu" }],
-                    [{ text: "📑 Como publicar PDF de Carrossel (Instruções)", callback_data: "info_pdf_carousel" }],
                     [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
                 ]
             }
@@ -1085,20 +1151,23 @@ Integre a governança corporativa ao ecossistema operacional de TI e Cibersegura
         await bot.sendMessage(
             chatId,
             `🏢 **[PÁGINA COMERCIAL AUDIT CHAIN - MENU DE AÇÕES]**\n\n` +
-            `Todas as publicações disparadas aqui utilizarão **APENAS** o **Tom Comercial B2B**, a **Legenda Curta Explicativa** e os **Criativos/Carrosséis** promovendo os serviços da empresa.\n\n` +
-            `💡 *Para publicar um carrossel em PDF criado no Canva/Figma, basta enviar o arquivo PDF diretamente neste chat!*`,
+            `Todas as publicações disparadas aqui utilizarão **APENAS** o **Tom Comercial B2B**, a **Legenda Curta Explicativa**, os **Criativos V2** ou **Carrosséis em PDF Nativos** promovendo os serviços da empresa.\n\n` +
+            `💡 *Para publicar um carrossel customizado em PDF feito por você no Canva/Figma, basta enviar o arquivo PDF diretamente neste chat!*`,
             { parse_mode: 'Markdown', ...auditChainKeyboard }
         );
     } else if (action === "select_company_post_menu") {
         const companyPostKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "1️⃣ Risco de Terceiros (TPRM & DORA)", callback_data: "publish_company_post_c_tprm" }],
-                    [{ text: "2️⃣ Privacidade de Dados (LGPD & GDPR)", callback_data: "publish_company_post_c_privacy" }],
-                    [{ text: "3️⃣ Continuidade de Negócios (BCM & BIA)", callback_data: "publish_company_post_c_bcm" }],
-                    [{ text: "4️⃣ Segurança da Informação (ISO 27001/NIST)", callback_data: "publish_company_post_c_infosec" }],
-                    [{ text: "5️⃣ Otimização & Arquitetura OneTrust", callback_data: "publish_company_post_c_onetrust" }],
-                    [{ text: "6️⃣ Otimização & Arquitetura ServiceNow GRC", callback_data: "publish_company_post_c_servicenow" }],
+                    [{ text: "1️⃣ Risco de Terceiros (TPRM & DORA - Imagem V2)", callback_data: "publish_company_post_c_tprm" }],
+                    [{ text: "2️⃣ Privacidade de Dados (LGPD & GDPR - Imagem V2)", callback_data: "publish_company_post_c_privacy" }],
+                    [{ text: "3️⃣ Continuidade de Negócios (BCM & BIA - Imagem V2)", callback_data: "publish_company_post_c_bcm" }],
+                    [{ text: "4️⃣ Segurança da Informação (ISO 27001 - Imagem V2)", callback_data: "publish_company_post_c_infosec" }],
+                    [{ text: "5️⃣ Arquitetura OneTrust (Imagem V2)", callback_data: "publish_company_post_c_onetrust" }],
+                    [{ text: "6️⃣ Arquitetura ServiceNow GRC (Imagem V2)", callback_data: "publish_company_post_c_servicenow" }],
+                    [{ text: "📄 Carrossel PDF: TPRM & DORA (5 Slides)", callback_data: "publish_company_post_c_pdf_tprm" }],
+                    [{ text: "📄 Carrossel PDF: Privacidade LGPD (5 Slides)", callback_data: "publish_company_post_c_pdf_privacy" }],
+                    [{ text: "📄 Carrossel PDF: BCM & Resiliência (5 Slides)", callback_data: "publish_company_post_c_pdf_bcm" }],
                     [{ text: "🏢 Voltar ao Menu Audit Chain", callback_data: "menu_audit_chain_page" }]
                 ]
             }
@@ -1397,7 +1466,50 @@ Integre a governança corporativa ao ecossistema operacional de TI e Cibersegura
                 let mediaCategory = "NONE";
                 let mediaArray = undefined;
 
-                if (post.imagePath) {
+                if (post.pdfPath) {
+                    const fullPdfPath = path.isAbsolute(post.pdfPath) ? post.pdfPath : path.join(__dirname, post.pdfPath);
+                    if (fs.existsSync(fullPdfPath)) {
+                        await bot.sendMessage(chatId, `📄 Fazendo upload do Carrossel em PDF [${path.basename(fullPdfPath)}] para a API do LinkedIn...`);
+                        
+                        const registerResponse = await composio.tools.proxyExecute({
+                            endpoint: "https://api.linkedin.com/v2/assets?action=registerUpload",
+                            method: "POST",
+                            connectedAccountId: CONNECTED_ACCOUNT_ID,
+                            headers: {
+                                "X-Restli-Protocol-Version": "2.0.0",
+                                "Content-Type": "application/json"
+                            },
+                            body: {
+                                registerUploadRequest: {
+                                    recipes: ["urn:li:digitalmediaRecipe:feedshare-document"],
+                                    owner: ORG_URN,
+                                    serviceRelationships: [{
+                                        relationshipType: "OWNER",
+                                        identifier: "urn:li:userGeneratedContent"
+                                    }]
+                                }
+                            }
+                        });
+
+                        const registerData = registerResponse.data.value;
+                        const uploadUrl = registerData.uploadMechanism["com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"].uploadUrl;
+                        const assetUrn = registerData.asset;
+
+                        const pdfBuffer = fs.readFileSync(fullPdfPath);
+                        await fetch(uploadUrl, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/pdf' },
+                            body: pdfBuffer
+                        });
+
+                        mediaCategory = "DOCUMENT";
+                        mediaArray = [{
+                            "status": "READY",
+                            "media": assetUrn,
+                            "title": { "text": `${post.title} (${Date.now()})` }
+                        }];
+                    }
+                } else if (post.imagePath) {
                     const fullImagePath = path.isAbsolute(post.imagePath) ? post.imagePath : path.join(__dirname, post.imagePath);
                     if (fs.existsSync(fullImagePath)) {
                         await bot.sendMessage(chatId, `🖼️ Fazendo upload do asset gráfico [${path.basename(fullImagePath)}] para a API do LinkedIn...`);
