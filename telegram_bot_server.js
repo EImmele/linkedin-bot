@@ -927,7 +927,7 @@ bot.on('callback_query', async (query) => {
                 inline_keyboard: [
                     [{ text: "🚀 Post 4: Riscos em Terceiros & DORA (Empresa + Criativo)", callback_data: "publish_custom_post4_company_img" }],
                     [{ text: "🚨 Post 5: Gestão de Incidentes (Empresa + Criativo)", callback_data: "publish_custom_post5_company_img" }],
-                    [{ text: "📚 Escolher Post do Portfólio p/ Empresa", callback_data: "select_post_menu" }],
+                    [{ text: "📚 Ver Catálogo Completo dos 8 Serviços (Empresa)", callback_data: "select_company_post_menu" }],
                     [{ text: "📑 Como publicar PDF de Carrossel (Instruções)", callback_data: "info_pdf_carousel" }],
                     [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
                 ]
@@ -947,7 +947,7 @@ bot.on('callback_query', async (query) => {
                     [{ text: "🚀 Post 4: Riscos em Terceiros (Texto Longo Pessoal)", callback_data: "publish_custom_post4_personal_text" }],
                     [{ text: "🖼️ Post 4: Riscos em Terceiros (Com Imagem Pessoal)", callback_data: "publish_custom_post4_personal_img" }],
                     [{ text: "🚨 Post 5: Gestão de Incidentes (CISM ISACA)", callback_data: "publish_custom_post5_personal_img" }],
-                    [{ text: "📚 Escolher Post do Portfólio p/ Perfil Pessoal", callback_data: "select_post_menu" }],
+                    [{ text: "📚 Ver Catálogo CISM & Thought Leadership (Pessoal)", callback_data: "select_personal_post_menu" }],
                     [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
                 ]
             }
@@ -969,6 +969,34 @@ bot.on('callback_query', async (query) => {
             `O bot formatará a legenda comercial automaticamente e publicará o carrossel interativo no LinkedIn!`,
             { parse_mode: 'Markdown', ...getMainMenuKeyboard() }
         );
+    } else if (action === "select_company_post_menu") {
+        const companyPostKeyboard = {
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: "1️⃣ Privacidade de Dados (LGPD/GDPR + OneTrust)", callback_data: "publish_custom_post1_company_img" }],
+                    [{ text: "2️⃣ Continuidade de Negócios (BCM + ServiceNow)", callback_data: "publish_custom_post2_company_img" }],
+                    [{ text: "3️⃣ Segurança da Informação (ISO 27001/NIST)", callback_data: "publish_custom_post3_company_img" }],
+                    [{ text: "4️⃣ Risco de Terceiros (TPRM & DORA)", callback_data: "publish_custom_post4_company_img" }],
+                    [{ text: "5️⃣ Compliance & Auditoria de Controles", callback_data: "publish_custom_post5_company_img" }],
+                    [{ text: "🏢 Voltar ao Menu Audit Chain", callback_data: "menu_audit_chain_page" }]
+                ]
+            }
+        };
+        await bot.sendMessage(chatId, "🏢 **[CATÁLOGO COMERCIAL AUDIT CHAIN - 8 SOLUÇÕES]**\n\nEscolha o post de serviço para disparar na Página da Empresa com **Criativo/Carrossel + Legenda Curta B2B**:", companyPostKeyboard);
+    } else if (action === "select_personal_post_menu") {
+        const personalPostKeyboard = {
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: "1️⃣ Tradução de Riscos de TI p/ o Board (Risk IT)", callback_data: "publish_custom_post1_personal_text" }],
+                    [{ text: "2️⃣ Continuidade & BIA (COBIT DSS04)", callback_data: "publish_custom_post2_personal_text" }],
+                    [{ text: "3️⃣ Segurança como Business Enabler (CISM)", callback_data: "publish_custom_post3_personal_text" }],
+                    [{ text: "4️⃣ Riscos em Terceiros [🖼️ com Imagem]", callback_data: "publish_custom_post4_personal_img" }],
+                    [{ text: "5️⃣ Gestão de Incidentes [🚨 CISM Domínio 4]", callback_data: "publish_custom_post5_personal_img" }],
+                    [{ text: "👤 Voltar ao Menu Pessoal", callback_data: "menu_personal_profile" }]
+                ]
+            }
+        };
+        await bot.sendMessage(chatId, "👤 **[CATÁLOGO DE THOUGHT LEADERSHIP - ERIK IMMELE]**\n\nEscolha o artigo/post conceitual para disparar no seu Perfil Pessoal em **1ª Pessoa ('Eu')**:", personalPostKeyboard);
     } else if (action === "select_post_menu") {
         const selectPostKeyboard = {
             reply_markup: {
