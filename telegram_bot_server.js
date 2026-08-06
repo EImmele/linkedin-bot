@@ -930,7 +930,7 @@ const companyPostsDB = {
     c_tprm: {
         title: "1️⃣ Gestão de Risco de Terceiros (TPRM/VRM & DORA)",
         category: "TPRM / DORA / Supply Chain",
-        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_slide1_dora_cover_1786056158919.png",
+        imagePath: "media/audit_chain_tprm_dora.png",
         text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM GRC, PRIVACIDADE & CIBERSEGURANÇA]
 
 📌 GESTÃO DE RISCO DE TERCEIROS (TPRM) & CONFORMIDADE DORA
@@ -954,7 +954,7 @@ Fale com nossos consultores e agende uma avaliação de maturidade.
     c_privacy: {
         title: "2️⃣ Privacidade de Dados (LGPD & GDPR)",
         category: "Data Privacy / LGPD / GDPR",
-        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_services_infographic_1786055816314.png",
+        imagePath: "media/audit_chain_privacy.png",
         text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM PRIVACIDADE DE DADOS]
 
 📌 ESTRUTURAÇÃO DE PROGRAMA DE PRIVACIDADE (LGPD & GDPR)
@@ -977,7 +977,7 @@ Transforme obrigações regulatórias em vantagem competitiva e confiança de me
     c_bcm: {
         title: "3️⃣ Continuidade de Negócios (BCM & Resiliência)",
         category: "BCM / Resiliência / BIA",
-        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_light_slide2_content_1786055917170.png",
+        imagePath: "media/audit_chain_bcm.png",
         text: `🏢 [AUDIT CHAIN - RESILIÊNCIA OPERACIONAL & BCM]
 
 📌 CONTINUIDADE DE NEGÓCIOS & RECUPERAÇÃO DE DESASTRES
@@ -1000,7 +1000,7 @@ Sua empresa sabe exatamente quais sistemas operar primeiro em um momento de desa
     c_infosec: {
         title: "4️⃣ Segurança da Informação (ISO 27001 & NIST CSF)",
         category: "InfoSec / ISO 27001 / NIST",
-        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_light_slide1_cover_1786055907088.png",
+        imagePath: "media/audit_chain_infosec.png",
         text: `🏢 [AUDIT CHAIN - SEGURANÇA DA INFORMAÇÃO & GRC]
 
 📌 SISTEMA DE GESTÃO DE SEGURANÇA DA INFORMAÇÃO (SGSI)
@@ -1023,7 +1023,7 @@ Alinhe a proteção cibernética aos objetivos estratégicos e ao apetite de ris
     c_onetrust: {
         title: "5️⃣ Plataforma OneTrust (Arquitetura & Implementação)",
         category: "OneTrust / VRM / Privacy Automation",
-        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_slide3_platforms_1786056176140.png",
+        imagePath: "media/audit_chain_platforms.png",
         text: `🏢 [AUDIT CHAIN - ARQUITETURA & OTIMIZAÇÃO ONETRUST]
 
 📌 ESPECIALISTAS EM ARQUITETURA & IMPLANTAÇÃO ONETRUST
@@ -1046,7 +1046,7 @@ Extraia o valor máximo do seu investimento no ecossistema OneTrust com parametr
     c_servicenow: {
         title: "6️⃣ Plataforma ServiceNow GRC/IRM (Arquitetura & Sustentação)",
         category: "ServiceNow / GRC / IRM",
-        imagePath: "C:\\Users\\Erik I\\.gemini\\antigravity-ide\\brain\\f593a16e-d9b7-43db-89f5-bf0c62663f10\\audit_chain_slide3_platforms_1786056176140.png",
+        imagePath: "media/audit_chain_platforms.png",
         text: `🏢 [AUDIT CHAIN - ESPECIALISTAS SERVICENOW GRC / IRM]
 
 📌 ARQUITETURA, IMPLEMENTAÇÃO & SUSTENTAÇÃO SERVICENOW GRC
