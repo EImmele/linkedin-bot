@@ -1092,10 +1092,45 @@ bot.on('callback_query', async (query) => {
         const isPersonal = parts[1] === "personal";
         const isImage = parts[2] === "img";
 
+function getFormattedCompanyPostText(post) {
+    if (post.companyText) {
+        return post.companyText;
+    }
+    
+    const cleanBody = post.text
+        .replace(/Como parte da minha preparação.*jornada\./gi, '')
+        .replace(/Hello everyone.*journey\./gi, '')
+        .trim();
+
+    return `🏢 [AUDIT CHAIN - SOLUÇÕES EM GRC, PRIVACIDADE & CIBERSEGURANÇA]
+
+Na Audit Chain, ajudamos organizações a fortalecer a governança corporativa, mitigar riscos operacionais e garantir a conformidade regulatória contínua.
+
+📌 ${post.title}
+
+${cleanBody}
+
+---
+
+💡 CONHEÇA O PORTFÓLIO DE SERVIÇOS DA AUDIT CHAIN:
+1️⃣ Privacidade de Dados (Programas LGPD & GDPR, Data Mapping / RoPA, RIPD & DSAR)
+2️⃣ Continuidade de Negócios (BCM, BIA, PCN/BCP & DRP)
+3️⃣ Segurança da Informação (ISO 27001:2022 & NIST CSF 2.0)
+4️⃣ Gestão de Risco de Terceiros (TPRM/VRM & Conformidade DORA)
+5️⃣ Compliance & Auditoria de Controles (COSO ERM & ISO 37301)
+6️⃣ Serviços Pontuais sob Demanda (CISO & DPO as a Service)
+7️⃣ Implementação & Arquitetura OneTrust (VRM, RoPA, DSAR, SSO/SCIM)
+8️⃣ Implementação & Arquitetura ServiceNow GRC / IRM (VRM, Policy, Risk & BCM)
+
+📩 Sua empresa busca elevar a maturidade de GRC ou automatizar plataformas OneTrust e ServiceNow?
+Fale com nossos consultores especializados da Audit Chain e agende uma avaliação de maturidade!`;
+}
+
         const post = postsDB[postKey];
         const authorUrn = isPersonal ? PERSONAL_URN : ORG_URN;
         const targetName = isPersonal ? "Perfil Pessoal (Erik Immele)" : "Página Comercial (Audit Chain)";
         const formatLabel = isImage ? "Texto + Infográfico PNG" : "Texto Puro";
+        const finalContent = isPersonal ? post.text : getFormattedCompanyPostText(post);
 
         await bot.sendMessage(chatId, `🚀 Disparando ${post.title} em formato [${formatLabel}] para ${targetName}...`);
 
@@ -1113,7 +1148,7 @@ bot.on('callback_query', async (query) => {
                     lifecycleState: "PUBLISHED",
                     specificContent: {
                         "com.linkedin.ugc.ShareContent": {
-                            "shareCommentary": { "text": post.text },
+                            "shareCommentary": { "text": finalContent },
                             "shareMediaCategory": "NONE"
                         }
                     },
