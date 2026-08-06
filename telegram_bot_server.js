@@ -1434,8 +1434,13 @@ Integre a governança corporativa ao ecossistema operacional de TI e Cibersegura
                     }];
                 }
 
+function makeUniqueContent(text) {
+    const timeRef = new Date().toISOString().replace(/[-:T.]/g, "").slice(8, 14);
+    return `${text}\n\n📌 [Ref: AC-${timeRef}]`;
+}
+
                 const shareContentObj = {
-                    "shareCommentary": { "text": post.text },
+                    "shareCommentary": { "text": makeUniqueContent(post.text) },
                     "shareMediaCategory": mediaCategory
                 };
                 if (mediaArray) {
@@ -1537,7 +1542,7 @@ Integre a governança corporativa ao ecossistema operacional de TI e Cibersegura
             }
 
             const shareContentObj = {
-                "shareCommentary": { "text": finalContent },
+                "shareCommentary": { "text": makeUniqueContent(finalContent) },
                 "shareMediaCategory": mediaCategory
             };
             if (mediaArray) {
