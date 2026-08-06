@@ -1154,6 +1154,62 @@ bot.on('callback_query', async (query) => {
         await bot.sendMessage(chatId, `🚀 Disparando ${post.title} em formato [${formatLabel}] para ${targetName}...`);
 
         try {
+            let mediaCategory = "NONE";
+            let mediaArray = undefined;
+
+            if (isImage && post.imagePath) {
+                const fullImagePath = path.isAbsolute(post.imagePath) ? post.imagePath : path.join(__dirname, post.imagePath);
+                if (fs.existsSync(fullImagePath)) {
+                    await bot.sendMessage(chatId, `🖼️ Fazendo upload do asset gráfico [${path.basename(fullImagePath)}] para a API do LinkedIn...`);
+                    
+                    const registerResponse = await composio.tools.proxyExecute({
+                        endpoint: "https://api.linkedin.com/v2/assets?action=registerUpload",
+                        method: "POST",
+                        connectedAccountId: CONNECTED_ACCOUNT_ID,
+                        headers: {
+                            "X-Restli-Protocol-Version": "2.0.0",
+                            "Content-Type": "application/json"
+                        },
+                        body: {
+                            registerUploadRequest: {
+                                recipes: ["urn:li:digitalmediaRecipe:feedshare-image"],
+                                owner: authorUrn,
+                                serviceRelationships: [{
+                                    relationshipType: "OWNER",
+                                    identifier: "urn:li:userGeneratedContent"
+                                }]
+                            }
+                        }
+                    });
+
+                    const registerData = registerResponse.data.value;
+                    const uploadUrl = registerData.uploadMechanism["com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"].uploadUrl;
+                    const assetUrn = registerData.asset;
+
+                    const imageBuffer = fs.readFileSync(fullImagePath);
+                    await fetch(uploadUrl, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'image/png' },
+                        body: imageBuffer
+                    });
+
+                    mediaCategory = "IMAGE";
+                    mediaArray = [{
+                        "status": "READY",
+                        "media": assetUrn,
+                        "title": { "text": post.title }
+                    }];
+                }
+            }
+
+            const shareContentObj = {
+                "shareCommentary": { "text": finalContent },
+                "shareMediaCategory": mediaCategory
+            };
+            if (mediaArray) {
+                shareContentObj.media = mediaArray;
+            }
+
             const response = await composio.tools.proxyExecute({
                 endpoint: "https://api.linkedin.com/v2/ugcPosts",
                 method: "POST",
@@ -1166,10 +1222,7 @@ bot.on('callback_query', async (query) => {
                     author: authorUrn,
                     lifecycleState: "PUBLISHED",
                     specificContent: {
-                        "com.linkedin.ugc.ShareContent": {
-                            "shareCommentary": { "text": finalContent },
-                            "shareMediaCategory": "NONE"
-                        }
+                        "com.linkedin.ugc.ShareContent": shareContentObj
                     },
                     visibility: { "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC" }
                 }
