@@ -1397,46 +1397,49 @@ Integre a governança corporativa ao ecossistema operacional de TI e Cibersegura
                 let mediaCategory = "NONE";
                 let mediaArray = undefined;
 
-                if (post.imagePath && fs.existsSync(post.imagePath)) {
-                    await bot.sendMessage(chatId, `🖼️ Fazendo upload do asset gráfico [${path.basename(post.imagePath)}] para a API do LinkedIn...`);
-                    
-                    const registerResponse = await composio.tools.proxyExecute({
-                        endpoint: "https://api.linkedin.com/v2/assets?action=registerUpload",
-                        method: "POST",
-                        connectedAccountId: CONNECTED_ACCOUNT_ID,
-                        headers: {
-                            "X-Restli-Protocol-Version": "2.0.0",
-                            "Content-Type": "application/json"
-                        },
-                        body: {
-                            registerUploadRequest: {
-                                recipes: ["urn:li:digitalmediaRecipe:feedshare-image"],
-                                owner: ORG_URN,
-                                serviceRelationships: [{
-                                    relationshipType: "OWNER",
-                                    identifier: "urn:li:userGeneratedContent"
-                                }]
+                if (post.imagePath) {
+                    const fullImagePath = path.isAbsolute(post.imagePath) ? post.imagePath : path.join(__dirname, post.imagePath);
+                    if (fs.existsSync(fullImagePath)) {
+                        await bot.sendMessage(chatId, `🖼️ Fazendo upload do asset gráfico [${path.basename(fullImagePath)}] para a API do LinkedIn...`);
+                        
+                        const registerResponse = await composio.tools.proxyExecute({
+                            endpoint: "https://api.linkedin.com/v2/assets?action=registerUpload",
+                            method: "POST",
+                            connectedAccountId: CONNECTED_ACCOUNT_ID,
+                            headers: {
+                                "X-Restli-Protocol-Version": "2.0.0",
+                                "Content-Type": "application/json"
+                            },
+                            body: {
+                                registerUploadRequest: {
+                                    recipes: ["urn:li:digitalmediaRecipe:feedshare-image"],
+                                    owner: ORG_URN,
+                                    serviceRelationships: [{
+                                        relationshipType: "OWNER",
+                                        identifier: "urn:li:userGeneratedContent"
+                                    }]
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    const registerData = registerResponse.data.value;
-                    const uploadUrl = registerData.uploadMechanism["com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"].uploadUrl;
-                    const assetUrn = registerData.asset;
+                        const registerData = registerResponse.data.value;
+                        const uploadUrl = registerData.uploadMechanism["com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"].uploadUrl;
+                        const assetUrn = registerData.asset;
 
-                    const imageBuffer = fs.readFileSync(post.imagePath);
-                    await fetch(uploadUrl, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'image/png' },
-                        body: imageBuffer
-                    });
+                        const imageBuffer = fs.readFileSync(fullImagePath);
+                        await fetch(uploadUrl, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'image/png' },
+                            body: imageBuffer
+                        });
 
-                    mediaCategory = "IMAGE";
-                    mediaArray = [{
-                        "status": "READY",
-                        "media": assetUrn,
-                        "title": { "text": `${post.title} (${Date.now()})` }
-                    }];
+                        mediaCategory = "IMAGE";
+                        mediaArray = [{
+                            "status": "READY",
+                            "media": assetUrn,
+                            "title": { "text": `${post.title} (${Date.now()})` }
+                        }];
+                    }
                 }
 
                 const shareContentObj = {
