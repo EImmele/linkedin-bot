@@ -153,13 +153,6 @@ process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected R
 
 const fixedCismMessage = `Olá pessoal, Como parte da minha preparação para o exame de certificação CISM da ISACA, estou compartilhando reflexões práticas (e reais) que conectam minha experiência no mercado com o conhecimento adquirido nesta jornada.`;
 
-const trackedPosts = [
-    { key: "post1", urn: "urn:li:share:7490327458173399040", activityUrn: "urn:li:activity:7490327458907582464", name: "Post 1 (Riscos TI - Perfil Pessoal)", author: PERSONAL_URN },
-    { key: "post2", urn: "urn:li:share:7490192848332574720", activityUrn: "urn:li:activity:7490192848332574720", name: "Post 2 (BCM - Audit Chain)", author: ORG_URN },
-    { key: "post3", urn: "urn:li:share:7490193701017722880", activityUrn: "urn:li:activity:7490193701017722880", name: "Post 3 (Segurança - Perfil Pessoal)", author: PERSONAL_URN },
-    { key: "post4", urn: "urn:li:share:7490380916247232512", activityUrn: "urn:li:activity:7490380916247232512", name: "Post 4 (TPRM - Audit Chain)", author: ORG_URN }
-];
-
 const unrepliedCommentsCache = {};
 const pendingCommentReplies = {};
 
@@ -499,8 +492,11 @@ cron.schedule('45 9 * * 2,3,4', async () => {
                     }
                 }
             );
-// Set of processed comment IDs to prevent duplicate notifications/replies
-const processedComments = new Set();
+        }
+    }
+});
+
+// Set of processed comment IDs is initialized at top of file
 
 async function checkAndProcessNewComments() {
     loadConfig();
