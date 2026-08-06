@@ -163,6 +163,33 @@ const trackedPosts = [
 const unrepliedCommentsCache = {};
 const pendingCommentReplies = {};
 
+function generateSmartResponse(authorName, commentText) {
+    const textClean = commentText ? commentText.trim().toLowerCase() : "";
+    
+    const wordsOnly = textClean.replace(/[^\p{L}\p{N}\s]/gu, '').trim();
+    const words = wordsOnly.split(/\s+/).filter(w => w.length > 0);
+    
+    const shortPraiseKeywords = ["boa", "excelente", "top", "sensacional", "muito bom", "parabens", "parabéns", "show", "demais", "ótimo", "otimo", "valeu", "sucesso", "obrigado", "obrigada", "👏", "🙌", "🔥"];
+    const isShortPraise = words.length <= 4 && (words.length === 0 || words.some(w => shortPraiseKeywords.includes(w)));
+    
+    if (isShortPraise) {
+        const naturalReplies = [
+            `${authorName} Valeu demais pelo apoio, meu caro! Tamo junto nessa jornada! 👊`,
+            `${authorName} Muito obrigado pelo apoio, meu amigo! Tamo junto! 🚀`,
+            `${authorName} Valeu demais! Forte abraço, meu caro! 🤝`,
+            `${authorName} Tamo junto, meu caro! Grande abraço!`
+        ];
+        const hash = authorName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        return naturalReplies[hash % naturalReplies.length];
+    }
+
+    if (textClean.includes('?') || textClean.includes('como') || textClean.includes('qual') || textClean.includes('onde')) {
+        return `${authorName} Ótima provocação! Na prática de GRC e Risk IT, quando trazemos essa clareza para a operação, a liderança assume a decisão com muito mais segurança. Como vocês estruturam esse alinhamento por aí?`;
+    }
+
+    return `${authorName} Perfeito, concordo totalmente! Quando conectamos a governança e os controles de segurança ao valor do negócio, a liderança passa a enxergar a área como parceira estratégica. Valeu demais pelo comentário!`;
+}
+
 // Helper to resolve real person name via LinkedIn API
 async function resolvePersonName(actorUrn) {
     if (!actorUrn || !actorUrn.includes("person:")) return "Profissional do LinkedIn";
@@ -505,7 +532,7 @@ async function checkAndProcessNewComments() {
                     const textSnippet = c.message?.text || "Comentário recebido";
                     const realName = await resolvePersonName(actorUrn);
 
-                    const aiSuggestion = `${realName} Exatamente essa virada de chave! Na governança de CISM e Risk IT, quando conectamos o risco ao impacto financeiro, a liderança assume a decisão com clareza. Como vocês estruturam esse alinhamento por aí?`;
+                    const aiSuggestion = generateSmartResponse(realName, textSnippet);
 
                     if (autoApprovalMode) {
                         // AUTO PILOT: Reply automatically immediately
@@ -883,7 +910,7 @@ bot.on('callback_query', async (query) => {
                 await bot.sendMessage(chatId, `⚡ **Modo Piloto Automático Ativo!** Respondendo a ${last5.length} comentários automaticamente com marcação em azul (@)...`);
 
                 for (const c of last5) {
-                    const aiSuggestion = `${c.author} Exatamente essa virada de chave! Na governança de CISM e Risk IT, quando conectamos o risco ao impacto financeiro, a liderança assume a decisão com clareza. Como vocês estruturam esse alinhamento por aí?`;
+                    const aiSuggestion = generateSmartResponse(c.author, c.text);
                     
                     try {
                         const payload = {
@@ -918,7 +945,7 @@ bot.on('callback_query', async (query) => {
                 const commentButtons = last5.map((c, index) => {
                     const cacheKey = `comm_${index + 1}`;
                     
-                    const aiSuggestion = `${c.author} Exatamente essa virada de chave! Na governança de CISM e Risk IT, quando conectamos o risco ao impacto financeiro, a liderança assume a decisão com clareza. Como vocês estruturam esse alinhamento por aí?`;
+                    const aiSuggestion = generateSmartResponse(c.author, c.text);
 
                     unrepliedCommentsCache[cacheKey] = {
                         ...c,
