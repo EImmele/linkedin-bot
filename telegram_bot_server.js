@@ -828,6 +828,69 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
     }
 };
 
+const companyDynamicTopicsPool = [
+    {
+        title: "Gestão Estratégica de Riscos de Terceiros (TPRM) & Conformidade DORA",
+        category: "TPRM / DORA / Resiliência",
+        imagePath: "media/audit_chain_tprm_dora.png",
+        pitch: "Como sua instituição financeira ou grande empresa qualifica a cadeia de suprimentos de TI e atende os requerimentos regulatórios DORA (EU 2022/2554)?"
+    },
+    {
+        title: "Governança & Mapeamento de Dados para LGPD & GDPR (Data Privacy)",
+        category: "Privacidade / LGPD / ANPD",
+        imagePath: "media/audit_chain_privacy.png",
+        pitch: "Estruturação de inventários RoPA, Relatórios de Impacto (RIPD/DPIA) e governança automatizada de direitos dos titulares (DSAR)."
+    },
+    {
+        title: "Continuidade de Negócios (BCM) & Análise de Impacto Operacional (BIA)",
+        category: "Resiliência / BCM / BIA",
+        imagePath: "media/audit_chain_bcm.png",
+        pitch: "Garantia de operação ininterrupta, definição pragmática de RTO/RPO e simulados de crise corporativos com ServiceNow BCM."
+    },
+    {
+        title: "Sistema de Gestão de Segurança da Informação (SGSI - ISO 27001:2022)",
+        category: "Segurança / ISO 27001 / NIST",
+        imagePath: "media/audit_chain_infosec.png",
+        pitch: "Alinhamento das políticas de cibersegurança ao apetite de risco executivo e preparação para auditorias de certificação."
+    },
+    {
+        title: "Arquitetura, Otimização & Health Check da Plataforma OneTrust",
+        category: "OneTrust / Automação VRM",
+        imagePath: "media/audit_chain_platforms.png",
+        pitch: "Parametrização avançada de Vendor Inventory, Auto-Risks, RBAC, Org Groups, APIs REST e automação de privacidade."
+    },
+    {
+        title: "Implementação & Sustentação de Suíte ServiceNow GRC / IRM",
+        category: "ServiceNow GRC / IRM",
+        imagePath: "media/audit_chain_platforms.png",
+        pitch: "Integração ponta a ponta dos módulos Vendor Risk Management, Policy & Compliance e Risk Register com a operação de TI."
+    },
+    {
+        title: "Governança de Inteligência Artificial & Avaliação de Riscos de Algoritmos",
+        category: "IA / NIST AI RMF / Governança",
+        imagePath: "media/audit_chain_infosec.png",
+        pitch: "Inventário de modelos de IA de terceiros, prevenção de vazamento de dados confidenciais e conformidade com marcos de IA."
+    },
+    {
+        title: "Matriz de Risco Inerente vs. Residual na Seleção de Fornecedores Críticos",
+        category: "TPRM / Matriz de Riscos",
+        imagePath: "media/audit_chain_tprm_dora.png",
+        pitch: "Cálculo preciso de exposição a riscos de fornecedores (CIFs) combinando scoring de criticidade com controles mitigatórios."
+    },
+    {
+        title: "Testes de Mesa (Tabletop Exercises) & Validação de Planos de Crise",
+        category: "BCM / Simulados de Crise",
+        imagePath: "media/audit_chain_bcm.png",
+        pitch: "Execução de exercícios práticos de continuidade para comitês de gestão de crise e validação de procedimentos de recuperação."
+    },
+    {
+        title: "Diagnóstico de Maturidade em Cibersegurança & Matriz KRIs/KPIs Executivos",
+        category: "GRC Executivo / C-Level",
+        imagePath: "media/audit_chain_infosec.png",
+        pitch: "Transformação de dados técnicos de segurança em indicadores de gestão legíveis para a diretoria e conselhos de administração."
+    }
+];
+
 function getMainMenuKeyboard() {
     const toggleButtonText = autoApprovalMode 
         ? "🟢 Modo Aprovação: AUTOMÁTICA (Clique p/ Manual)" 
@@ -1586,30 +1649,31 @@ bot.on('callback_query', async (query) => {
 
         try {
             const companyDynamicIndex = Object.keys(companyPostsDB).length + 1;
-            const newCompanyKey = `c_dyn_${companyDynamicIndex}`;
-            const topicItem = dynamicTopicsPool[(companyDynamicIndex - 1) % dynamicTopicsPool.length] || dynamicTopicsPool[0];
+            const newCompanyKey = `c_dyn_${companyDynamicIndex}_${Date.now().toString().slice(-4)}`;
+            const topicIndex = Math.floor(Math.random() * companyDynamicTopicsPool.length);
+            const topicItem = companyDynamicTopicsPool[topicIndex];
 
             const defaultCompanyText = `🏢 [AUDIT CHAIN - CONSULTORIA ESPECIALIZADA EM GRC & CIBERSEGURANÇA]
 
 📌 ${topicItem.title.toUpperCase()}
 
-Como sua empresa lida com as exigências regulatórias e operacionais no mercado atual?
+${topicItem.pitch}
 
-👉 Confira no infográfico/criativo acima os pilares de atuação recomendados pela Audit Chain!
+👉 Confira no infográfico / criativo acima os pilares estratégicos recomendados pela equipe consultiva da Audit Chain!
 
 ---
 
-💡 PORTFÓLIO DE SOLUÇÕES AUDIT CHAIN:
+💡 PORTFÓLIO DE SOLUÇÕES & SERVIÇOS AUDIT CHAIN:
 • Gestão de Risco de Terceiros (TPRM/VRM) & Conformidade DORA (EU 2022/2554)
 • Privacidade de Dados (LGPD/GDPR) | Continuidade de Negócios (BCM & BIA) | SegInfo (ISO 27001)
-• Arquitetura, Implementação e Otimização de Plataformas: OneTrust & ServiceNow GRC.
+• Arquitetura, Parametrização & Sustentação de Plataformas: OneTrust & ServiceNow GRC/IRM.
 
-📩 Fale com nossos consultores seniores e agende um diagnóstico de maturidade para sua empresa.
+📩 Fale com nossos consultores seniores e agende uma avaliação de maturidade para sua empresa.
 
 #AuditChain #GRC #TPRM #DORA #OneTrust #ServiceNow #Ciberseguranca #LGPD #ISO27001`;
 
             companyPostsDB[newCompanyKey] = {
-                title: `Serviço ${companyDynamicIndex}: ${topicItem.title}`,
+                title: `Serviço Inédito: ${topicItem.title}`,
                 category: topicItem.category,
                 imagePath: topicItem.imagePath,
                 text: defaultCompanyText
@@ -1686,15 +1750,16 @@ Como sua empresa lida com as exigências regulatórias e operacionais no mercado
 
         try {
             const dynamicIndex = Object.keys(postsDB).length + 1;
-            const newKey = `post${dynamicIndex}`;
-            const topicItem = dynamicTopicsPool[(dynamicIndex - 1) % dynamicTopicsPool.length] || dynamicTopicsPool[0];
+            const newKey = `post_dyn_${dynamicIndex}_${Date.now().toString().slice(-4)}`;
+            const topicIndex = Math.floor(Math.random() * companyDynamicTopicsPool.length);
+            const topicItem = companyDynamicTopicsPool[topicIndex];
 
             postsDB[newKey] = {
-                title: `Post ${dynamicIndex}: ${topicItem.title}`,
+                title: `Post Inédito ${dynamicIndex}: ${topicItem.title}`,
                 category: topicItem.category,
                 recommendedFormat: "WITH_IMAGE",
                 imagePath: topicItem.imagePath,
-                text: topicItem.text
+                text: `📌 ${topicItem.title.toUpperCase()}\n\n${topicItem.pitch}\n\nNa minha atuação em arquitetura de GRC e segurança da informação, observo que a maturidade neste tema exige 3 etapas indispensáveis:\n\n1. Mapeamento & Avaliação Proporcional\n2. Automação de Processos e Controles Técnicos\n3. Monitoramento Contínuo e Relatórios Executivos\n\nComo sua organização enxerga este desafio no cenário atual?\n\n#GRC #Ciberseguranca #ThoughtLeadership #AuditChain`
             };
 
             try {
@@ -1710,10 +1775,10 @@ Como sua empresa lida com as exigências regulatórias e operacionais no mercado
                 reply_markup: {
                     inline_keyboard: [
                         [
-                            { text: `🚀 Publicar Post ${dynamicIndex} no Perfil Pessoal`, callback_data: `publish_custom_${newKey}_personal_img` }
+                            { text: `🚀 Publicar Post Inédito no Perfil Pessoal`, callback_data: `publish_custom_${newKey}_personal_img` }
                         ],
                         [
-                            { text: `🏢 Publicar Post ${dynamicIndex} na Audit Chain`, callback_data: `publish_custom_${newKey}_company_img` }
+                            { text: `🏢 Publicar Post Inédito na Audit Chain`, callback_data: `publish_custom_${newKey}_company_img` }
                         ],
                         [
                             { text: "✨ Gerar Outro Post Inédito com IA", callback_data: "generate_ai_post" },
@@ -1725,8 +1790,8 @@ Como sua empresa lida com as exigências regulatórias e operacionais no mercado
 
             await bot.sendMessage(
                 chatId,
-                `✨ **NOVO POST INÉDITO GERADO COM SUCESSO! (Post ${dynamicIndex})**\n\n` +
-                `📌 **Título**: Post ${dynamicIndex}: ${topicItem.title}\n` +
+                `✨ **NOVO POST INÉDITO GERADO COM SUCESSO!**\n\n` +
+                `📌 **Título**: ${postsDB[newKey].title}\n` +
                 `🏷️ **Categoria**: ${topicItem.category}\n` +
                 `🖼️ **Criativo Vinculado**: \`${topicItem.imagePath}\`\n\n` +
                 `--------------------\n\n` +
