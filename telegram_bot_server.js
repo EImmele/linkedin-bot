@@ -208,6 +208,11 @@ ${shortSummary}
 📩 Fale com nossos consultores e agende uma avaliação de maturidade para a sua empresa!`;
 }
 
+function makeUniqueContent(text) {
+    const timeRef = Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `${text}\n\n📌 [Ref: AC-${timeRef}]`;
+}
+
 // Helper to resolve real person name via LinkedIn API
 async function resolvePersonName(actorUrn) {
     if (!actorUrn || !actorUrn.includes("person:")) return "Profissional do LinkedIn";
@@ -1433,11 +1438,6 @@ Integre a governança corporativa ao ecossistema operacional de TI e Cibersegura
                         "title": { "text": `${post.title} (${Date.now()})` }
                     }];
                 }
-
-function makeUniqueContent(text) {
-    const timeRef = Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
-    return `${text}\n\n📌 [Ref: AC-${timeRef}]`;
-}
 
                 const shareContentObj = {
                     "shareCommentary": { "text": makeUniqueContent(post.text) },
