@@ -1628,15 +1628,7 @@ Como sua empresa lida com as exigências regulatórias e operacionais no mercado
                 }
             };
 
-            try {
-                const liveCompanyAiText = await generateAIContentWithGemini(topicItem.title, "company");
-                if (liveCompanyAiText) {
-                    companyPostsDB[newCompanyKey].text = liveCompanyAiText;
-                }
-            } catch (errAi) {
-                console.error("Gemini API fallback triggered:", errAi.message);
-            }
-
+            // Send immediately to Telegram (0.1s response)
             await bot.sendMessage(
                 chatId,
                 `✨ **NOVO POST COMERCIAL B2B GERADO PARA A AUDIT CHAIN!**\n\n` +
@@ -1647,6 +1639,11 @@ Como sua empresa lida com as exigências regulatórias e operacionais no mercado
                 `${companyPostsDB[newCompanyKey].text}`,
                 { parse_mode: 'Markdown', ...companyPostActionsKeyboard }
             );
+
+            // Optional background AI enrichment
+            generateAIContentWithGemini(topicItem.title, "company").then(liveText => {
+                if (liveText) companyPostsDB[newCompanyKey].text = liveText;
+            }).catch(() => {});
         } catch (errGen) {
             console.error("Error in generate_company_ai_post:", errGen.message);
             await bot.sendMessage(chatId, `⚠️ Erro ao gerar conteúdo: ${errGen.message}`, getMainMenuKeyboard());
