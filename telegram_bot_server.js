@@ -151,6 +151,37 @@ console.log("🤖 Telegram Bot updated with 24/7 Cron Scheduler & Keep-Alive Sel
 process.on('uncaughtException', (err) => { console.error('⚠️ Protected Exception:', err.message); });
 process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected Rejection:', reason); });
 
+const publishedStatusFile = path.join(__dirname, 'published_status.json');
+let publishedStatusMap = {};
+
+function loadPublishedStatus() {
+    try {
+        if (fs.existsSync(publishedStatusFile)) {
+            publishedStatusMap = JSON.parse(fs.readFileSync(publishedStatusFile, 'utf8'));
+        }
+    } catch (e) {
+        console.error("Error loading published_status.json:", e.message);
+    }
+}
+
+function markPostAsPublished(key, urn) {
+    publishedStatusMap[key] = {
+        publishedAt: new Date().toISOString(),
+        urn: urn || ""
+    };
+    try {
+        fs.writeFileSync(publishedStatusFile, JSON.stringify(publishedStatusMap, null, 2));
+    } catch (e) {
+        console.error("Error saving published_status.json:", e.message);
+    }
+}
+
+function getPostStatusIcon(key) {
+    return publishedStatusMap[key] ? "✅ [PUBLICADO]" : "⏳ [PENDENTE]";
+}
+
+loadPublishedStatus();
+
 const fixedCismMessage = `Olá pessoal, Como parte da minha preparação para o exame de certificação CISM da ISACA, estou compartilhando reflexões práticas (e reais) que conectam minha experiência no mercado com o conhecimento adquirido nesta jornada.`;
 
 const unrepliedCommentsCache = {};
@@ -1505,15 +1536,15 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
         const companyPostKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "1️⃣ Risco de Terceiros (TPRM & DORA - Imagem V2)", callback_data: "publish_company_post_c_tprm" }],
-                    [{ text: "2️⃣ Privacidade de Dados (LGPD & GDPR - Imagem V2)", callback_data: "publish_company_post_c_privacy" }],
-                    [{ text: "3️⃣ Continuidade de Negócios (BCM & BIA - Imagem V2)", callback_data: "publish_company_post_c_bcm" }],
-                    [{ text: "4️⃣ Segurança da Informação (ISO 27001 - Imagem V2)", callback_data: "publish_company_post_c_infosec" }],
-                    [{ text: "5️⃣ Arquitetura OneTrust (Imagem V2)", callback_data: "publish_company_post_c_onetrust" }],
-                    [{ text: "6️⃣ Arquitetura ServiceNow GRC (Imagem V2)", callback_data: "publish_company_post_c_servicenow" }],
-                    [{ text: "📄 Carrossel PDF: TPRM & DORA (5 Slides)", callback_data: "publish_company_post_c_pdf_tprm" }],
-                    [{ text: "📄 Carrossel PDF: Privacidade LGPD (5 Slides)", callback_data: "publish_company_post_c_pdf_privacy" }],
-                    [{ text: "📄 Carrossel PDF: BCM & Resiliência (5 Slides)", callback_data: "publish_company_post_c_pdf_bcm" }],
+                    [{ text: `${getPostStatusIcon('c_tprm')} 1️⃣ Risco de Terceiros (TPRM & DORA - Imagem V2)`, callback_data: "publish_company_post_c_tprm" }],
+                    [{ text: `${getPostStatusIcon('c_privacy')} 2️⃣ Privacidade de Dados (LGPD & GDPR - Imagem V2)`, callback_data: "publish_company_post_c_privacy" }],
+                    [{ text: `${getPostStatusIcon('c_bcm')} 3️⃣ Continuidade de Negócios (BCM & BIA - Imagem V2)`, callback_data: "publish_company_post_c_bcm" }],
+                    [{ text: `${getPostStatusIcon('c_infosec')} 4️⃣ Segurança da Informação (ISO 27001 - Imagem V2)`, callback_data: "publish_company_post_c_infosec" }],
+                    [{ text: `${getPostStatusIcon('c_onetrust')} 5️⃣ Arquitetura OneTrust (Imagem V2)`, callback_data: "publish_company_post_c_onetrust" }],
+                    [{ text: `${getPostStatusIcon('c_servicenow')} 6️⃣ Arquitetura ServiceNow GRC (Imagem V2)`, callback_data: "publish_company_post_c_servicenow" }],
+                    [{ text: `${getPostStatusIcon('c_pdf_tprm')} 📄 Carrossel PDF: TPRM & DORA (5 Slides)`, callback_data: "publish_company_post_c_pdf_tprm" }],
+                    [{ text: `${getPostStatusIcon('c_pdf_privacy')} 📄 Carrossel PDF: Privacidade LGPD (5 Slides)`, callback_data: "publish_company_post_c_pdf_privacy" }],
+                    [{ text: `${getPostStatusIcon('c_pdf_bcm')} 📄 Carrossel PDF: BCM & Resiliência (5 Slides)`, callback_data: "publish_company_post_c_pdf_bcm" }],
                     [{ text: "🏢 Voltar ao Menu Audit Chain", callback_data: "menu_audit_chain_page" }]
                 ]
             }
@@ -1523,16 +1554,16 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
         const personalPostKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "1️⃣ Tradução de Riscos de TI p/ o Board (Risk IT)", callback_data: "publish_custom_post1_personal_text" }],
-                    [{ text: "2️⃣ Continuidade & BIA (COBIT DSS04)", callback_data: "publish_custom_post2_personal_text" }],
-                    [{ text: "3️⃣ Segurança como Business Enabler (CISM)", callback_data: "publish_custom_post3_personal_text" }],
-                    [{ text: "4️⃣ Riscos em Terceiros [🖼️ com Imagem V2]", callback_data: "publish_custom_post4_personal_img" }],
-                    [{ text: "5️⃣ Gestão de Incidentes [🚨 CISM Domínio 4]", callback_data: "publish_custom_post5_personal_img" }],
-                    [{ text: "6️⃣ Governança de IA & Riscos Cibernéticos (NIST AI)", callback_data: "publish_custom_post6_personal_img" }],
-                    [{ text: "7️⃣ Automação de TPRM no OneTrust (Vendor Portal)", callback_data: "publish_custom_post7_personal_img" }],
-                    [{ text: "8️⃣ Arquitetura ServiceNow IRM (Compliance)", callback_data: "publish_custom_post8_personal_img" }],
-                    [{ text: "9️⃣ Simulados de Crise & Testes BCM (ISO 22301)", callback_data: "publish_custom_post9_personal_img" }],
-                    [{ text: "🔟 Zero Trust Architecture & GRC Executivo", callback_data: "publish_custom_post10_personal_img" }],
+                    [{ text: `${getPostStatusIcon('post1')} 1️⃣ Tradução de Riscos (Risk IT)`, callback_data: "publish_custom_post1_personal_text" }],
+                    [{ text: `${getPostStatusIcon('post2')} 2️⃣ Continuidade & BIA (COBIT DSS04)`, callback_data: "publish_custom_post2_personal_text" }],
+                    [{ text: `${getPostStatusIcon('post3')} 3️⃣ Segurança como Business Enabler (CISM)`, callback_data: "publish_custom_post3_personal_text" }],
+                    [{ text: `${getPostStatusIcon('post4')} 4️⃣ Riscos em Terceiros [🖼️ com Imagem V2]`, callback_data: "publish_custom_post4_personal_img" }],
+                    [{ text: `${getPostStatusIcon('post5')} 5️⃣ Gestão de Incidentes [🚨 CISM Domínio 4]`, callback_data: "publish_custom_post5_personal_img" }],
+                    [{ text: `${getPostStatusIcon('post6')} 6️⃣ Governança de IA & Riscos Cibernéticos (NIST AI)`, callback_data: "publish_custom_post6_personal_img" }],
+                    [{ text: `${getPostStatusIcon('post7')} 7️⃣ Automação de TPRM no OneTrust (Vendor Portal)`, callback_data: "publish_custom_post7_personal_img" }],
+                    [{ text: `${getPostStatusIcon('post8')} 8️⃣ Arquitetura ServiceNow IRM (Compliance)`, callback_data: "publish_custom_post8_personal_img" }],
+                    [{ text: `${getPostStatusIcon('post9')} 9️⃣ Simulados de Crise & Testes BCM (ISO 22301)`, callback_data: "publish_custom_post9_personal_img" }],
+                    [{ text: `${getPostStatusIcon('post10')} 🔟 Zero Trust Architecture & GRC Executivo`, callback_data: "publish_custom_post10_personal_img" }],
                     [{ text: "✨ 🆕 GERAR NOVO POST INÉDITO COM IA", callback_data: "generate_ai_post" }],
                     [{ text: "👤 Voltar ao Menu Pessoal", callback_data: "menu_personal_profile" }]
                 ]
@@ -1983,6 +2014,7 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
                     const publishedUrn = response.data.id || response.data['$URN'];
                     if (publishedUrn) {
                         addTrackedPost(publishedUrn, `Publicação Audit Chain (${post.title})`);
+                        markPostAsPublished(key, publishedUrn);
                     }
                     await bot.sendMessage(chatId, `🎉 PUBLICADO COM SUCESSO NA PÁGINA DA AUDIT CHAIN!\n\n• Post: ${post.title}\n• Formato: Legenda B2B + Criativo Anexado\n• ID: ${response.data.id}\n\n✅ Adicionado ao monitoramento de comentários 24/7!`);
                 } else {
