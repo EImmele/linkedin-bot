@@ -1619,6 +1619,11 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
             text: topicItem.text
         };
 
+        const liveAiText = await generateAIContentWithGemini(topicItem.title, "personal");
+        if (liveAiText) {
+            postsDB[newKey].text = liveAiText;
+        }
+
         const postActionsKeyboard = {
             reply_markup: {
                 inline_keyboard: [
