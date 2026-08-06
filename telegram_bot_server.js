@@ -3,6 +3,7 @@ const TelegramBot = TelegramBotModule.default || TelegramBotModule;
 const { Composio } = require('@composio/core');
 const cron = require('node-cron');
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
@@ -56,7 +57,17 @@ http.createServer((req, res) => {
     console.log(`🌐 HTTP Health Check Server listening on port ${PORT}`);
 });
 
-console.log("🤖 Telegram Bot updated with 24/7 Cron Scheduler for Tue/Wed/Thu at 09:45 AM (Brasília Time)...");
+// Self-Ping Keep-Alive System (Pings server every 10 minutes to prevent Render Free Tier sleep)
+const RENDER_SERVICE_URL = "https://linkedin-bot-4b2m.onrender.com";
+setInterval(() => {
+    https.get(RENDER_SERVICE_URL, (res) => {
+        console.log(`⏰ [Keep-Alive Ping] Self-ping successful! HTTP Status: ${res.statusCode}`);
+    }).on('error', (err) => {
+        console.error(`⚠️ [Keep-Alive Ping Error]: ${err.message}`);
+    });
+}, 10 * 60 * 1000); // Every 10 minutes
+
+console.log("🤖 Telegram Bot updated with 24/7 Cron Scheduler & Keep-Alive Self Ping...");
 
 process.on('uncaughtException', (err) => { console.error('⚠️ Protected Exception:', err.message); });
 process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected Rejection:', reason); });
