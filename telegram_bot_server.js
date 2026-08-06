@@ -1079,6 +1079,7 @@ A maturidade em governança e segurança é construída com processos claros, te
                     [{ text: "📄 3. Carrossel PDF: TPRM & DORA (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_tprm" }],
                     [{ text: "📄 4. Carrossel PDF: Privacidade LGPD (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_privacy" }],
                     [{ text: "📄 5. Carrossel PDF: BCM & Resiliência (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_bcm" }],
+                    [{ text: "✨ 🆕 GERAR POST COMERCIAL INÉDITO (AUDIT CHAIN)", callback_data: "generate_company_ai_post" }],
                     [{ text: "📚 Ver Catálogo Completo de Serviços (Empresa)", callback_data: "select_company_post_menu" }],
                     [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
                 ]
@@ -1542,6 +1543,7 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
                     [{ text: "📄 3. Carrossel PDF: TPRM & DORA (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_tprm" }],
                     [{ text: "📄 4. Carrossel PDF: Privacidade LGPD (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_privacy" }],
                     [{ text: "📄 5. Carrossel PDF: BCM & Resiliência (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_bcm" }],
+                    [{ text: "✨ 🆕 GERAR POST COMERCIAL INÉDITO (AUDIT CHAIN)", callback_data: "generate_company_ai_post" }],
                     [{ text: "📚 Ver Catálogo Completo de Serviços (Empresa)", callback_data: "select_company_post_menu" }],
                     [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
                 ]
@@ -1567,11 +1569,74 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
                     [{ text: `${getPostStatusIcon('c_pdf_tprm')} 📄 Carrossel PDF: TPRM & DORA (5 Slides)`, callback_data: "publish_company_post_c_pdf_tprm" }],
                     [{ text: `${getPostStatusIcon('c_pdf_privacy')} 📄 Carrossel PDF: Privacidade LGPD (5 Slides)`, callback_data: "publish_company_post_c_pdf_privacy" }],
                     [{ text: `${getPostStatusIcon('c_pdf_bcm')} 📄 Carrossel PDF: BCM & Resiliência (5 Slides)`, callback_data: "publish_company_post_c_pdf_bcm" }],
+                    [{ text: "✨ 🆕 GERAR POST COMERCIAL INÉDITO (AUDIT CHAIN)", callback_data: "generate_company_ai_post" }],
                     [{ text: "🏢 Voltar ao Menu Audit Chain", callback_data: "menu_audit_chain_page" }]
                 ]
             }
         };
         await bot.sendMessage(chatId, "🏢 **[CATÁLOGO COMERCIAL AUDIT CHAIN - SERVIÇOS EXCLUSIVOS DE EMPRESA]**\n\nEscolha o post de serviço para disparar na Página da Empresa com **Criativo/Carrossel + Legenda Curta B2B**:", companyPostKeyboard);
+    } else if (action === "generate_company_ai_post") {
+        await bot.sendMessage(chatId, "✨ **IA Geradora de Conteúdo Comercial B2B (Audit Chain) Ativada!**\n\nCriando uma nova oferta de serviço corporativo inédita...", { parse_mode: 'Markdown' });
+
+        const companyDynamicIndex = Object.keys(companyPostsDB).length + 1;
+        const newCompanyKey = `c_dyn_${companyDynamicIndex}`;
+        const topicItem = dynamicTopicsPool[(companyDynamicIndex - 1) % dynamicTopicsPool.length];
+
+        const defaultCompanyText = `🏢 [AUDIT CHAIN - CONSULTORIA ESPECIALIZADA EM GRC & CIBERSEGURANÇA]
+
+📌 ${topicItem.title.toUpperCase()}
+
+Como sua empresa lida com as exigências regulatórias e operacionais no mercado atual?
+
+👉 Confira no infográfico/criativo acima os pilares de atuação recomendados pela Audit Chain!
+
+---
+
+💡 PORTFÓLIO DE SOLUÇÕES AUDIT CHAIN:
+• Gestão de Risco de Terceiros (TPRM/VRM) & Conformidade DORA (EU 2022/2554)
+• Privacidade de Dados (LGPD/GDPR) | Continuidade de Negócios (BCM & BIA) | SegInfo (ISO 27001)
+• Arquitetura, Implementação e Otimização de Plataformas: OneTrust & ServiceNow GRC.
+
+📩 Fale com nossos consultores seniores e agende um diagnóstico de maturidade para sua empresa.
+
+#AuditChain #GRC #TPRM #DORA #OneTrust #ServiceNow #Ciberseguranca #LGPD #ISO27001`;
+
+        companyPostsDB[newCompanyKey] = {
+            title: `Serviço ${companyDynamicIndex}: ${topicItem.title}`,
+            category: topicItem.category,
+            imagePath: topicItem.imagePath,
+            text: defaultCompanyText
+        };
+
+        const liveCompanyAiText = await generateAIContentWithGemini(topicItem.title, "company");
+        if (liveCompanyAiText) {
+            companyPostsDB[newCompanyKey].text = liveCompanyAiText;
+        }
+
+        const companyPostActionsKeyboard = {
+            reply_markup: {
+                inline_keyboard: [
+                    [
+                        { text: `🏢 Publicar Serviço na Página da Audit Chain`, callback_data: `publish_company_post_${newCompanyKey}` }
+                    ],
+                    [
+                        { text: "✨ Gerar Outro Post Comercial Inédito", callback_data: "generate_company_ai_post" },
+                        { text: "🏠 Menu Principal", callback_data: "back_to_main_menu" }
+                    ]
+                ]
+            }
+        };
+
+        await bot.sendMessage(
+            chatId,
+            `✨ **NOVO POST COMERCIAL B2B GERADO PARA A AUDIT CHAIN!**\n\n` +
+            `📌 **Título**: ${topicItem.title}\n` +
+            `🏷️ **Categoria**: ${topicItem.category}\n` +
+            `🖼️ **Criativo Vinculado**: \`${topicItem.imagePath}\`\n\n` +
+            `--------------------\n\n` +
+            `${companyPostsDB[newCompanyKey].text}`,
+            { parse_mode: 'Markdown', ...companyPostActionsKeyboard }
+        );
     } else if (action === "select_personal_post_menu") {
         const personalPostKeyboard = {
             reply_markup: {
