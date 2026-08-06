@@ -23,8 +23,85 @@ let autoApprovalMode = false;
 let totalRepliesSent = 3;
 let myTelegramChatId = process.env.TELEGRAM_CHAT_ID || null;
 
-// Persistent Config File
+// Persistent Files
 const CONFIG_FILE = path.join(__dirname, 'chat_config.json');
+const TRACKED_POSTS_FILE = path.join(__dirname, 'tracked_posts.json');
+const RESPONDED_COMMENTS_FILE = path.join(__dirname, 'responded_comments.json');
+
+// Processed comments set (deduplication)
+const processedComments = new Set();
+
+function loadRespondedComments() {
+    try {
+        if (fs.existsSync(RESPONDED_COMMENTS_FILE)) {
+            const arr = JSON.parse(fs.readFileSync(RESPONDED_COMMENTS_FILE, 'utf8'));
+            if (Array.isArray(arr)) {
+                arr.forEach(id => processedComments.add(id));
+                console.log(`📁 Loaded ${processedComments.size} responded comments from disk.`);
+            }
+        }
+    } catch (e) {
+        console.error("⚠️ Error loading responded_comments.json:", e.message);
+    }
+}
+
+function saveRespondedComments() {
+    try {
+        fs.writeFileSync(RESPONDED_COMMENTS_FILE, JSON.stringify(Array.from(processedComments), null, 2), 'utf8');
+    } catch (e) {
+        console.error("⚠️ Error saving responded_comments.json:", e.message);
+    }
+}
+
+let trackedPosts = [
+    { key: "post1", urn: "urn:li:share:7490327458173399040", activityUrn: "urn:li:activity:7490327458907582464", name: "Post 1 (Riscos TI - Perfil Pessoal)", author: PERSONAL_URN },
+    { key: "post2", urn: "urn:li:share:7490192848332574720", activityUrn: "urn:li:activity:7490192848332574720", name: "Post 2 (BCM - Audit Chain)", author: ORG_URN },
+    { key: "post3", urn: "urn:li:share:7490193701017722880", activityUrn: "urn:li:activity:7490193701017722880", name: "Post 3 (Segurança - Perfil Pessoal)", author: PERSONAL_URN },
+    { key: "post4", urn: "urn:li:share:7490380916247232512", activityUrn: "urn:li:activity:7490380916247232512", name: "Post 4 (TPRM - Audit Chain)", author: ORG_URN }
+];
+
+function loadTrackedPosts() {
+    try {
+        if (fs.existsSync(TRACKED_POSTS_FILE)) {
+            const data = JSON.parse(fs.readFileSync(TRACKED_POSTS_FILE, 'utf8'));
+            if (Array.isArray(data) && data.length > 0) {
+                trackedPosts = data;
+                console.log(`📁 Loaded ${trackedPosts.length} tracked posts from disk.`);
+            }
+        }
+    } catch (e) {
+        console.error("⚠️ Error loading tracked_posts.json:", e.message);
+    }
+}
+
+function saveTrackedPosts() {
+    try {
+        fs.writeFileSync(TRACKED_POSTS_FILE, JSON.stringify(trackedPosts, null, 2), 'utf8');
+    } catch (e) {
+        console.error("⚠️ Error saving tracked_posts.json:", e.message);
+    }
+}
+
+function addTrackedPost(urnStr, name = "Post LinkedIn") {
+    let cleanUrn = urnStr.trim();
+    if (!cleanUrn.startsWith("urn:li:")) {
+        cleanUrn = `urn:li:share:${cleanUrn}`;
+    }
+    const exists = trackedPosts.find(p => p.urn === cleanUrn || p.activityUrn === cleanUrn);
+    if (!exists) {
+        trackedPosts.unshift({
+            key: `post_${Date.now()}`,
+            urn: cleanUrn,
+            activityUrn: cleanUrn.replace("urn:li:share:", "urn:li:activity:"),
+            name: name,
+            author: PERSONAL_URN
+        });
+        saveTrackedPosts();
+        return true;
+    }
+    return false;
+}
+
 function loadConfig() {
     try {
         if (fs.existsSync(CONFIG_FILE)) {
@@ -47,6 +124,8 @@ function saveConfig() {
 }
 
 loadConfig();
+loadTrackedPosts();
+loadRespondedComments();
 
 // Start HTTP Health Check Server for Render Web Service (Free Tier)
 const PORT = process.env.PORT || 3000;
@@ -454,6 +533,7 @@ async function checkAndProcessNewComments() {
 
                         totalRepliesSent++;
                         processedComments.add(commentId);
+                        saveRespondedComments();
                         console.log(`✅ Auto-replied to comment from ${realName}`);
                         await bot.sendMessage(myTelegramChatId, `🎉 **NOVO COMENTÁRIO RESPONDIDO NO PILOTO AUTOMÁTICO!**\n\n📌 **Post**: ${item.name}\n👤 **Autor**: ${realName}\n💬 **Comentário**: "${textSnippet}"\n✍️ **Resposta Enviada**: "${aiSuggestion}"`, { parse_mode: 'Markdown' });
                     } else {
@@ -493,6 +573,7 @@ async function checkAndProcessNewComments() {
                         );
 
                         processedComments.add(commentId);
+                        saveRespondedComments();
                         console.log(`🔔 Notified Telegram about new comment from ${realName}`);
                     }
                 }
@@ -517,11 +598,21 @@ bot.on('message', async (msg) => {
     }
     const text = msg.text || "";
 
-    if (text.startsWith('/start') || text.toLowerCase().includes('menu') || text.toLowerCase().includes('ajuda')) {
+    if (text.startsWith('/addpost') || text.includes('linkedin.com/posts/') || text.includes('urn:li:')) {
+        const match = text.match(/\d{15,20}/);
+        if (match) {
+            const urn = `urn:li:share:${match[0]}`;
+            const added = addTrackedPost(urn, `Post (${match[0]})`);
+            await bot.sendMessage(chatId, added ? `✅ **Post adicionado ao monitoramento 24/7 com sucesso!**\n\nURN: \`${urn}\`\nBuscando novos comentários agora...` : `ℹ️ O post \`${urn}\` já está sendo monitorado!`, { parse_mode: 'Markdown' });
+            await checkAndProcessNewComments();
+        } else {
+            await bot.sendMessage(chatId, `⚠️ Não encontrei o ID do post. Envie no formato:\n\`/addpost 7490380916247232512\` ou o link direto do post.`, { parse_mode: 'Markdown' });
+        }
+    } else if (text.startsWith('/start') || text.toLowerCase().includes('menu') || text.toLowerCase().includes('ajuda')) {
         const modeLabel = autoApprovalMode ? "🟢 PILOTO AUTOMÁTICO (Sem aprovação)" : "🔴 APROVAÇÃO MANUAL (Com revisão)";
-        await bot.sendMessage(chatId, `👋 Olá, Erik!\n\n⚙️ **Status Atual do Modo de Aprovação**: ${modeLabel}\n\nEscolha uma opção no menu abaixo:`, getMainMenuKeyboard());
+        await bot.sendMessage(chatId, `👋 Olá, Erik!\n\n⚙️ **Status Atual do Modo de Aprovação**: ${modeLabel}\n📌 **Posts Monitorados Atualmente**: ${trackedPosts.length}\n\nEscolha uma opção no menu abaixo ou envie um link/ID de post para monitorar (\`/addpost ID\`):`, getMainMenuKeyboard());
     } else {
-        await bot.sendMessage(chatId, `💡 Mensagem recebida: "${text}"`, getMainMenuKeyboard());
+        await bot.sendMessage(chatId, `💡 Mensagem recebida: "${text}"\nPara adicionar um post para monitorar, envie:\n\`/addpost <ID_ou_Link>\``, getMainMenuKeyboard());
     }
 });
 
@@ -1008,7 +1099,11 @@ bot.on('callback_query', async (query) => {
             });
 
             if (response.status === 201 || (response.data && response.data.id)) {
-                await bot.sendMessage(chatId, `🎉 PUBLICADO COM SUCESSO!\n\n• Post: ${post.title}\n• Formato: ${formatLabel}\n• Destino: ${targetName}\n• ID: ${response.data.id}`);
+                const publishedUrn = response.data.id || response.data['$URN'];
+                if (publishedUrn) {
+                    addTrackedPost(publishedUrn, `Publicação (${post.title})`);
+                }
+                await bot.sendMessage(chatId, `🎉 PUBLICADO COM SUCESSO!\n\n• Post: ${post.title}\n• Formato: ${formatLabel}\n• Destino: ${targetName}\n• ID: ${response.data.id}\n\n✅ Adicionado ao monitoramento de comentários 24/7!`);
             } else {
                 await bot.sendMessage(chatId, `⚠️ Resposta API: ${JSON.stringify(response.data)}`);
             }
