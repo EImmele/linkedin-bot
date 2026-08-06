@@ -619,6 +619,214 @@ A maturidade em TPRM transforma riscos de fornecedores em decisões estratégica
     }
 };
 
+const companyPostsDB = {
+    c_tprm: {
+        title: "1️⃣ Gestão de Risco de Terceiros (TPRM/VRM & DORA)",
+        category: "TPRM / DORA / Supply Chain",
+        imagePath: "media/audit_chain_tprm_dora.png",
+        text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM GRC, PRIVACIDADE & CIBERSEGURANÇA]
+
+📌 GESTÃO DE RISCO DE TERCEIROS (TPRM) & CONFORMIDADE DORA
+
+Como sua organização garante a governança de fornecedores de TIC e a resiliência operacional contínua perante os requisitos regulatórios?
+
+👉 Confira no infográfico / carrossel acima os 5 pilares da solução!
+
+---
+
+💡 PORTFÓLIO DE SERVIÇOS AUDIT CHAIN:
+• Gestão de Risco de Terceiros (TPRM/VRM) & Conformidade DORA (Art. 28-30)
+• Privacidade de Dados (LGPD/GDPR) | Continuidade de Negócios (BCM) | SegInfo (ISO 27001) | Compliance
+• Arquitetura, Implementação & Otimização de Plataformas: OneTrust & ServiceNow GRC/IRM.
+
+📩 Sua empresa precisa adequar o programa de terceiros ou automatizar processos no OneTrust/ServiceNow?
+Fale com nossos consultores e agende uma avaliação de maturidade.
+
+#AuditChain #TPRM #DORA #GRC #OneTrust #ServiceNow #Ciberseguranca #LGPD #ISO27001`
+    },
+    c_privacy: {
+        title: "2️⃣ Privacidade de Dados (LGPD & GDPR)",
+        category: "Data Privacy / LGPD / GDPR",
+        imagePath: "media/audit_chain_privacy.png",
+        text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM PRIVACIDADE DE DADOS]
+
+📌 ESTRUTURAÇÃO DE PROGRAMA DE PRIVACIDADE (LGPD & GDPR)
+
+Transforme obrigações regulatórias em vantagem competitiva e confiança de mercado.
+
+👉 Confira acima as etapas do programa completo de privacidade de dados!
+
+---
+
+💡 ENTREGÁVEIS TÉCNICOS AUDIT CHAIN:
+• Mapeamento de Dados (Data Mapping / RoPA) & Relatórios de Impacto (RIPD/DPIA)
+• Governança de Direitos dos Titulares (DSAR) & Gestão de Vazamentos/ANPD
+• Arquitetura & Automação dos Módulos OneTrust Privacy (RoPA & DSAR)
+
+📩 Fale com nossos especialistas em privacidade e garanta a conformidade da sua organização.
+
+#AuditChain #LGPD #GDPR #Privacy #OneTrust #ANPD #DPIA #DSAR`
+    },
+    c_bcm: {
+        title: "3️⃣ Continuidade de Negócios (BCM & Resiliência)",
+        category: "BCM / Resiliência / BIA",
+        imagePath: "media/audit_chain_bcm.png",
+        text: `🏢 [AUDIT CHAIN - RESILIÊNCIA OPERACIONAL & BCM]
+
+📌 CONTINUIDADE DE NEGÓCIOS & RECUPERAÇÃO DE DESASTRES
+
+Sua empresa sabe exatamente quais sistemas operar primeiro em um momento de desastre ou crise?
+
+👉 Confira acima a estrutura de BIA e Planos de Continuidade (BCP/DRP)!
+
+---
+
+💡 SERVIÇOS DE BCM AUDIT CHAIN:
+• Business Impact Analysis (BIA), RTO, RPO & MTPD
+• Planos de Continuidade de Negócios (PCN/BCP), DRP & Simulados de Mesa
+• Implementação & Automação do Módulo ServiceNow BCM
+
+📩 Garanta a resiliência operacional da sua empresa com a consultoria especializada Audit Chain.
+
+#AuditChain #BCM #ISO22301 #Resiliencia #BIA #ServiceNow #DRP`
+    },
+    c_infosec: {
+        title: "4️⃣ Segurança da Informação (ISO 27001 & NIST CSF)",
+        category: "InfoSec / ISO 27001 / NIST",
+        imagePath: "media/audit_chain_infosec.png",
+        text: `🏢 [AUDIT CHAIN - SEGURANÇA DA INFORMAÇÃO & GRC]
+
+📌 SISTEMA DE GESTÃO DE SEGURANÇA DA INFORMAÇÃO (SGSI)
+
+Alinhe a proteção cibernética aos objetivos estratégicos e ao apetite de risco da empresa.
+
+👉 Confira no infográfico acima a estrutura do SGSI ISO 27001:2022!
+
+---
+
+💡 SERVIÇOS DE SEGURANÇA AUDIT CHAIN:
+• Gap Analysis & Diagnóstico de Maturidade ISO 27001:2022 / NIST CSF 2.0
+• Matriz de Riscos de TI, Políticas Normativas & Indicadores Executivos (KRIs/KPIs)
+• Preparação para Certificações Internacionais & Auditorias
+
+📩 Eleve a segurança da sua empresa com a equipe consultiva da Audit Chain.
+
+#AuditChain #ISO27001 #NIST #SegurancaDaInformacao #Ciberseguranca #GRC`
+    },
+    c_onetrust: {
+        title: "5️⃣ Plataforma OneTrust (Arquitetura & Implementação)",
+        category: "OneTrust / VRM / Privacy Automation",
+        imagePath: "media/audit_chain_platforms.png",
+        text: `🏢 [AUDIT CHAIN - ARQUITETURA & OTIMIZAÇÃO ONETRUST]
+
+📌 ESPECIALISTAS EM ARQUITETURA & IMPLANTAÇÃO ONETRUST
+
+Extraia o valor máximo do seu investimento no ecossistema OneTrust com parametrização avançada e automação.
+
+👉 Confira no infográfico os módulos suportados pela Audit Chain!
+
+---
+
+💡 MÓDULOS ONETRUST ATENDIDOS PELA AUDIT CHAIN:
+• Third-Party Risk Management (TPRM/VRM) & Vendor Portal
+• Data Mapping (RoPA) & Privacy Rights Automation (DSAR)
+• Configurações Globais: RBAC, Org Groups, Attribute Manager, Integration Manager (APIs REST) & SSO/SCIM
+
+📩 Agende um Health Check da sua instância OneTrust com nossos arquitetos certificados.
+
+#AuditChain #OneTrust #TPRM #VRM #DSAR #RoPA #IntegrationManager #Privacy`
+    },
+    c_servicenow: {
+        title: "6️⃣ Plataforma ServiceNow GRC/IRM (Arquitetura & Sustentação)",
+        category: "ServiceNow / GRC / IRM",
+        imagePath: "media/audit_chain_platforms.png",
+        text: `🏢 [AUDIT CHAIN - ESPECIALISTAS SERVICENOW GRC / IRM]
+
+📌 ARQUITETURA, IMPLEMENTAÇÃO & SUSTENTAÇÃO SERVICENOW GRC
+
+Integre a governança corporativa ao ecossistema operacional de TI e Cibersegurança.
+
+👉 Confira no carrossel a suíte ServiceNow IRM parametrizada pela Audit Chain!
+
+---
+
+💡 MÓDULOS SERVICENOW GRC/IRM ATENDIDOS:
+• Vendor Risk Management (VRM) & Vendor Portfolio
+• Policy & Compliance Management (Authority Documents, Citations, Controls)
+• Risk Management (Risk Register, KRIs, Performance Analytics) & BCM
+
+📩 Fale com nossos consultores especialistas em ServiceNow GRC e otimize sua plataforma.
+
+#AuditChain #ServiceNow #GRC #IRM #VRM #Compliance #RiskManagement`
+    },
+    c_pdf_tprm: {
+        title: "📄 Carrossel PDF: DORA & Risco em Terceiros (5 Slides)",
+        category: "Carrossel PDF / TPRM & DORA",
+        pdfPath: "media/carrousel_audit_chain_tprm_dora.pdf",
+        text: `🏢 [AUDIT CHAIN - CARROSSEIL EXECUTIVO: TPRM & DORA]
+
+📌 GESTÃO DE RISCO DE TERCEIROS & REGULAÇÃO DORA (5 SLIDES)
+
+Confira no documento PDF deslizável acima a metodologia completa de 4 etapas para adequação da governança de parceiros de TIC perante a regulação DORA.
+
+---
+
+💡 O QUE VOCÊ VERÁ NESTE CARROSSEIL:
+1. Enquadramento de Funções Críticas (CIFs)
+2. Due Diligence & Questionários Proporcionais
+3. Matriz de Risco Inerente vs Residual
+4. Monitoramento Contínuo com OneTrust & ServiceNow GRC
+
+📩 Precisa estruturar o programa de TPRM na sua empresa? Agende uma reunião com nossos arquitetos!
+
+#AuditChain #TPRM #DORA #CarrosselLinkedIn #OneTrust #ServiceNow`
+    },
+    c_pdf_privacy: {
+        title: "📄 Carrossel PDF: Privacidade de Dados LGPD/GDPR (5 Slides)",
+        category: "Carrossel PDF / LGPD & GDPR",
+        pdfPath: "media/carrousel_audit_chain_lgpd_privacy.pdf",
+        text: `🏢 [AUDIT CHAIN - CARROSSEIL EXECUTIVO: PRIVACIDADE DE DADOS]
+
+📌 ESTRUTURAÇÃO DE PROGRAMA DE PRIVACIDADE LGPD/GDPR (5 SLIDES)
+
+Deslize as páginas acima para conferir os entregáveis práticos do nosso programa de privacidade e automação de direitos dos titulares.
+
+---
+
+💡 ESTRUTURA DO CARROSSEIL:
+• Data Mapping & Inventário (RoPA)
+• Relatórios de Impacto (RIPD / DPIA)
+• Automação de DSAR com OneTrust Privacy
+• Governança e Notificação ANPD
+
+📩 Fale com nossos especialistas e garanta a conformidade da sua empresa.
+
+#AuditChain #LGPD #GDPR #Privacy #DSAR #RoPA #OneTrust`
+    },
+    c_pdf_bcm: {
+        title: "📄 Carrossel PDF: Continuidade BCM & BIA (5 Slides)",
+        category: "Carrossel PDF / BCM & Resiliência",
+        pdfPath: "media/carrousel_audit_chain_bcm_resilience.pdf",
+        text: `🏢 [AUDIT CHAIN - CARROSSEIL EXECUTIVO: BCM & RESILIÊNCIA]
+
+📌 CONTINUIDADE DE NEGÓCIOS & ANÁLISE BIA (5 SLIDES)
+
+Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP) integrados com ServiceNow BCM.
+
+---
+
+💡 CONTEÚDO DO CARROSSEIL:
+• Business Impact Analysis (BIA) orientado ao negócio
+• RTO & RPO sem adivinhação
+• Simulados de Mesa & DRP
+• Automação no ServiceNow BCM
+
+📩 Proteja a operação da sua empresa com a consultoria especializada Audit Chain!
+
+#AuditChain #BCM #ISO22301 #Resiliencia #ServiceNow #BIA`
+    }
+};
+
 function getMainMenuKeyboard() {
     const toggleButtonText = autoApprovalMode 
         ? "🟢 Modo Aprovação: AUTOMÁTICA (Clique p/ Manual)" 
@@ -1331,214 +1539,6 @@ bot.on('callback_query', async (query) => {
         await bot.sendMessage(chatId, newStatusText, { parse_mode: 'Markdown', ...getMainMenuKeyboard() });
     } else if (action === "back_to_main_menu") {
         await bot.sendMessage(chatId, "🏠 Menu Principal:", getMainMenuKeyboard());
-const companyPostsDB = {
-    c_tprm: {
-        title: "1️⃣ Gestão de Risco de Terceiros (TPRM/VRM & DORA)",
-        category: "TPRM / DORA / Supply Chain",
-        imagePath: "media/audit_chain_tprm_dora.png",
-        text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM GRC, PRIVACIDADE & CIBERSEGURANÇA]
-
-📌 GESTÃO DE RISCO DE TERCEIROS (TPRM) & CONFORMIDADE DORA
-
-Como sua organização garante a governança de fornecedores de TIC e a resiliência operacional contínua perante os requisitos regulatórios?
-
-👉 Confira no infográfico / carrossel acima os 5 pilares da solução!
-
----
-
-💡 PORTFÓLIO DE SERVIÇOS AUDIT CHAIN:
-• Gestão de Risco de Terceiros (TPRM/VRM) & Conformidade DORA (Art. 28-30)
-• Privacidade de Dados (LGPD/GDPR) | Continuidade de Negócios (BCM) | SegInfo (ISO 27001) | Compliance
-• Arquitetura, Implementação & Otimização de Plataformas: OneTrust & ServiceNow GRC/IRM.
-
-📩 Sua empresa precisa adequar o programa de terceiros ou automatizar processos no OneTrust/ServiceNow?
-Fale com nossos consultores e agende uma avaliação de maturidade.
-
-#AuditChain #TPRM #DORA #GRC #OneTrust #ServiceNow #Ciberseguranca #LGPD #ISO27001`
-    },
-    c_privacy: {
-        title: "2️⃣ Privacidade de Dados (LGPD & GDPR)",
-        category: "Data Privacy / LGPD / GDPR",
-        imagePath: "media/audit_chain_privacy.png",
-        text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM PRIVACIDADE DE DADOS]
-
-📌 ESTRUTURAÇÃO DE PROGRAMA DE PRIVACIDADE (LGPD & GDPR)
-
-Transforme obrigações regulatórias em vantagem competitiva e confiança de mercado.
-
-👉 Confira acima as etapas do programa completo de privacidade de dados!
-
----
-
-💡 ENTREGÁVEIS TÉCNICOS AUDIT CHAIN:
-• Mapeamento de Dados (Data Mapping / RoPA) & Relatórios de Impacto (RIPD/DPIA)
-• Governança de Direitos dos Titulares (DSAR) & Gestão de Vazamentos/ANPD
-• Arquitetura & Automação dos Módulos OneTrust Privacy (RoPA & DSAR)
-
-📩 Fale com nossos especialistas em privacidade e garanta a conformidade da sua organização.
-
-#AuditChain #LGPD #GDPR #Privacy #OneTrust #ANPD #DPIA #DSAR`
-    },
-    c_bcm: {
-        title: "3️⃣ Continuidade de Negócios (BCM & Resiliência)",
-        category: "BCM / Resiliência / BIA",
-        imagePath: "media/audit_chain_bcm.png",
-        text: `🏢 [AUDIT CHAIN - RESILIÊNCIA OPERACIONAL & BCM]
-
-📌 CONTINUIDADE DE NEGÓCIOS & RECUPERAÇÃO DE DESASTRES
-
-Sua empresa sabe exatamente quais sistemas operar primeiro em um momento de desastre ou crise?
-
-👉 Confira acima a estrutura de BIA e Planos de Continuidade (BCP/DRP)!
-
----
-
-💡 SERVIÇOS DE BCM AUDIT CHAIN:
-• Business Impact Analysis (BIA), RTO, RPO & MTPD
-• Planos de Continuidade de Negócios (PCN/BCP), DRP & Simulados de Mesa
-• Implementação & Automação do Módulo ServiceNow BCM
-
-📩 Garanta a resiliência operacional da sua empresa com a consultoria especializada Audit Chain.
-
-#AuditChain #BCM #ISO22301 #Resiliencia #BIA #ServiceNow #DRP`
-    },
-    c_infosec: {
-        title: "4️⃣ Segurança da Informação (ISO 27001 & NIST CSF)",
-        category: "InfoSec / ISO 27001 / NIST",
-        imagePath: "media/audit_chain_infosec.png",
-        text: `🏢 [AUDIT CHAIN - SEGURANÇA DA INFORMAÇÃO & GRC]
-
-📌 SISTEMA DE GESTÃO DE SEGURANÇA DA INFORMAÇÃO (SGSI)
-
-Alinhe a proteção cibernética aos objetivos estratégicos e ao apetite de risco da empresa.
-
-👉 Confira no infográfico acima a estrutura do SGSI ISO 27001:2022!
-
----
-
-💡 SERVIÇOS DE SEGURANÇA AUDIT CHAIN:
-• Gap Analysis & Diagnóstico de Maturidade ISO 27001:2022 / NIST CSF 2.0
-• Matriz de Riscos de TI, Políticas Normativas & Indicadores Executivos (KRIs/KPIs)
-• Preparação para Certificações Internacionais & Auditorias
-
-📩 Eleve a segurança da sua empresa com a equipe consultiva da Audit Chain.
-
-#AuditChain #ISO27001 #NIST #SegurancaDaInformacao #Ciberseguranca #GRC`
-    },
-    c_onetrust: {
-        title: "5️⃣ Plataforma OneTrust (Arquitetura & Implementação)",
-        category: "OneTrust / VRM / Privacy Automation",
-        imagePath: "media/audit_chain_platforms.png",
-        text: `🏢 [AUDIT CHAIN - ARQUITETURA & OTIMIZAÇÃO ONETRUST]
-
-📌 ESPECIALISTAS EM ARQUITETURA & IMPLANTAÇÃO ONETRUST
-
-Extraia o valor máximo do seu investimento no ecossistema OneTrust com parametrização avançada e automação.
-
-👉 Confira no infográfico os módulos suportados pela Audit Chain!
-
----
-
-💡 MÓDULOS ONETRUST ATENDIDOS PELA AUDIT CHAIN:
-• Third-Party Risk Management (TPRM/VRM) & Vendor Portal
-• Data Mapping (RoPA) & Privacy Rights Automation (DSAR)
-• Configurações Globais: RBAC, Org Groups, Attribute Manager, Integration Manager (APIs REST) & SSO/SCIM
-
-📩 Agende um Health Check da sua instância OneTrust com nossos arquitetos certificados.
-
-#AuditChain #OneTrust #TPRM #VRM #DSAR #RoPA #IntegrationManager #Privacy`
-    },
-    c_servicenow: {
-        title: "6️⃣ Plataforma ServiceNow GRC/IRM (Arquitetura & Sustentação)",
-        category: "ServiceNow / GRC / IRM",
-        imagePath: "media/audit_chain_platforms.png",
-        text: `🏢 [AUDIT CHAIN - ESPECIALISTAS SERVICENOW GRC / IRM]
-
-📌 ARQUITETURA, IMPLEMENTAÇÃO & SUSTENTAÇÃO SERVICENOW GRC
-
-Integre a governança corporativa ao ecossistema operacional de TI e Cibersegurança.
-
-👉 Confira no carrossel a suíte ServiceNow IRM parametrizada pela Audit Chain!
-
----
-
-💡 MÓDULOS SERVICENOW GRC/IRM ATENDIDOS:
-• Vendor Risk Management (VRM) & Vendor Portfolio
-• Policy & Compliance Management (Authority Documents, Citations, Controls)
-• Risk Management (Risk Register, KRIs, Performance Analytics) & BCM
-
-📩 Fale com nossos consultores especialistas em ServiceNow GRC e otimize sua plataforma.
-
-#AuditChain #ServiceNow #GRC #IRM #VRM #Compliance #RiskManagement`
-    },
-    c_pdf_tprm: {
-        title: "📄 Carrossel PDF: DORA & Risco em Terceiros (5 Slides)",
-        category: "Carrossel PDF / TPRM & DORA",
-        pdfPath: "media/carrousel_audit_chain_tprm_dora.pdf",
-        text: `🏢 [AUDIT CHAIN - CARROSSEIL EXECUTIVO: TPRM & DORA]
-
-📌 GESTÃO DE RISCO DE TERCEIROS & REGULAÇÃO DORA (5 SLIDES)
-
-Confira no documento PDF deslizável acima a metodologia completa de 4 etapas para adequação da governança de parceiros de TIC perante a regulação DORA.
-
----
-
-💡 O QUE VOCÊ VERÁ NESTE CARROSSEIL:
-1. Enquadramento de Funções Críticas (CIFs)
-2. Due Diligence & Questionários Proporcionais
-3. Matriz de Risco Inerente vs Residual
-4. Monitoramento Contínuo com OneTrust & ServiceNow GRC
-
-📩 Precisa estruturar o programa de TPRM na sua empresa? Agende uma reunião com nossos arquitetos!
-
-#AuditChain #TPRM #DORA #CarrosselLinkedIn #OneTrust #ServiceNow`
-    },
-    c_pdf_privacy: {
-        title: "📄 Carrossel PDF: Privacidade de Dados LGPD/GDPR (5 Slides)",
-        category: "Carrossel PDF / LGPD & GDPR",
-        pdfPath: "media/carrousel_audit_chain_lgpd_privacy.pdf",
-        text: `🏢 [AUDIT CHAIN - CARROSSEIL EXECUTIVO: PRIVACIDADE DE DADOS]
-
-📌 ESTRUTURAÇÃO DE PROGRAMA DE PRIVACIDADE LGPD/GDPR (5 SLIDES)
-
-Deslize as páginas acima para conferir os entregáveis práticos do nosso programa de privacidade e automação de direitos dos titulares.
-
----
-
-💡 ESTRUTURA DO CARROSSEIL:
-• Data Mapping & Inventário (RoPA)
-• Relatórios de Impacto (RIPD / DPIA)
-• Automação de DSAR com OneTrust Privacy
-• Governança e Notificação ANPD
-
-📩 Fale com nossos especialistas e garanta a conformidade da sua empresa.
-
-#AuditChain #LGPD #GDPR #Privacy #DSAR #RoPA #OneTrust`
-    },
-    c_pdf_bcm: {
-        title: "📄 Carrossel PDF: Continuidade BCM & BIA (5 Slides)",
-        category: "Carrossel PDF / BCM & Resiliência",
-        pdfPath: "media/carrousel_audit_chain_bcm_resilience.pdf",
-        text: `🏢 [AUDIT CHAIN - CARROSSEIL EXECUTIVO: BCM & RESILIÊNCIA]
-
-📌 CONTINUIDADE DE NEGÓCIOS & ANÁLISE BIA (5 SLIDES)
-
-Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP) integrados com ServiceNow BCM.
-
----
-
-💡 CONTEÚDO DO CARROSSEIL:
-• Business Impact Analysis (BIA) orientado ao negócio
-• RTO & RPO sem adivinhação
-• Simulados de Mesa & DRP
-• Automação no ServiceNow BCM
-
-📩 Proteja a operação da sua empresa com a consultoria especializada Audit Chain!
-
-#AuditChain #BCM #ISO22301 #Resiliencia #ServiceNow #BIA`
-    }
-};
-
     } else if (action === "menu_audit_chain_page") {
         const auditChainKeyboard = {
             reply_markup: {
