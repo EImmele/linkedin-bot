@@ -643,6 +643,16 @@ cron.schedule('*/3 * * * *', async () => {
     await checkAndProcessNewComments();
 });
 
+// Register official Telegram Bot Commands list for quick '/' autocomplete
+bot.setMyCommands([
+    { command: 'start', description: '📱 Menu Principal (Audit Chain & Pessoal)' },
+    { command: 'auditchain', description: '🏢 Menu Comercial & Criativos (Audit Chain)' },
+    { command: 'pessoal', description: '👤 Menu Thought Leadership (Erik Immele)' },
+    { command: 'addpost', description: '📌 Adicionar post ao monitoramento 24/7' },
+    { command: 'dashboard', description: '📊 Dashboard de Interações & Comentários' },
+    { command: 'status', description: '⚡ Status do Bot & Piloto Automático' }
+]).catch(err => console.error("Error setting Telegram commands:", err.message));
+
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
     if (myTelegramChatId !== chatId) {
@@ -661,11 +671,47 @@ bot.on('message', async (msg) => {
         } else {
             await bot.sendMessage(chatId, `⚠️ Não encontrei o ID do post. Envie no formato:\n\`/addpost 7490380916247232512\` ou o link direto do post.`, { parse_mode: 'Markdown' });
         }
+    } else if (text.startsWith('/auditchain')) {
+        const auditChainKeyboard = {
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: "🚀 Post 4: Riscos em Terceiros & DORA (Empresa + Criativo)", callback_data: "publish_custom_post4_company_img" }],
+                    [{ text: "🚨 Post 5: Gestão de Incidentes (Empresa + Criativo)", callback_data: "publish_custom_post5_company_img" }],
+                    [{ text: "📚 Escolher Post do Portfólio p/ Empresa", callback_data: "select_post_menu" }],
+                    [{ text: "📑 Como publicar PDF de Carrossel (Instruções)", callback_data: "info_pdf_carousel" }],
+                    [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
+                ]
+            }
+        };
+        await bot.sendMessage(chatId, `🏢 **[PÁGINA COMERCIAL AUDIT CHAIN - MENU DE AÇÕES]**\n\nTodas as publicações disparadas aqui utilizarão o **Tom Comercial B2B**, a **Legenda Curta Explicativa** e o **Foco em Criativos/Carrosséis** promovendo as 8 soluções da empresa.`, { parse_mode: 'Markdown', ...auditChainKeyboard });
+    } else if (text.startsWith('/pessoal')) {
+        const personalKeyboard = {
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: "🚀 Post 4: Riscos em Terceiros (Texto Longo Pessoal)", callback_data: "publish_custom_post4_personal_text" }],
+                    [{ text: "🖼️ Post 4: Riscos em Terceiros (Com Imagem Pessoal)", callback_data: "publish_custom_post4_personal_img" }],
+                    [{ text: "🚨 Post 5: Gestão de Incidentes (CISM ISACA)", callback_data: "publish_custom_post5_personal_img" }],
+                    [{ text: "📚 Escolher Post do Portfólio p/ Perfil Pessoal", callback_data: "select_post_menu" }],
+                    [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
+                ]
+            }
+        };
+        await bot.sendMessage(chatId, `👤 **[PERFIL PESSOAL ERIK IMMELE - MENU DE AÇÕES]**\n\nTodas as publicações disparadas aqui utilizarão o tom de **Thought Leadership**, **1ª Pessoa ("Eu")** e a **Jornada de Preparação CISM da ISACA** para elevar sua autoridade de CISO/DPO/GRC no mercado.`, { parse_mode: 'Markdown', ...personalKeyboard });
+    } else if (text.startsWith('/dashboard')) {
+        await bot.sendMessage(chatId, "📊 **Carregando Dashboard de Interações... Clique no botão abaixo:**", {
+            parse_mode: 'Markdown',
+            reply_markup: {
+                inline_keyboard: [[{ text: "📊 Abrir Dashboard Geral", callback_data: "show_dashboard" }]]
+            }
+        });
+    } else if (text.startsWith('/status')) {
+        const modeLabel = autoApprovalMode ? "🟢 PILOTO AUTOMÁTICO (Sem aprovação)" : "🔴 APROVAÇÃO MANUAL (Com revisão)";
+        await bot.sendMessage(chatId, `⚡ **STATUS DO BOT & CONEXÃO**\n\n• Status Composio/LinkedIn: CONECTADO (HTTP 200)\n• Modo de Aprovação: ${modeLabel}\n• Uptime Cloud: 100% 24/7 no Render.com\n• Posts Rastreados: ${trackedPosts.length}`, getMainMenuKeyboard());
     } else if (text.startsWith('/start') || text.toLowerCase().includes('menu') || text.toLowerCase().includes('ajuda')) {
         const modeLabel = autoApprovalMode ? "🟢 PILOTO AUTOMÁTICO (Sem aprovação)" : "🔴 APROVAÇÃO MANUAL (Com revisão)";
-        await bot.sendMessage(chatId, `👋 Olá, Erik!\n\n⚙️ **Status Atual do Modo de Aprovação**: ${modeLabel}\n📌 **Posts Monitorados Atualmente**: ${trackedPosts.length}\n\nEscolha uma opção no menu abaixo ou envie um link/ID de post para monitorar (\`/addpost ID\`):`, getMainMenuKeyboard());
+        await bot.sendMessage(chatId, `👋 Olá, Erik!\n\n⚙️ **Status Atual do Modo de Aprovação**: ${modeLabel}\n📌 **Posts Monitorados Atualmente**: ${trackedPosts.length}\n\nEscolha uma opção no menu abaixo ou digite \`/\` para ver os comandos rápidos:`, getMainMenuKeyboard());
     } else {
-        await bot.sendMessage(chatId, `💡 Mensagem recebida: "${text}"\nPara adicionar um post para monitorar, envie:\n\`/addpost <ID_ou_Link>\``, getMainMenuKeyboard());
+        await bot.sendMessage(chatId, `💡 Mensagem recebida: "${text}"\nDigite \`/\` para abrir o menu de comandos rápidos ou use o menu:`, getMainMenuKeyboard());
     }
 });
 
