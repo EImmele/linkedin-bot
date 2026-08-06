@@ -20,18 +20,43 @@ let autoApprovalMode = false;
 
 // Metrics Counter Cache
 let totalRepliesSent = 3;
-let myTelegramChatId = null;
+let myTelegramChatId = process.env.TELEGRAM_CHAT_ID || null;
+
+// Persistent Config File
+const CONFIG_FILE = path.join(__dirname, 'chat_config.json');
+function loadConfig() {
+    try {
+        if (fs.existsSync(CONFIG_FILE)) {
+            const data = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+            if (data.chatId) myTelegramChatId = data.chatId;
+            if (typeof data.autoApprovalMode === 'boolean') autoApprovalMode = data.autoApprovalMode;
+            console.log(`📁 Loaded config: chatId=${myTelegramChatId}, autoApprovalMode=${autoApprovalMode}`);
+        }
+    } catch (e) {
+        console.error("⚠️ Error loading chat_config.json:", e.message);
+    }
+}
+
+function saveConfig() {
+    try {
+        fs.writeFileSync(CONFIG_FILE, JSON.stringify({ chatId: myTelegramChatId, autoApprovalMode }, null, 2), 'utf8');
+    } catch (e) {
+        console.error("⚠️ Error saving chat_config.json:", e.message);
+    }
+}
+
+loadConfig();
 
 // Start HTTP Health Check Server for Render Web Service (Free Tier)
 const PORT = process.env.PORT || 3000;
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end(`Audit Chain LinkedIn & Telegram Bot Server is Running 24/7! AutoApproval: ${autoApprovalMode ? 'ON' : 'OFF'}\n`);
+    res.end(`Audit Chain LinkedIn & Telegram Bot Server is Running 24/7! AutoApproval: ${autoApprovalMode ? 'ON' : 'OFF'} | ChatID: ${myTelegramChatId || 'Not Set'}\n`);
 }).listen(PORT, () => {
     console.log(`🌐 HTTP Health Check Server listening on port ${PORT}`);
 });
 
-console.log("🤖 Telegram Bot updated with 24/7 Cron Scheduler for Tue/Wed/Thu at 09:45 AM...");
+console.log("🤖 Telegram Bot updated with 24/7 Cron Scheduler for Tue/Wed/Thu at 09:45 AM (Brasília Time)...");
 
 process.on('uncaughtException', (err) => { console.error('⚠️ Protected Exception:', err.message); });
 process.on('unhandledRejection', (reason) => { console.error('⚠️ Protected Rejection:', reason); });
@@ -312,12 +337,14 @@ function getMainMenuKeyboard() {
 }
 
 // CRON JOB SCHEDULER: Runs Every Tuesday, Wednesday and Thursday at 09:45 AM (UTC/Local)
+// CRON JOB SCHEDULER: Runs Every Tuesday, Wednesday and Thursday at 09:45 AM (Horário de Brasília)
 cron.schedule('45 9 * * 2,3,4', async () => {
-    console.log("⏰ 24/7 CRON TRIGGER: 09:45 AM Prime Time reached!");
+    console.log("⏰ 24/7 CRON TRIGGER: 09:45 AM Prime Time (Brasília) reached!");
+    loadConfig();
     
     if (myTelegramChatId) {
         if (autoApprovalMode) {
-            await bot.sendMessage(myTelegramChatId, "⏰ **HORÁRIO NOBRE (09:45 AM)**: Disparando Post 5 (Gestão de Incidentes CISM) automaticamente no piloto automático...");
+            await bot.sendMessage(myTelegramChatId, "⏰ **HORÁRIO NOBRE (09:45 AM BRT)**: Disparando Post 5 (Gestão de Incidentes CISM) automaticamente no piloto automático...");
             // Auto publish Post 5
             try {
                 const response = await composio.tools.proxyExecute({
@@ -344,7 +371,7 @@ cron.schedule('45 9 * * 2,3,4', async () => {
         } else {
             await bot.sendMessage(
                 myTelegramChatId,
-                "⏰ **CHEGOU O HORÁRIO NOBRE DE HOJE (09:45 AM)!**\n\nO **Post 5 (Gestão de Incidentes CISM)** está pronto para ser publicado no seu LinkedIn.\n\nClique em um dos botões abaixo para aprovar:",
+                "⏰ **CHEGOU O HORÁRIO NOBRE DE HOJE (09:45 AM BRT)!**\n\nO **Post 5 (Gestão de Incidentes CISM)** está pronto para ser publicado no seu LinkedIn.\n\nClique em um dos botões abaixo para aprovar:",
                 {
                     parse_mode: 'Markdown',
                     reply_markup: {
@@ -356,12 +383,19 @@ cron.schedule('45 9 * * 2,3,4', async () => {
                 }
             );
         }
+    } else {
+        console.warn("⚠️ Cron triggered at 09:45 AM BRT, but no Telegram Chat ID is set! Send /start to the bot.");
     }
+}, {
+    timezone: "America/Sao_Paulo"
 });
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
-    myTelegramChatId = chatId;
+    if (myTelegramChatId !== chatId) {
+        myTelegramChatId = chatId;
+        saveConfig();
+    }
     const text = msg.text || "";
 
     if (text.startsWith('/start') || text.toLowerCase().includes('menu') || text.toLowerCase().includes('ajuda')) {
@@ -374,7 +408,10 @@ bot.on('message', async (msg) => {
 
 bot.on('callback_query', async (query) => {
     const chatId = query.message.chat.id;
-    myTelegramChatId = chatId;
+    if (myTelegramChatId !== chatId) {
+        myTelegramChatId = chatId;
+        saveConfig();
+    }
     const action = query.data;
 
     try { await bot.answerCallbackQuery(query.id); } catch (e) {}
@@ -539,6 +576,7 @@ bot.on('callback_query', async (query) => {
         await bot.sendMessage(chatId, dashboardMessage, { parse_mode: 'Markdown', ...getMainMenuKeyboard() });
     } else if (action === "toggle_approval_mode") {
         autoApprovalMode = !autoApprovalMode;
+        saveConfig();
         const newStatusText = autoApprovalMode 
             ? "🟢 **MODO PILOTO AUTOMÁTICO ATIVADO!**\n\nA partir de agora, as respostas a comentários e disparos agendados serão publicados **diretamente sem exigir aprovação prévia**. Você receberá apenas as confirmações de envio no Telegram."
             : "🔴 **MODO APROVAÇÃO MANUAL ATIVADO!**\n\nA partir de agora, **todo comentário e post exigirá obrigatoriamente a sua revisão e clique explícito de aprovação no Telegram** antes de ir ao ar no LinkedIn.";
