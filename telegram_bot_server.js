@@ -1430,12 +1430,12 @@ Integre a governança corporativa ao ecossistema operacional de TI e Cibersegura
                     mediaArray = [{
                         "status": "READY",
                         "media": assetUrn,
-                        "title": { "text": post.title }
+                        "title": { "text": `${post.title} (${Date.now()})` }
                     }];
                 }
 
 function makeUniqueContent(text) {
-    const timeRef = new Date().toISOString().replace(/[-:T.]/g, "").slice(8, 14);
+    const timeRef = Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
     return `${text}\n\n📌 [Ref: AC-${timeRef}]`;
 }
 
