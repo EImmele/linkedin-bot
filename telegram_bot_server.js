@@ -1097,33 +1097,24 @@ function getFormattedCompanyPostText(post) {
         return post.companyText;
     }
     
-    const cleanBody = post.text
-        .replace(/Como parte da minha preparação.*jornada\./gi, '')
-        .replace(/Hello everyone.*journey\./gi, '')
-        .trim();
+    const lines = post.text.split('\n').filter(l => l.trim().length > 0 && !l.includes('Como parte da minha'));
+    const shortSummary = lines.slice(0, 3).join('\n').trim();
 
     return `🏢 [AUDIT CHAIN - SOLUÇÕES EM GRC, PRIVACIDADE & CIBERSEGURANÇA]
 
-Na Audit Chain, ajudamos organizações a fortalecer a governança corporativa, mitigar riscos operacionais e garantir a conformidade regulatória contínua.
+📌 ${post.title.toUpperCase()}
 
-📌 ${post.title}
+${shortSummary}
 
-${cleanBody}
+👉 Confira no infográfico / carrossel acima os detalhes visuais da solução!
 
 ---
 
-💡 CONHEÇA O PORTFÓLIO DE SERVIÇOS DA AUDIT CHAIN:
-1️⃣ Privacidade de Dados (Programas LGPD & GDPR, Data Mapping / RoPA, RIPD & DSAR)
-2️⃣ Continuidade de Negócios (BCM, BIA, PCN/BCP & DRP)
-3️⃣ Segurança da Informação (ISO 27001:2022 & NIST CSF 2.0)
-4️⃣ Gestão de Risco de Terceiros (TPRM/VRM & Conformidade DORA)
-5️⃣ Compliance & Auditoria de Controles (COSO ERM & ISO 37301)
-6️⃣ Serviços Pontuais sob Demanda (CISO & DPO as a Service)
-7️⃣ Implementação & Arquitetura OneTrust (VRM, RoPA, DSAR, SSO/SCIM)
-8️⃣ Implementação & Arquitetura ServiceNow GRC / IRM (VRM, Policy, Risk & BCM)
+💡 PORTFÓLIO DE SERVIÇOS AUDIT CHAIN:
+• Privacidade (LGPD/GDPR) | Continuidade (BCM) | SegInfo (ISO 27001) | Risco em Terceiros (TPRM/DORA) | Compliance | CISO/DPO as a Service
+• Especialistas em Implementação & Otimização de Plataformas: OneTrust & ServiceNow GRC/IRM.
 
-📩 Sua empresa busca elevar a maturidade de GRC ou automatizar plataformas OneTrust e ServiceNow?
-Fale com nossos consultores especializados da Audit Chain e agende uma avaliação de maturidade!`;
+📩 Fale com nossos consultores e agende uma avaliação de maturidade para a sua empresa!`;
 }
 
         const post = postsDB[postKey];
