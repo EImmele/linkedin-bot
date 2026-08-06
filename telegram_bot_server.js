@@ -1538,12 +1538,12 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
         const auditChainKeyboard = {
             reply_markup: {
                 inline_keyboard: [
+                    [{ text: "✨ 🆕 GERAR NOVO POST COM IA (AUDIT CHAIN)", callback_data: "generate_company_ai_post" }],
                     [{ text: "🚀 1. Risco de Terceiros & DORA (Empresa + Criativo V2)", callback_data: "publish_company_post_c_tprm" }],
                     [{ text: "🔒 2. Privacidade LGPD/GDPR (Empresa + Criativo V2)", callback_data: "publish_company_post_c_privacy" }],
                     [{ text: "📄 3. Carrossel PDF: TPRM & DORA (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_tprm" }],
                     [{ text: "📄 4. Carrossel PDF: Privacidade LGPD (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_privacy" }],
                     [{ text: "📄 5. Carrossel PDF: BCM & Resiliência (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_bcm" }],
-                    [{ text: "✨ 🆕 GERAR POST COMERCIAL INÉDITO (AUDIT CHAIN)", callback_data: "generate_company_ai_post" }],
                     [{ text: "📚 Ver Catálogo Completo de Serviços (Empresa)", callback_data: "select_company_post_menu" }],
                     [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
                 ]
@@ -1560,6 +1560,7 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
         const companyPostKeyboard = {
             reply_markup: {
                 inline_keyboard: [
+                    [{ text: "✨ 🆕 GERAR NOVO POST COM IA (AUDIT CHAIN)", callback_data: "generate_company_ai_post" }],
                     [{ text: `${getPostStatusIcon('c_tprm')} 1️⃣ Risco de Terceiros (TPRM & DORA - Imagem V2)`, callback_data: "publish_company_post_c_tprm" }],
                     [{ text: `${getPostStatusIcon('c_privacy')} 2️⃣ Privacidade de Dados (LGPD & GDPR - Imagem V2)`, callback_data: "publish_company_post_c_privacy" }],
                     [{ text: `${getPostStatusIcon('c_bcm')} 3️⃣ Continuidade de Negócios (BCM & BIA - Imagem V2)`, callback_data: "publish_company_post_c_bcm" }],
@@ -1569,7 +1570,6 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
                     [{ text: `${getPostStatusIcon('c_pdf_tprm')} 📄 Carrossel PDF: TPRM & DORA (5 Slides)`, callback_data: "publish_company_post_c_pdf_tprm" }],
                     [{ text: `${getPostStatusIcon('c_pdf_privacy')} 📄 Carrossel PDF: Privacidade LGPD (5 Slides)`, callback_data: "publish_company_post_c_pdf_privacy" }],
                     [{ text: `${getPostStatusIcon('c_pdf_bcm')} 📄 Carrossel PDF: BCM & Resiliência (5 Slides)`, callback_data: "publish_company_post_c_pdf_bcm" }],
-                    [{ text: "✨ 🆕 GERAR POST COMERCIAL INÉDITO (AUDIT CHAIN)", callback_data: "generate_company_ai_post" }],
                     [{ text: "🏢 Voltar ao Menu Audit Chain", callback_data: "menu_audit_chain_page" }]
                 ]
             }
