@@ -832,64 +832,112 @@ const companyDynamicTopicsPool = [
     {
         title: "Gestão Estratégica de Riscos de Terceiros (TPRM) & Conformidade DORA",
         category: "TPRM / DORA / Resiliência",
-        imagePath: "media/audit_chain_tprm_dora.png",
+        imagePath: "media/audit_chain_tprm_dora_v2.png",
         pitch: "Como sua instituição financeira ou grande empresa qualifica a cadeia de suprimentos de TI e atende os requerimentos regulatórios DORA (EU 2022/2554)?"
     },
     {
         title: "Governança & Mapeamento de Dados para LGPD & GDPR (Data Privacy)",
         category: "Privacidade / LGPD / ANPD",
-        imagePath: "media/audit_chain_privacy.png",
+        imagePath: "media/audit_chain_privacy_v2.png",
         pitch: "Estruturação de inventários RoPA, Relatórios de Impacto (RIPD/DPIA) e governança automatizada de direitos dos titulares (DSAR)."
     },
     {
         title: "Continuidade de Negócios (BCM) & Análise de Impacto Operacional (BIA)",
         category: "Resiliência / BCM / BIA",
-        imagePath: "media/audit_chain_bcm.png",
+        imagePath: "media/audit_chain_bcm_v2.png",
         pitch: "Garantia de operação ininterrupta, definição pragmática de RTO/RPO e simulados de crise corporativos com ServiceNow BCM."
     },
     {
         title: "Sistema de Gestão de Segurança da Informação (SGSI - ISO 27001:2022)",
         category: "Segurança / ISO 27001 / NIST",
-        imagePath: "media/audit_chain_infosec.png",
+        imagePath: "media/audit_chain_infosec_v2.png",
         pitch: "Alinhamento das políticas de cibersegurança ao apetite de risco executivo e preparação para auditorias de certificação."
     },
     {
         title: "Arquitetura, Otimização & Health Check da Plataforma OneTrust",
         category: "OneTrust / Automação VRM",
-        imagePath: "media/audit_chain_platforms.png",
+        imagePath: "media/audit_chain_platforms_v2.png",
         pitch: "Parametrização avançada de Vendor Inventory, Auto-Risks, RBAC, Org Groups, APIs REST e automação de privacidade."
     },
     {
         title: "Implementação & Sustentação de Suíte ServiceNow GRC / IRM",
         category: "ServiceNow GRC / IRM",
-        imagePath: "media/audit_chain_platforms.png",
+        imagePath: "media/audit_chain_platforms_v2.png",
         pitch: "Integração ponta a ponta dos módulos Vendor Risk Management, Policy & Compliance e Risk Register com a operação de TI."
     },
     {
         title: "Governança de Inteligência Artificial & Avaliação de Riscos de Algoritmos",
         category: "IA / NIST AI RMF / Governança",
-        imagePath: "media/audit_chain_infosec.png",
+        imagePath: "media/audit_chain_infosec_v2.png",
         pitch: "Inventário de modelos de IA de terceiros, prevenção de vazamento de dados confidenciais e conformidade com marcos de IA."
     },
     {
         title: "Matriz de Risco Inerente vs. Residual na Seleção de Fornecedores Críticos",
         category: "TPRM / Matriz de Riscos",
-        imagePath: "media/audit_chain_tprm_dora.png",
+        imagePath: "media/audit_chain_tprm_dora_v2.png",
         pitch: "Cálculo preciso de exposição a riscos de fornecedores (CIFs) combinando scoring de criticidade com controles mitigatórios."
     },
     {
         title: "Testes de Mesa (Tabletop Exercises) & Validação de Planos de Crise",
         category: "BCM / Simulados de Crise",
-        imagePath: "media/audit_chain_bcm.png",
+        imagePath: "media/audit_chain_bcm_v2.png",
         pitch: "Execução de exercícios práticos de continuidade para comitês de gestão de crise e validação de procedimentos de recuperação."
     },
     {
         title: "Diagnóstico de Maturidade em Cibersegurança & Matriz KRIs/KPIs Executivos",
         category: "GRC Executivo / C-Level",
-        imagePath: "media/audit_chain_infosec.png",
+        imagePath: "media/audit_chain_infosec_v2.png",
         pitch: "Transformação de dados técnicos de segurança em indicadores de gestão legíveis para a diretoria e conselhos de administração."
     }
 ];
+
+function generateExecutiveB2BText(topicItem) {
+    const textTemplates = [
+        `🏢 [AUDIT CHAIN - CONSULTORIA ESPECIALIZADA EM GRC & CIBERSEGURANÇA]
+
+📌 ${topicItem.title.toUpperCase()}
+
+${topicItem.pitch}
+
+Para garantir a maturidade operacional e o alinhamento com as melhores práticas de mercado, a Audit Chain apoia sua empresa em três pilares fundamentais:
+
+1️⃣ Mapeamento de Riscos & Enquadramento Regulatório (BIA & Critical Functions)
+2️⃣ Parametrização Avançada e Automação de Processos nas Plataformas OneTrust & ServiceNow IRM
+3️⃣ Monitoramento Contínuo, Matriz KRIs/KPIs e Preparação para Auditorias Executivas
+
+👉 Confira no infográfico / criativo executivo acima os detalhes da nossa metodologia de entrega!
+
+---
+
+📩 Sua organização precisa acelerar a conformidade ou otimizar processos de GRC?
+Fale com nossos consultores seniores e solicite uma avaliação de maturidade.
+
+#AuditChain #GRC #TPRM #DORA #OneTrust #ServiceNow #Ciberseguranca #LGPD #ISO27001`,
+
+        `🏢 [AUDIT CHAIN - GOVERNANÇA, PRIVACIDADE & RESILIÊNCIA OPERACIONAL]
+
+📌 ${topicItem.title.toUpperCase()}
+
+No cenário regulatório atual, transformar exigências de conformidade em valor estratégico é o diferencial das empresas líderes.
+
+${topicItem.pitch}
+
+💡 Entregáveis Principais da Consultoria Audit Chain:
+• Diagnóstico de Gaps & Matriz de Risco Inerente vs. Residual
+• Implementação e Otimização dos Módulos OneTrust VRM, Privacy & ServiceNow GRC
+• Elaboração de Políticas Normativas, Testes de Mesa e Treinamentos de Capacitação
+
+👉 Arraste / confira a síntese visual no criativo executivo acima!
+
+---
+
+📩 Agende um diagnóstico técnico com nossos especialistas para estruturar ou evoluir o programa da sua empresa.
+
+#AuditChain #TPRM #DORA #LGPD #ISO27001 #OneTrust #ServiceNow #Ciberseguranca`
+    ];
+
+    return textTemplates[Math.floor(Math.random() * textTemplates.length)];
+}
 
 function getMainMenuKeyboard() {
     const toggleButtonText = autoApprovalMode 
@@ -1653,24 +1701,7 @@ bot.on('callback_query', async (query) => {
             const topicIndex = Math.floor(Math.random() * companyDynamicTopicsPool.length);
             const topicItem = companyDynamicTopicsPool[topicIndex];
 
-            const defaultCompanyText = `🏢 [AUDIT CHAIN - CONSULTORIA ESPECIALIZADA EM GRC & CIBERSEGURANÇA]
-
-📌 ${topicItem.title.toUpperCase()}
-
-${topicItem.pitch}
-
-👉 Confira no infográfico / criativo acima os pilares estratégicos recomendados pela equipe consultiva da Audit Chain!
-
----
-
-💡 PORTFÓLIO DE SOLUÇÕES & SERVIÇOS AUDIT CHAIN:
-• Gestão de Risco de Terceiros (TPRM/VRM) & Conformidade DORA (EU 2022/2554)
-• Privacidade de Dados (LGPD/GDPR) | Continuidade de Negócios (BCM & BIA) | SegInfo (ISO 27001)
-• Arquitetura, Parametrização & Sustentação de Plataformas: OneTrust & ServiceNow GRC/IRM.
-
-📩 Fale com nossos consultores seniores e agende uma avaliação de maturidade para sua empresa.
-
-#AuditChain #GRC #TPRM #DORA #OneTrust #ServiceNow #Ciberseguranca #LGPD #ISO27001`;
+            const defaultCompanyText = generateExecutiveB2BText(topicItem);
 
             companyPostsDB[newCompanyKey] = {
                 title: `Serviço Inédito: ${topicItem.title}`,
