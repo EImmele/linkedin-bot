@@ -18,6 +18,7 @@ const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
 // State for Approval Mode: false = MANUAL (Human-in-the-Loop), true = AUTO_PILOT (Auto-Publish without approval)
 let autoApprovalMode = false;
+var companyPostsDB = {};
 
 // Metrics Counter Cache
 let totalRepliesSent = 3;
@@ -619,7 +620,7 @@ A maturidade em TPRM transforma riscos de fornecedores em decisões estratégica
     }
 };
 
-const companyPostsDB = {
+companyPostsDB = {
     c_tprm: {
         title: "1️⃣ Gestão de Risco de Terceiros (TPRM/VRM & DORA)",
         category: "TPRM / DORA / Supply Chain",
