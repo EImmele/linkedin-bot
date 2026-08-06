@@ -837,6 +837,9 @@ async function generateAIContentWithGemini(userPrompt, targetAudience = "persona
         : `Você é Erik Immele, Arquiteto Sênior de GRC, Especialista OneTrust, TPRM & DORA e profissional se preparando para a certificação CISM da ISACA. Escreva um post de Thought Leadership no LinkedIn em 1ª pessoa ('Eu'), conectando a prática de mercado com governança de riscos, segurança da informação e resiliência operacional. Use tom executivo e 3 pontos práticos numerados.`;
 
     try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
         const body = {
             contents: [{
@@ -847,8 +850,10 @@ async function generateAIContentWithGemini(userPrompt, targetAudience = "persona
         const res = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
+            body: JSON.stringify(body),
+            signal: controller.signal
         });
+        clearTimeout(timeoutId);
 
         const data = await res.json();
         if (data.candidates && data.candidates[0] && data.candidates[0].content) {
@@ -857,7 +862,7 @@ async function generateAIContentWithGemini(userPrompt, targetAudience = "persona
             return aiText.trim();
         }
     } catch (e) {
-        console.error("⚠️ Gemini API Error:", e.message);
+        console.error("⚠️ Gemini API Error / Timeout (using instant fallback):", e.message);
     }
     return null;
 }
