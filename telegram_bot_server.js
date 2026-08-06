@@ -1018,28 +1018,33 @@ A maturidade em governança e segurança é construída com processos claros, te
         const auditChainKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "🚀 Post 4: Riscos em Terceiros & DORA (Empresa + Criativo)", callback_data: "publish_custom_post4_company_img" }],
-                    [{ text: "🚨 Post 5: Gestão de Incidentes (Empresa + Criativo)", callback_data: "publish_custom_post5_company_img" }],
-                    [{ text: "📚 Escolher Post do Portfólio p/ Empresa", callback_data: "select_post_menu" }],
-                    [{ text: "📑 Como publicar PDF de Carrossel (Instruções)", callback_data: "info_pdf_carousel" }],
+                    [{ text: "🚀 1. Risco de Terceiros & DORA (Empresa + Criativo V2)", callback_data: "publish_company_post_c_tprm" }],
+                    [{ text: "🔒 2. Privacidade LGPD/GDPR (Empresa + Criativo V2)", callback_data: "publish_company_post_c_privacy" }],
+                    [{ text: "📄 3. Carrossel PDF: TPRM & DORA (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_tprm" }],
+                    [{ text: "📄 4. Carrossel PDF: Privacidade LGPD (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_privacy" }],
+                    [{ text: "📄 5. Carrossel PDF: BCM & Resiliência (5 Slides Nativos)", callback_data: "publish_company_post_c_pdf_bcm" }],
+                    [{ text: "📚 Ver Catálogo Completo de Serviços (Empresa)", callback_data: "select_company_post_menu" }],
                     [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
                 ]
             }
         };
-        await bot.sendMessage(chatId, `🏢 **[PÁGINA COMERCIAL AUDIT CHAIN - MENU DE AÇÕES]**\n\nTodas as publicações disparadas aqui utilizarão o **Tom Comercial B2B**, a **Legenda Curta Explicativa** e o **Foco em Criativos/Carrosséis** promovendo as 8 soluções da empresa.`, { parse_mode: 'Markdown', ...auditChainKeyboard });
+        await bot.sendMessage(chatId, `🏢 **[PÁGINA COMERCIAL AUDIT CHAIN - MENU DE AÇÕES]**\n\nTodas as publicações disparadas aqui utilizarão o **Tom Comercial B2B**, a **Legenda Curta Explicativa**, os **Criativos V2** ou **Carrosséis em PDF Nativos** promovendo os serviços da empresa.`, { parse_mode: 'Markdown', ...auditChainKeyboard });
     } else if (text.startsWith('/pessoal')) {
         const personalKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "🚀 Post 4: Riscos em Terceiros (Texto Longo Pessoal)", callback_data: "publish_custom_post4_personal_text" }],
-                    [{ text: "🖼️ Post 4: Riscos em Terceiros (Com Imagem Pessoal)", callback_data: "publish_custom_post4_personal_img" }],
-                    [{ text: "🚨 Post 5: Gestão de Incidentes (CISM ISACA)", callback_data: "publish_custom_post5_personal_img" }],
-                    [{ text: "📚 Escolher Post do Portfólio p/ Perfil Pessoal", callback_data: "select_post_menu" }],
+                    [{ text: "1️⃣ Tradução de Riscos (Risk IT)", callback_data: "publish_custom_post1_personal_text" }],
+                    [{ text: "4️⃣ Riscos em Terceiros [🖼️ Criativo V2]", callback_data: "publish_custom_post4_personal_img" }],
+                    [{ text: "5️⃣ Gestão de Incidentes [🚨 CISM Domínio 4]", callback_data: "publish_custom_post5_personal_img" }],
+                    [{ text: "6️⃣ Governança de IA (NIST AI RMF)", callback_data: "publish_custom_post6_personal_img" }],
+                    [{ text: "7️⃣ Automação de TPRM no OneTrust", callback_data: "publish_custom_post7_personal_img" }],
+                    [{ text: "✨ 🆕 GERAR NOVO POST INÉDITO COM IA", callback_data: "generate_ai_post" }],
+                    [{ text: "📚 Ver Catálogo Completo (Posts 1 a 10)", callback_data: "select_personal_post_menu" }],
                     [{ text: "🏠 Voltar ao Menu Principal", callback_data: "back_to_main_menu" }]
                 ]
             }
         };
-        await bot.sendMessage(chatId, `👤 **[PERFIL PESSOAL ERIK IMMELE - MENU DE AÇÕES]**\n\nTodas as publicações disparadas aqui utilizarão o tom de **Thought Leadership**, **1ª Pessoa ("Eu")** e a **Jornada de Preparação CISM da ISACA** para elevar sua autoridade de CISO/DPO/GRC no mercado.`, { parse_mode: 'Markdown', ...personalKeyboard });
+        await bot.sendMessage(chatId, `👤 **[PERFIL PESSOAL ERIK IMMELE - MENU DE AÇÕES]**\n\nTodas as publicações disparadas aqui utilizarão o tom de **Thought Leadership**, **1ª Pessoa ("Eu")** e a **Jornada CISM da ISACA** para elevar sua autoridade no mercado.`, { parse_mode: 'Markdown', ...personalKeyboard });
     } else if (text.startsWith('/dashboard')) {
         await bot.sendMessage(chatId, "📊 **Carregando Dashboard de Interações... Clique no botão abaixo:**", {
             parse_mode: 'Markdown',
