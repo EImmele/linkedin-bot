@@ -1583,11 +1583,12 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
     } else if (action === "generate_company_ai_post") {
         await bot.sendMessage(chatId, "✨ **IA Geradora de Conteúdo Comercial B2B (Audit Chain) Ativada!**\n\nCriando uma nova oferta de serviço corporativo inédita...", { parse_mode: 'Markdown' });
 
-        const companyDynamicIndex = Object.keys(companyPostsDB).length + 1;
-        const newCompanyKey = `c_dyn_${companyDynamicIndex}`;
-        const topicItem = dynamicTopicsPool[(companyDynamicIndex - 1) % dynamicTopicsPool.length];
+        try {
+            const companyDynamicIndex = Object.keys(companyPostsDB).length + 1;
+            const newCompanyKey = `c_dyn_${companyDynamicIndex}`;
+            const topicItem = dynamicTopicsPool[(companyDynamicIndex - 1) % dynamicTopicsPool.length] || dynamicTopicsPool[0];
 
-        const defaultCompanyText = `🏢 [AUDIT CHAIN - CONSULTORIA ESPECIALIZADA EM GRC & CIBERSEGURANÇA]
+            const defaultCompanyText = `🏢 [AUDIT CHAIN - CONSULTORIA ESPECIALIZADA EM GRC & CIBERSEGURANÇA]
 
 📌 ${topicItem.title.toUpperCase()}
 
@@ -1606,42 +1607,50 @@ Como sua empresa lida com as exigências regulatórias e operacionais no mercado
 
 #AuditChain #GRC #TPRM #DORA #OneTrust #ServiceNow #Ciberseguranca #LGPD #ISO27001`;
 
-        companyPostsDB[newCompanyKey] = {
-            title: `Serviço ${companyDynamicIndex}: ${topicItem.title}`,
-            category: topicItem.category,
-            imagePath: topicItem.imagePath,
-            text: defaultCompanyText
-        };
+            companyPostsDB[newCompanyKey] = {
+                title: `Serviço ${companyDynamicIndex}: ${topicItem.title}`,
+                category: topicItem.category,
+                imagePath: topicItem.imagePath,
+                text: defaultCompanyText
+            };
 
-        const liveCompanyAiText = await generateAIContentWithGemini(topicItem.title, "company");
-        if (liveCompanyAiText) {
-            companyPostsDB[newCompanyKey].text = liveCompanyAiText;
-        }
-
-        const companyPostActionsKeyboard = {
-            reply_markup: {
-                inline_keyboard: [
-                    [
-                        { text: `🏢 Publicar Serviço na Página da Audit Chain`, callback_data: `publish_company_post_${newCompanyKey}` }
-                    ],
-                    [
-                        { text: "✨ Gerar Outro Post Comercial Inédito", callback_data: "generate_company_ai_post" },
-                        { text: "🏠 Menu Principal", callback_data: "back_to_main_menu" }
+            const companyPostActionsKeyboard = {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            { text: `🏢 Publicar Serviço na Página da Audit Chain`, callback_data: `publish_company_post_${newCompanyKey}` }
+                        ],
+                        [
+                            { text: "✨ Gerar Outro Post Comercial Inédito", callback_data: "generate_company_ai_post" },
+                            { text: "🏠 Menu Principal", callback_data: "back_to_main_menu" }
+                        ]
                     ]
-                ]
-            }
-        };
+                }
+            };
 
-        await bot.sendMessage(
-            chatId,
-            `✨ **NOVO POST COMERCIAL B2B GERADO PARA A AUDIT CHAIN!**\n\n` +
-            `📌 **Título**: ${topicItem.title}\n` +
-            `🏷️ **Categoria**: ${topicItem.category}\n` +
-            `🖼️ **Criativo Vinculado**: \`${topicItem.imagePath}\`\n\n` +
-            `--------------------\n\n` +
-            `${companyPostsDB[newCompanyKey].text}`,
-            { parse_mode: 'Markdown', ...companyPostActionsKeyboard }
-        );
+            try {
+                const liveCompanyAiText = await generateAIContentWithGemini(topicItem.title, "company");
+                if (liveCompanyAiText) {
+                    companyPostsDB[newCompanyKey].text = liveCompanyAiText;
+                }
+            } catch (errAi) {
+                console.error("Gemini API fallback triggered:", errAi.message);
+            }
+
+            await bot.sendMessage(
+                chatId,
+                `✨ **NOVO POST COMERCIAL B2B GERADO PARA A AUDIT CHAIN!**\n\n` +
+                `📌 **Título**: ${topicItem.title}\n` +
+                `🏷️ **Categoria**: ${topicItem.category}\n` +
+                `🖼️ **Criativo Vinculado**: \`${topicItem.imagePath}\`\n\n` +
+                `--------------------\n\n` +
+                `${companyPostsDB[newCompanyKey].text}`,
+                { parse_mode: 'Markdown', ...companyPostActionsKeyboard }
+            );
+        } catch (errGen) {
+            console.error("Error in generate_company_ai_post:", errGen.message);
+            await bot.sendMessage(chatId, `⚠️ Erro ao gerar conteúdo: ${errGen.message}`, getMainMenuKeyboard());
+        }
     } else if (action === "select_personal_post_menu") {
         const personalPostKeyboard = {
             reply_markup: {
@@ -1677,50 +1686,59 @@ Como sua empresa lida com as exigências regulatórias e operacionais no mercado
     } else if (action === "generate_ai_post") {
         await bot.sendMessage(chatId, "✨ **IA Geradora de Conteúdo GRC Ativada!**\n\nCriando um novo post inédito com alta relevância técnica...", { parse_mode: 'Markdown' });
 
-        const dynamicIndex = Object.keys(postsDB).length + 1;
-        const newKey = `post${dynamicIndex}`;
-        const topicItem = dynamicTopicsPool[(dynamicIndex - 1) % dynamicTopicsPool.length];
+        try {
+            const dynamicIndex = Object.keys(postsDB).length + 1;
+            const newKey = `post${dynamicIndex}`;
+            const topicItem = dynamicTopicsPool[(dynamicIndex - 1) % dynamicTopicsPool.length] || dynamicTopicsPool[0];
 
-        postsDB[newKey] = {
-            title: `Post ${dynamicIndex}: ${topicItem.title}`,
-            category: topicItem.category,
-            recommendedFormat: "WITH_IMAGE",
-            imagePath: topicItem.imagePath,
-            text: topicItem.text
-        };
+            postsDB[newKey] = {
+                title: `Post ${dynamicIndex}: ${topicItem.title}`,
+                category: topicItem.category,
+                recommendedFormat: "WITH_IMAGE",
+                imagePath: topicItem.imagePath,
+                text: topicItem.text
+            };
 
-        const liveAiText = await generateAIContentWithGemini(topicItem.title, "personal");
-        if (liveAiText) {
-            postsDB[newKey].text = liveAiText;
-        }
-
-        const postActionsKeyboard = {
-            reply_markup: {
-                inline_keyboard: [
-                    [
-                        { text: `🚀 Publicar Post ${dynamicIndex} no Perfil Pessoal`, callback_data: `publish_custom_${newKey}_personal_img` }
-                    ],
-                    [
-                        { text: `🏢 Publicar Post ${dynamicIndex} na Audit Chain`, callback_data: `publish_custom_${newKey}_company_img` }
-                    ],
-                    [
-                        { text: "✨ Gerar Outro Post Inédito com IA", callback_data: "generate_ai_post" },
-                        { text: "🏠 Menu Principal", callback_data: "back_to_main_menu" }
-                    ]
-                ]
+            try {
+                const liveAiText = await generateAIContentWithGemini(topicItem.title, "personal");
+                if (liveAiText) {
+                    postsDB[newKey].text = liveAiText;
+                }
+            } catch (errAi) {
+                console.error("Gemini API fallback triggered:", errAi.message);
             }
-        };
 
-        await bot.sendMessage(
-            chatId,
-            `✨ **NOVO POST INÉDITO GERADO COM SUCESSO! (Post ${dynamicIndex})**\n\n` +
-            `📌 **Título**: Post ${dynamicIndex}: ${topicItem.title}\n` +
-            `🏷️ **Categoria**: ${topicItem.category}\n` +
-            `🖼️ **Criativo Vinculado**: \`${topicItem.imagePath}\`\n\n` +
-            `--------------------\n\n` +
-            `${topicItem.text}`,
-            { parse_mode: 'Markdown', ...postActionsKeyboard }
-        );
+            const postActionsKeyboard = {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            { text: `🚀 Publicar Post ${dynamicIndex} no Perfil Pessoal`, callback_data: `publish_custom_${newKey}_personal_img` }
+                        ],
+                        [
+                            { text: `🏢 Publicar Post ${dynamicIndex} na Audit Chain`, callback_data: `publish_custom_${newKey}_company_img` }
+                        ],
+                        [
+                            { text: "✨ Gerar Outro Post Inédito com IA", callback_data: "generate_ai_post" },
+                            { text: "🏠 Menu Principal", callback_data: "back_to_main_menu" }
+                        ]
+                    ]
+                }
+            };
+
+            await bot.sendMessage(
+                chatId,
+                `✨ **NOVO POST INÉDITO GERADO COM SUCESSO! (Post ${dynamicIndex})**\n\n` +
+                `📌 **Título**: Post ${dynamicIndex}: ${topicItem.title}\n` +
+                `🏷️ **Categoria**: ${topicItem.category}\n` +
+                `🖼️ **Criativo Vinculado**: \`${topicItem.imagePath}\`\n\n` +
+                `--------------------\n\n` +
+                `${postsDB[newKey].text}`,
+                { parse_mode: 'Markdown', ...postActionsKeyboard }
+            );
+        } catch (errGen) {
+            console.error("Error in generate_ai_post:", errGen.message);
+            await bot.sendMessage(chatId, `⚠️ Erro ao gerar post: ${errGen.message}`, getMainMenuKeyboard());
+        }
     } else if (action === "select_post_menu") {
         const selectPostKeyboard = {
             reply_markup: {
