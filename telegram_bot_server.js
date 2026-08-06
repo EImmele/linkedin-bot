@@ -593,7 +593,29 @@ Autenticação forte (MFA), validação de postura de dispositivo e monitorament
 3. Suposição de Brecha (Assume Breach)
 Segmentar a rede para conter a movimentação lateral do atacante e minimizar a superfície de impacto.
 
-Zero Trust não é um produto fechado, mas sim uma arquitetura contínua de governança e proteção cibernética.`
+596: Zero Trust não é um produto fechado, mas sim uma arquitetura contínua de governança e proteção cibernética.`
+    },
+    post11: {
+        title: "Post 11: Matriz de Risco Inerente vs. Residual em Frameworks DORA & TPRM (OneTrust)",
+        category: "TPRM / DORA / Matriz de Risco",
+        recommendedFormat: "WITH_IMAGE",
+        imagePath: "media/audit_chain_tprm_dora.png",
+        text: `Como a sua organização calcula o gap entre Risco Inerente e Risco Residual nas avaliações de fornecedores de TI?
+
+Na minha prática de governança e arquitetura OneTrust, vejo muitas empresas tratando questionários de TPRM como meras listas de checagem.
+
+Sob a ótica do Artigo 28 da regulação DORA (EU 2022/2554) e da ISO 27001 (A.5.19 a A.5.22), o cálculo de risco de terceiros exige três etapas fundamentais:
+
+1. Avaliação do Risco Inerente (Critério de Criticidade BIA)
+Determinar a criticidade da função prestada (CIF) antes de qualquer controle do fornecedor.
+
+2. Avaliação de Controles e Mitigações
+Analisar as evidências técnicas fornecidas pelo parceiro no Vendor Portal para calcular o desconto de risco.
+
+3. Plano de Ação de Remediação (CAPA)
+Tratar as lacunas identificadas antes da assinatura contratual ou da renovação do serviço.
+
+A maturidade em TPRM transforma riscos de fornecedores em decisões estratégicas fundamentadas.`
     }
 };
 
@@ -1564,6 +1586,7 @@ Confira no PDF acima como estabelecer RTO, RPO e Planos de Continuidade (BCP/DRP
                     [{ text: `${getPostStatusIcon('post8')} 8️⃣ Arquitetura ServiceNow IRM (Compliance)`, callback_data: "publish_custom_post8_personal_img" }],
                     [{ text: `${getPostStatusIcon('post9')} 9️⃣ Simulados de Crise & Testes BCM (ISO 22301)`, callback_data: "publish_custom_post9_personal_img" }],
                     [{ text: `${getPostStatusIcon('post10')} 🔟 Zero Trust Architecture & GRC Executivo`, callback_data: "publish_custom_post10_personal_img" }],
+                    [{ text: `${getPostStatusIcon('post11')} 1️⃣1️⃣ Matriz Risco Inerente vs Residual (TPRM & DORA)`, callback_data: "publish_custom_post11_personal_img" }],
                     [{ text: "✨ 🆕 GERAR NOVO POST INÉDITO COM IA", callback_data: "generate_ai_post" }],
                     [{ text: "🔄 Resetar Status de Publicações (Reiniciar Ciclo)", callback_data: "reset_published_status" }],
                     [{ text: "👤 Voltar ao Menu Pessoal", callback_data: "menu_personal_profile" }]
