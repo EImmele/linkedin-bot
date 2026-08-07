@@ -600,23 +600,11 @@ Segmentar a rede para conter a movimentação lateral do atacante e minimizar a 
         title: "Post 11: Matriz de Risco Inerente vs. Residual em Frameworks DORA & TPRM (OneTrust)",
         category: "TPRM / DORA / Matriz de Risco",
         recommendedFormat: "WITH_IMAGE",
-        imagePath: "media/audit_chain_tprm_dora.png",
         text: `Como a sua organização calcula o gap entre Risco Inerente e Risco Residual nas avaliações de fornecedores de TI?
 
 Na minha prática de governança e arquitetura OneTrust, vejo muitas empresas tratando questionários de TPRM como meras listas de checagem.
 
-Sob a ótica do Artigo 28 da regulação DORA (EU 2022/2554) e da ISO 27001 (A.5.19 a A.5.22), o cálculo de risco de terceiros exige três etapas fundamentais:
-
-1. Avaliação do Risco Inerente (Critério de Criticidade BIA)
-Determinar a criticidade da função prestada (CIF) antes de qualquer controle do fornecedor.
-
-2. Avaliação de Controles e Mitigações
-Analisar as evidências técnicas fornecidas pelo parceiro no Vendor Portal para calcular o desconto de risco.
-
-3. Plano de Ação de Remediação (CAPA)
-Tratar as lacunas identificadas antes da assinatura contratual ou da renovação do serviço.
-
-A maturidade em TPRM transforma riscos de fornecedores em decisões estratégicas fundamentadas.`
+Sob a ótica do Artigo 28 da regulação DORA (EU 2022/2554) e da ISO 27001 (A.5.19 a A.5.22), o cálculo de risco de terceiros exige três etapas fundamentais.`
     }
 };
 
@@ -624,7 +612,7 @@ companyPostsDB = {
     c_tprm: {
         title: "1️⃣ Gestão de Risco de Terceiros (TPRM/VRM & DORA)",
         category: "TPRM / DORA / Supply Chain",
-        imagePath: "media/audit_chain_tprm_dora.png",
+        imagePath: "media/audit_chain_tprm_dora_v2.png",
         text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM GRC, PRIVACIDADE & CIBERSEGURANÇA]
 
 📌 GESTÃO DE RISCO DE TERCEIROS (TPRM) & CONFORMIDADE DORA
@@ -648,7 +636,7 @@ Fale com nossos consultores e agende uma avaliação de maturidade.
     c_privacy: {
         title: "2️⃣ Privacidade de Dados (LGPD & GDPR)",
         category: "Data Privacy / LGPD / GDPR",
-        imagePath: "media/audit_chain_privacy.png",
+        imagePath: "media/audit_chain_privacy_v2.png",
         text: `🏢 [AUDIT CHAIN - SOLUÇÕES EM PRIVACIDADE DE DADOS]
 
 📌 ESTRUTURAÇÃO DE PROGRAMA DE PRIVACIDADE (LGPD & GDPR)
@@ -671,7 +659,7 @@ Transforme obrigações regulatórias em vantagem competitiva e confiança de me
     c_bcm: {
         title: "3️⃣ Continuidade de Negócios (BCM & Resiliência)",
         category: "BCM / Resiliência / BIA",
-        imagePath: "media/audit_chain_bcm.png",
+        imagePath: "media/audit_chain_bcm_v2.png",
         text: `🏢 [AUDIT CHAIN - RESILIÊNCIA OPERACIONAL & BCM]
 
 📌 CONTINUIDADE DE NEGÓCIOS & RECUPERAÇÃO DE DESASTRES
@@ -694,7 +682,7 @@ Sua empresa sabe exatamente quais sistemas operar primeiro em um momento de desa
     c_infosec: {
         title: "4️⃣ Segurança da Informação (ISO 27001 & NIST CSF)",
         category: "InfoSec / ISO 27001 / NIST",
-        imagePath: "media/audit_chain_infosec.png",
+        imagePath: "media/audit_chain_infosec_v2.png",
         text: `🏢 [AUDIT CHAIN - SEGURANÇA DA INFORMAÇÃO & GRC]
 
 📌 SISTEMA DE GESTÃO DE SEGURANÇA DA INFORMAÇÃO (SGSI)
@@ -717,7 +705,7 @@ Alinhe a proteção cibernética aos objetivos estratégicos e ao apetite de ris
     c_onetrust: {
         title: "5️⃣ Plataforma OneTrust (Arquitetura & Implementação)",
         category: "OneTrust / VRM / Privacy Automation",
-        imagePath: "media/audit_chain_platforms.png",
+        imagePath: "media/audit_chain_platforms_v2.png",
         text: `🏢 [AUDIT CHAIN - ARQUITETURA & OTIMIZAÇÃO ONETRUST]
 
 📌 ESPECIALISTAS EM ARQUITETURA & IMPLANTAÇÃO ONETRUST
@@ -740,7 +728,7 @@ Extraia o valor máximo do seu investimento no ecossistema OneTrust com parametr
     c_servicenow: {
         title: "6️⃣ Plataforma ServiceNow GRC/IRM (Arquitetura & Sustentação)",
         category: "ServiceNow / GRC / IRM",
-        imagePath: "media/audit_chain_platforms.png",
+        imagePath: "media/audit_chain_platforms_v2.png",
         text: `🏢 [AUDIT CHAIN - ESPECIALISTAS SERVICENOW GRC / IRM]
 
 📌 ARQUITETURA, IMPLEMENTAÇÃO & SUSTENTAÇÃO SERVICENOW GRC
