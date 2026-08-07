@@ -880,51 +880,60 @@ const companyDynamicTopicsPool = [
 ];
 
 function generateExecutiveB2BText(topicItem) {
-    const textTemplates = [
-        `🏢 [AUDIT CHAIN - CONSULTORIA ESPECIALIZADA EM GRC & CIBERSEGURANÇA]
+    const titleUpper = topicItem.title.toUpperCase();
+    const pitch = topicItem.pitch;
 
-📌 ${topicItem.title.toUpperCase()}
+    const templates = [
+        `📌 ${titleUpper}
 
-${topicItem.pitch}
+Auditando programas de governança e riscos em grandes corporações, vemos que o maior desafio não é preencher formulários, mas transformar exigências regulatórias em controles operacionais efetivos.
 
-Para garantir a maturidade operacional e o alinhamento com as melhores práticas de mercado, a Audit Chain apoia sua empresa em três pilares fundamentais:
+${pitch}
 
-1️⃣ Mapeamento de Riscos & Enquadramento Regulatório (BIA & Critical Functions)
-2️⃣ Parametrização Avançada e Automação de Processos nas Plataformas OneTrust & ServiceNow IRM
-3️⃣ Monitoramento Contínuo, Matriz KRIs/KPIs e Preparação para Auditorias Executivas
+Na Audit Chain, estruturamos a governança com três pilares pragmáticos:
 
-👉 Confira no infográfico / criativo executivo acima os detalhes da nossa metodologia de entrega!
+1. Diagnóstico de Gaps & Cálculo de Risco Inerente vs. Residual (DORA Art. 28 / ISO 27001)
+2. Parametrização e Automação de Processos nas Plataformas OneTrust & ServiceNow GRC
+3. Matriz Executiva de KRIs/KPIs e Simulados Práticos de Crise (BCM / BIA)
 
----
+Se a sua empresa precisa acelerar a conformidade ou otimizar a sustentação das plataformas GRC, nossa equipe sênior está à disposição.
 
-📩 Sua organização precisa acelerar a conformidade ou otimizar processos de GRC?
-Fale com nossos consultores seniores e solicite uma avaliação de maturidade.
+#AuditChain #GRC #TPRM #DORA #OneTrust #ServiceNow #Ciberseguranca`,
 
-#AuditChain #GRC #TPRM #DORA #OneTrust #ServiceNow #Ciberseguranca #LGPD #ISO27001`,
+        `📌 ${titleUpper}
 
-        `🏢 [AUDIT CHAIN - GOVERNANÇA, PRIVACIDADE & RESILIÊNCIA OPERACIONAL]
+Tratar a governança de riscos e a resiliência cibernética apenas como um checklist de auditoria é uma falsa garantia de segurança perante o mercado e os reguladores.
 
-📌 ${topicItem.title.toUpperCase()}
+${pitch}
 
-No cenário regulatório atual, transformar exigências de conformidade em valor estratégico é o diferencial das empresas líderes.
+Como atuamos na consultoria executiva da Audit Chain:
 
-${topicItem.pitch}
+• Estruturação do inventário de ativos e fornecedores críticos (CIFs & RoPA)
+• Automação de fluxos de avaliação no Vendor Portal do OneTrust e ServiceNow IRM
+• Capacitação de equipes e relatórios consolidados para o Conselho de Administração
 
-💡 Entregáveis Principais da Consultoria Audit Chain:
-• Diagnóstico de Gaps & Matriz de Risco Inerente vs. Residual
-• Implementação e Otimização dos Módulos OneTrust VRM, Privacy & ServiceNow GRC
-• Elaboração de Políticas Normativas, Testes de Mesa e Treinamentos de Capacitação
+Sua organização busca elevar o nível de maturidade em GRC? Agende uma avaliação com nossos consultores seniores.
 
-👉 Arraste / confira a síntese visual no criativo executivo acima!
+#AuditChain #TPRM #DORA #LGPD #ISO27001 #OneTrust #ServiceNow`,
 
----
+        `📌 ${titleUpper}
 
-📩 Agende um diagnóstico técnico com nossos especialistas para estruturar ou evoluir o programa da sua empresa.
+A complexidade regulatória em cibersegurança e privacidade exige soluções automatizadas que conectem a política normativa diretamente ao dia a dia da TI.
 
-#AuditChain #TPRM #DORA #LGPD #ISO27001 #OneTrust #ServiceNow #Ciberseguranca`
+${pitch}
+
+Metodologia de Entrega Audit Chain:
+
+1️⃣ Mapeamento e Avaliação de Impacto (BIA, DPIA/RIPD & Gap Analysis)
+2️⃣ Arquitetura, Integrações por API REST e Otimização em OneTrust & ServiceNow
+3️⃣ Governança Contínua e Gestão de Planos de Ação de Remediação (CAPA)
+
+Entre em contato com nossa liderança técnica para agendar um diagnóstico de maturidade.
+
+#AuditChain #GRC #Ciberseguranca #Resiliencia #OneTrust #ServiceNow #ISO27001`
     ];
 
-    return textTemplates[Math.floor(Math.random() * textTemplates.length)];
+    return templates[Math.floor(Math.random() * templates.length)];
 }
 
 function getMainMenuKeyboard() {
@@ -1066,15 +1075,15 @@ async function checkAndProcessNewComments() {
                         totalRepliesSent++;
                         processedComments.add(commentId);
                         saveRespondedComments();
-                        console.log(`✅ Auto-replied to comment from ${realName}`);
-                        await bot.sendMessage(myTelegramChatId, `🎉 **NOVO COMENTÁRIO RESPONDIDO NO PILOTO AUTOMÁTICO!**\n\n📌 **Post**: ${item.name}\n👤 **Autor**: ${realName}\n💬 **Comentário**: "${textSnippet}"\n✍️ **Resposta Enviada**: "${aiSuggestion}"`, { parse_mode: 'Markdown' });
+                        console.log(`🤖 Auto-replied to comment from ${realName}`);
+                        await bot.sendMessage(myTelegramChatId, `🟢 **RESPOSTA AUTOMÁTICA PUBLICADA NO LINKEDIN!**\n\n📌 **Post**: ${item.name}\n👤 **Para**: ${realName}\n💬 **Resposta**: "${aiSuggestion}"`);
                     } else {
-                        // HUMAN IN THE LOOP: Send proactive notification with approval button to Telegram
-                        const cacheKey = `comm_${commentId}`;
+                        // HUMAN IN THE LOOP: Send notification to Telegram asking for approval
+                        const cacheKey = `${item.key}_${commentId.replace(/[^a-zA-Z0-9]/g, '_')}`;
                         unrepliedCommentsCache[cacheKey] = {
-                            id: c.id,
+                            commentId: commentId,
                             fullCommentUrn: fullCommentUrn,
-                            activityUrn: item.urn.replace("urn:li:share:", "urn:li:activity:"),
+                            postUrn: item.urn.replace("urn:li:share:", "urn:li:activity:"),
                             postName: item.name,
                             author: realName,
                             actorUrn: actorUrn,
@@ -1141,8 +1150,8 @@ async function generateAIContentWithGemini(userPrompt, targetAudience = "persona
     }
 
     const systemInstruction = targetAudience === "company"
-        ? `Você é o Arquiteto Principal e Consultor Sênior de GRC da consultoria Audit Chain. Escreva um post comercial B2B de até 150 palavras para o LinkedIn promovendo serviços corporativos em Riscos de Terceiros (TPRM), Regulação DORA (EU 2022/2554), Privacidade de Dados (LGPD/GDPR), Continuidade de Negócios (BCM) ou Arquitetura OneTrust e ServiceNow GRC. Use tom executivo, direto, limpo e com hashtags no final.`
-        : `Você é Erik Immele, Arquiteto Sênior de GRC, Especialista OneTrust, TPRM & DORA e profissional se preparando para a certificação CISM da ISACA. Escreva um post de Thought Leadership no LinkedIn em 1ª pessoa ('Eu'), conectando a prática de mercado com governança de riscos, segurança da informação e resiliência operacional. Use tom executivo e 3 pontos práticos numerados.`;
+        ? `Você é o Sócio de Consultoria de GRC da Audit Chain. Escreva um post executivo B2B extremamente prático e humano para o LinkedIn (máximo 120 palavras). NUNCA use clichês de IA como 'No cenário atual', 'No ambiente corporativo de hoje', 'Como sua empresa lida com...', 'Confira acima...'. Comece direto com uma provocação técnica real ou fato do mercado. Detalhe 3 entregáveis pragmáticos (ex: DORA Art. 28, BIA RTO/RPO, OneTrust VRM, ServiceNow IRM) e termine com uma chamada limpa para diagnóstico corporativo sem tags internas nem emojis exagerados.`
+        : `Você é Erik Immele, Arquiteto Sênior de GRC e Especialista OneTrust/ServiceNow. Escreva um artigo curto de Thought Leadership no LinkedIn em 1ª pessoa ('Na minha prática de governança...'). NUNCA use linguagem genérica de IA. Seja direto, técnico e traga 3 lições de campo numeradas sobre resiliência e riscos cibernéticos.`;
 
     try {
         const controller = new AbortController();
